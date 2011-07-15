@@ -1,0 +1,8 @@
+* TODO add yesod as submodule
+  - State "TODO"       from ""           [2011-07-15 Fri 13:30] \\
+
+    [[https://github.com/snoyberg/yesod.git][github]]
+    
+    :PROPERTIES:
+    :CUSTOM_ID: efdb3cce-eef6-49a5-a250-387f4b870e78
+    :END:
