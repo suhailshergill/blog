@@ -1,0 +1,3 @@
+[submodule "yesod"]
+	path = yesod
+	url = shergill@chaos:~/git/github/SW/yesod.git
