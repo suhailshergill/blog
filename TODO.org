@@ -1,4 +1,6 @@
-* TODO add yesod as submodule
+* DONE add yesod as submodule
+  CLOSED: [2011-11-02 Wed 22:18]
+  - State "DONE"       from "TODO"       [2011-11-02 Wed 22:18]
   - State "TODO"       from ""           [2011-07-15 Fri 13:30] \\
 
     [[https://github.com/snoyberg/yesod.git][github]]
