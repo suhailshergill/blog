@@ -1,8 +1,8 @@
 Default: &defaults
   user: blog
-  password: blog
+  password: DMJaPqrTV8vjjR9QfQ37GeIf8rQoqddR
   host: localhost
-  port: 5432
+  port: 55432
   database: blog
   poolsize: 10
 

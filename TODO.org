@@ -1,5 +1,8 @@
-* DONE add yesod as submodule
+* CANCELED add yesod as submodule
   CLOSED: [2011-11-02 Wed 22:18]
+  - State "CANCELED"   from "DONE"       [2012-01-18 Wed 23:42] \\
+    don't really see a strong need for using yesod from source especially when it's
+    available via hackage. will be using a sandboxed installation via virthualenv
   - State "DONE"       from "TODO"       [2011-11-02 Wed 22:18]
   - State "TODO"       from ""           [2011-07-15 Fri 13:30] \\
 
