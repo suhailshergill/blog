@@ -1,6 +1,6 @@
 module Foundation
     ( Blog (..)
-    , BlogRoute (..)
+    , Route (..)
     , BlogMessage (..)
     , resourcesBlog
     , Handler
@@ -8,30 +8,29 @@ module Foundation
     , Form
     , maybeAuth
     , requireAuth
-    , module Yesod
     , module Settings
     , module Model
-    , StaticRoute (..)
-    , AuthRoute (..)
     ) where
 
 import Prelude
-import Yesod hiding (Form, AppConfig (..), withYamlEnvironment)
-import Yesod.Static (Static, base64md5, StaticRoute(..))
+import Yesod
+import Yesod.Static
 import Settings.StaticFiles
 import Yesod.Auth
-import Yesod.Auth.OpenId
+import Yesod.Auth.BrowserId
+import Yesod.Auth.GoogleEmail
 import Yesod.Default.Config
 import Yesod.Default.Util (addStaticContentExternal)
 import Yesod.Logger (Logger, logMsg, formatLogText)
+import Network.HTTP.Conduit (Manager)
 #ifdef DEVELOPMENT
 import Yesod.Logger (logLazyText)
 #endif
 import qualified Settings
 import qualified Data.ByteString.Lazy as L
-import qualified Database.Persist.Base
+import qualified Database.Persist.Store
 import Database.Persist.GenericSql
-import Settings (widgetFile)
+import Settings (widgetFile, Extra (..))
 import Model
 import Text.Jasmine (minifym)
 import Web.ClientSession (getKey)
@@ -47,10 +46,12 @@ import Network.Mail.Mime (sendmail)
 -- starts running, such as database connections. Every handler will have
 -- access to the data present here.
 data Blog = Blog
-    { settings :: AppConfig DefaultEnv ()
+    { settings :: AppConfig DefaultEnv Extra
     , getLogger :: Logger
     , getStatic :: Static -- ^ Settings for static file serving.
-    , connPool :: Database.Persist.Base.PersistConfigPool Settings.PersistConfig -- ^ Database connection pool.
+    , connPool :: Database.Persist.Store.PersistConfigPool Settings.PersistConfig -- ^ Database connection pool.
+    , httpManager :: Manager
+    , persistConfig :: Settings.PersistConfig
     }
 
 -- Set up i18n messages. See the message folder.
@@ -82,12 +83,13 @@ type Form x = Html -> MForm Blog Blog (FormResult x, Widget)
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
 instance Yesod Blog where
-    approot = appRoot . settings
+    approot = ApprootMaster $ appRoot . settings
 
     -- Place the session key file in the config folder
     encryptKey _ = fmap Just $ getKey "config/client_session_key.aes"
 
     defaultLayout widget = do
+        master <- getYesod
         mmsg <- getMessage
 
         -- We break up the default layout into two components:
@@ -125,8 +127,12 @@ instance Yesod Blog where
 -- How to run database actions.
 instance YesodPersist Blog where
     type YesodPersistBackend Blog = SqlPersist
-    runDB f = liftIOHandler
-            $ fmap connPool getYesod >>= Database.Persist.Base.runPool (undefined :: Settings.PersistConfig) f
+    runDB f = do
+        master <- getYesod
+        Database.Persist.Store.runPool
+            (persistConfig master)
+            f
+            (connPool master)
 
 instance YesodAuth Blog where
     type AuthId Blog = UserId
@@ -139,12 +145,14 @@ instance YesodAuth Blog where
     getAuthId creds = runDB $ do
         x <- getBy $ UniqueUser $ credsIdent creds
         case x of
-            Just (uid, _) -> return $ Just uid
+            Just (Entity uid _) -> return $ Just uid
             Nothing -> do
                 fmap Just $ insert $ User (credsIdent creds) Nothing
 
     -- You can add other plugins like BrowserID, email or OAuth here
-    authPlugins = [authOpenId]
+    authPlugins _ = [authBrowserId, authGoogleEmail]
+
+    authHttpManager = httpManager
 
 -- Sends off your mail. Requires sendmail in production!
 deliver :: Blog -> L.ByteString -> IO ()
