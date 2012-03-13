@@ -1,11 +1,11 @@
 # Require any additional compass plugins here.
 
-# Set this to the root of your project when deployed:
-http_path = "/"
-css_dir = "stylesheets"
-sass_dir = "sass"
-images_dir = "images"
-javascripts_dir = "javascripts"
+# # Set this to the root of your project when deployed:
+# http_path = "/"
+# css_dir = "stylesheets"
+# sass_dir = "sass"
+# images_dir = "images"
+# javascripts_dir = "javascripts"
 
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed
@@ -22,3 +22,34 @@ javascripts_dir = "javascripts"
 # preferred_syntax = :sass
 # and then run:
 # sass-convert -R --from scss --to sass sass scss && rm -rf sass && mv scss sass
+
+#Delineate the directory for our SASS/SCSS files (this directory)
+sass_path = "compass" #  File.dirname(.);
+
+print "sasspath = #{sass_path} \n"
+css_path = File.join(sass_path, "..", "static", "autogen")
+
+# Delinate the images directory
+images_dir = File.join("img")
+
+print "images dir: #{images_dir} \n"
+
+# Specify the output style/environment
+#output_style = :expanded #:compressed
+output_style = :compressed
+environment = :production
+
+$shouldTouch = true
+
+on_stylesheet_saved do |filename|
+  print "saved "
+  print filename
+  print "\n"
+  if $shouldTouch
+    $shouldTouch = false
+    staticFile = "S4M/Server/Static.hs"
+    `rm dist/build/S4M/Server/Static.o`
+    `touch #{staticFile}`
+    print "touched #{staticFile}\n"
+  end
+end
