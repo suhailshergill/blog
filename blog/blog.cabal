@@ -9,7 +9,7 @@ description:       'Tis a work in progress.
 category:          Web
 stability:         Experimental
 cabal-version:     >= 1.6
-build-type:        Simple
+build-type:        Custom
 homepage:          http://blog.shergill.su/
 
 Flag dev
