@@ -26,11 +26,13 @@
 #Delineate the directory for our SASS/SCSS files (this directory)
 sass_path = "compass" #  File.dirname(.);
 
+staticDir = File.join(sass_path, "..", "static")
+
 print "sasspath = #{sass_path} \n"
-css_path = File.join(sass_path, "..", "static", "autogen")
+css_path = staticDir
 
 # Delinate the images directory
-images_dir = File.join("img")
+images_dir = File.join(staticDir, "img")
 
 print "images dir: #{images_dir} \n"
 
@@ -47,8 +49,8 @@ on_stylesheet_saved do |filename|
   print "\n"
   if $shouldTouch
     $shouldTouch = false
-    staticFile = "S4M/Server/Static.hs"
-    `rm dist/build/S4M/Server/Static.o`
+    staticFile = "Settings.hs"
+    `rm dist/build/Settings.o`
     `touch #{staticFile}`
     print "touched #{staticFile}\n"
   end
