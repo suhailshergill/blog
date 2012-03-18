@@ -12,6 +12,9 @@
         <meta name="description" content="Personal website of Suhail Shergill">
         <meta name="author" content="Suhail Shergill">
 
+        $maybe verification <- extraVerification $ mySettings
+          <meta name="google-site-verification" content="#{verification}" />
+
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
         ^{pageHead pc}

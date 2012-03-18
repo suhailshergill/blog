@@ -3,6 +3,7 @@ Default: &defaults
   port: 3000
   copyright: Insert copyright statement here
   #analytics: UA-YOURCODE
+  verification: fHM_yAw2cluSQ1j0USmMnj3SwZXeKCQrYzkCC71Zado
 
 Development:
   <<: *defaults
