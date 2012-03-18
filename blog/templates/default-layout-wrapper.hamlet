@@ -1,9 +1,9 @@
 \<!doctype html>
-\<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-\<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-\<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+\<!--[if lt IE 7]> <html class="bp no-js ie6 oldie" lang="en"> <![endif]-->
+\<!--[if IE 7]>    <html class="bp no-js ie7 oldie" lang="en"> <![endif]-->
+\<!--[if IE 8]>    <html class="bp no-js ie8 oldie" lang="en"> <![endif]-->
 \<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en"> <!--<![endif]-->
+<html class="bp no-js" lang="en"> <!--<![endif]-->
   $with mySettings <- appExtra $ settings master
     <head>
         <meta charset="UTF-8">
@@ -25,7 +25,7 @@
 
         <script>
           document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
-    <body>
+    <body class="bp">
         <div id="container">
             <header>
             <div id="main" role="main">
