@@ -70,7 +70,7 @@ data Extra = Extra
 parseExtra :: DefaultEnv -> Object -> Parser Extra
 parseExtra _ o = Extra
     <$> o .:  "copyright"
-    <*> o .: "jquery"
+    <*> o .:  "jquery"
     <*> o .:? "localCopyright"
     <*> o .:? "analytics"
     <*> o .:? "verification"
