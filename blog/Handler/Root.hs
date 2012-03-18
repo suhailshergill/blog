@@ -14,6 +14,5 @@ getRootR :: Handler RepHtml
 getRootR = do
     defaultLayout $ do
         h2id <- lift newIdent
-        setTitle "su - su"
         (title,body) <- getBOFHExcuses
         $(widgetFile "homepage")
