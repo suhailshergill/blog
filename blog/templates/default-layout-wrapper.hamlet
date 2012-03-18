@@ -4,6 +4,7 @@
 \<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
 \<!--[if gt IE 8]><!-->
 <html class="no-js" lang="en"> <!--<![endif]-->
+  $with mySettings <- appExtra $ settings master
     <head>
         <meta charset="UTF-8">
 
@@ -28,7 +29,7 @@
               ^{pageBody pc}
             <footer>
 
-        $maybe analytics <- extraAnalytics $ appExtra $ settings master
+        $maybe analytics <- extraAnalytics $ mySettings
             <script>
                 window._gaq = [['_setAccount','#{analytics}'],['_trackPageview'],['_trackPageLoadTime']];
                 YepNope.load({
