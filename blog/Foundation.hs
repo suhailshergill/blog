@@ -41,7 +41,6 @@ import qualified Data.Text.Lazy.Encoding
 import Network.Mail.Mime (sendmail)
 #endif
 
-import Data.Text (Text)
 import Utils
 
 -- | The site argument for your application. This can be a good place to
