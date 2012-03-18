@@ -4,7 +4,6 @@
 \<!--[if IE 8]>    <html class="bp no-js ie8 oldie" lang="en"> <![endif]-->
 \<!--[if gt IE 8]><!-->
 <html class="bp no-js" lang="en"> <!--<![endif]-->
-  $with mySettings <- appExtra $ settings master
     <head>
         <meta charset="UTF-8">
 

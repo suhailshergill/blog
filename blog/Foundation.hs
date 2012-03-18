@@ -92,6 +92,8 @@ instance Yesod Blog where
         master <- getYesod
         mmsg <- getMessage
 
+        let mySettings = appExtra $ settings master
+
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
         -- default-layout-wrapper is the entire page. Since the final
@@ -100,7 +102,7 @@ instance Yesod Blog where
 
         pc <- widgetToPageContent $ do
             $(widgetFile "normalize")
-            addScriptRemoteAttrs (extraJquery $ appExtra $ settings master)
+            addScriptRemoteAttrs (extraJquery $ mySettings)
               [("type", "text/javascript")]
             $(widgetFile "default-layout")
         hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
