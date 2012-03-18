@@ -100,6 +100,8 @@ instance Yesod Blog where
 
         pc <- widgetToPageContent $ do
             $(widgetFile "normalize")
+            addScriptRemoteAttrs (extraJquery $ appExtra $ settings master)
+              [("type", "text/javascript")]
             $(widgetFile "default-layout")
         hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
 
