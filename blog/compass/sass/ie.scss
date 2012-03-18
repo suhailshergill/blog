@@ -21,3 +21,13 @@ html {
       }
    }
 }
+
+@import "partials/footer";
+html.ie6, html.ie8 {
+   body.bp {
+      #container {
+         display: table;
+         height: 100%;
+      }
+   }
+}
