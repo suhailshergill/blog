@@ -1,6 +1,7 @@
 Default: &defaults
   host: "localhost"
   port: 3000
+  staticroot: "http://static.blog.shergill.su"
   copyright: Except where otherwise noted, content on this site is licensed under a Creative Commons BY-NC-SA 3.0 License.
   #analytics: UA-YOURCODE
   verification: fHM_yAw2cluSQ1j0USmMnj3SwZXeKCQrYzkCC71Zado
@@ -18,4 +19,5 @@ Staging:
 Production:
   approot: "http://www.shergill.su"
   port: 53000
+  staticroot: "http://static.blog.shergill.su"
   <<: *defaults
