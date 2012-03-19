@@ -1,17 +1,24 @@
 \<!doctype html>
-\<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-\<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-\<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+\<!--[if lt IE 7]> <html class="bp no-js ie6 oldie" lang="en"> <![endif]-->
+\<!--[if IE 7]>    <html class="bp no-js ie7 oldie" lang="en"> <![endif]-->
+\<!--[if IE 8]>    <html class="bp no-js ie8 oldie" lang="en"> <![endif]-->
 \<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en"> <!--<![endif]-->
+<html class="bp no-js" lang="en"> <!--<![endif]-->
     <head>
         <meta charset="UTF-8">
 
         <title>#{pageTitle pc}
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta name="description" content="Personal website of Suhail Shergill">
+        <meta name="author" content="Suhail Shergill">
+
+        $maybe verification <- extraVerification $ mySettings
+          <meta name="google-site-verification" content="#{verification}" />
 
         <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <link href="@{StaticR sass_screen_css}" rel="stylesheet" media="screen,projection">
+        <link href="@{StaticR sass_ie_css}" rel="stylesheet" media="screen,projection">
+        <link href="@{StaticR sass_print_css}" rel="stylesheet" media="print">
 
         ^{pageHead pc}
 
@@ -21,14 +28,14 @@
 
         <script>
           document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
-    <body>
+    <body class="bp">
         <div id="container">
             <header>
             <div id="main" role="main">
               ^{pageBody pc}
-            <footer>
+        <footer>#{extraCopyright $ mySettings}
 
-        $maybe analytics <- extraAnalytics $ appExtra $ settings master
+        $maybe analytics <- extraAnalytics $ mySettings
             <script>
                 window._gaq = [['_setAccount','#{analytics}'],['_trackPageview'],['_trackPageLoadTime']];
                 YepNope.load({

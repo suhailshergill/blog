@@ -1,0 +1,34 @@
+$footer-height: 20px;
+
+html.bp, body.bp {
+   height: 100%;
+}
+
+body.bp {
+   #container {
+      min-height: 100%;
+   }
+
+   #main {
+      overflow: auto;
+      padding-bottom: $footer-height;
+   }
+
+   footer {
+      position: relative;
+      margin-top: -$footer-height;
+      height: $footer-height;
+      clear: both;
+      text-align: center;
+   }
+
+   // opera fix
+   &:before {
+	  content:"";
+	  height:100%;
+	  float:left;
+	  width:0;
+	  margin-top:-32767px;
+   }
+   
+}

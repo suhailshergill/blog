@@ -1,1 +1,6 @@
-document.getElementById("#{h2id}").innerHTML = "<i>Added from JavaScript.</i>";
+$(document).ready(function(){
+
+    // do something
+
+});
+

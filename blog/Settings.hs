@@ -45,8 +45,10 @@ staticDir = "static"
 -- have to make a corresponding change here.
 --
 -- To see how this value is used, see urlRenderOverride in Foundation.hs
-staticRoot :: AppConfig DefaultEnv x -> Text
-staticRoot conf = [st|#{appRoot conf}/static|]
+-- staticRoot :: AppConfig DefaultEnv x -> Text
+-- staticRoot conf = [st|#{appRoot conf}/static|]
+staticRoot :: AppConfig DefaultEnv Extra -> Text
+staticRoot conf = [st|#{extraStaticroot $ appExtra $ conf}|]
 
 
 -- The rest of this file contains settings which rarely need changing by a
@@ -61,10 +63,18 @@ widgetFile = Yesod.Default.Util.widgetFileNoReload
 
 data Extra = Extra
     { extraCopyright :: Text
+    , extraJquery :: Text
+    , extraStaticroot :: Text
+    , extraLocalCopyright :: Maybe Text
     , extraAnalytics :: Maybe Text -- ^ Google Analytics
+    , extraVerification :: Maybe Text
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
 parseExtra _ o = Extra
     <$> o .:  "copyright"
+    <*> o .:  "jquery"
+    <*> o .:  "staticroot"
+    <*> o .:? "localCopyright"
     <*> o .:? "analytics"
+    <*> o .:? "verification"

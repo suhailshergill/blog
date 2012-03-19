@@ -1,6 +1,7 @@
 module Handler.Root where
 
 import Import
+import Utils
 
 -- This is a handler function for the GET request method on the RootR
 -- resource pattern. All of your resource patterns are defined in
@@ -12,6 +13,5 @@ import Import
 getRootR :: Handler RepHtml
 getRootR = do
     defaultLayout $ do
-        h2id <- lift newIdent
-        setTitle "blog homepage"
+        (title,body) <- getBOFHExcuses
         $(widgetFile "homepage")

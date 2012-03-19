@@ -41,6 +41,8 @@ import qualified Data.Text.Lazy.Encoding
 import Network.Mail.Mime (sendmail)
 #endif
 
+import Utils
+
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
 -- starts running, such as database connections. Every handler will have
@@ -92,6 +94,8 @@ instance Yesod Blog where
         master <- getYesod
         mmsg <- getMessage
 
+        let mySettings = appExtra $ settings master
+
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
         -- default-layout-wrapper is the entire page. Since the final
@@ -99,7 +103,10 @@ instance Yesod Blog where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
+            setTitle "su - su"
             $(widgetFile "normalize")
+            addScriptRemoteAttrs (extraJquery $ mySettings)
+              [("type", "text/javascript")]
             $(widgetFile "default-layout")
         hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
 
@@ -123,6 +130,13 @@ instance Yesod Blog where
 
     -- Enable Javascript async loading
     yepnopeJs _ = Just $ Right $ StaticR js_modernizr_js
+
+    -- custom error pages
+    errorHandler NotFound = fmap chooseRep $ defaultLayout $ do
+      setTitle "Not Found"
+      (title,body) <- getBOFHExcuses
+      $(widgetFile "error-notFound")
+    errorHandler other = defaultErrorHandler other
 
 -- How to run database actions.
 instance YesodPersist Blog where

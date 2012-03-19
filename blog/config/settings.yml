@@ -1,8 +1,11 @@
 Default: &defaults
   host: "localhost"
   port: 3000
-  copyright: Insert copyright statement here
+  staticroot: "http://static.blog.shergill.su"
+  copyright: Except where otherwise noted, content on this site is licensed under a Creative Commons BY-NC-SA 3.0 License.
   #analytics: UA-YOURCODE
+  verification: fHM_yAw2cluSQ1j0USmMnj3SwZXeKCQrYzkCC71Zado
+  jquery: https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js
 
 Development:
   <<: *defaults
@@ -14,5 +17,7 @@ Staging:
   <<: *defaults
 
 Production:
-  approot: "http://www.example.com"
+  approot: "http://www.shergill.su"
+  port: 53000
+  staticroot: "http://static.blog.shergill.su"
   <<: *defaults
