@@ -103,7 +103,7 @@ instance Yesod Blog where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            setTitle "su - su"
+            setTitle (toHtml $ extraTitle $ mySettings)
             $(widgetFile "normalize")
             addScriptRemoteAttrs (extraJquery $ mySettings)
               [("type", "text/javascript")]
