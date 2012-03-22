@@ -1,5 +1,5 @@
 $maybe msg <- mmsg
     <div #message>#{msg}
 ^{widget}
-$maybe copyright <- extraLocalCopyright $ appExtra $ settings master
+$maybe copyright <- extraLocalCopyright $ mySettings
     <footer>#{copyright}
