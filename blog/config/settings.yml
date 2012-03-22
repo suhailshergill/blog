@@ -6,6 +6,7 @@ Default: &defaults
   #analytics: UA-YOURCODE
   verification: fHM_yAw2cluSQ1j0USmMnj3SwZXeKCQrYzkCC71Zado
   jquery: https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js
+  title: "$> su - shergill"
 
 Development:
   <<: *defaults

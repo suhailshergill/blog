@@ -68,6 +68,7 @@ data Extra = Extra
     , extraLocalCopyright :: Maybe Text
     , extraAnalytics :: Maybe Text -- ^ Google Analytics
     , extraVerification :: Maybe Text
+    , extraTitle :: Text
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
@@ -78,3 +79,4 @@ parseExtra _ o = Extra
     <*> o .:? "localCopyright"
     <*> o .:? "analytics"
     <*> o .:? "verification"
+    <*> o .: "title"
