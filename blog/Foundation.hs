@@ -103,7 +103,7 @@ instance Yesod Blog where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            setTitle "su - su"
+            setTitle (toHtml $ extraTitle $ mySettings)
             $(widgetFile "normalize")
             addScriptRemoteAttrs (extraJquery $ mySettings)
               [("type", "text/javascript")]
@@ -134,7 +134,7 @@ instance Yesod Blog where
     -- custom error pages
     errorHandler NotFound = fmap chooseRep $ defaultLayout $ do
       setTitle "Not Found"
-      (title,body) <- getBOFHExcuses
+      (title,body) <- getBOFHExcusesC 300
       $(widgetFile "error-notFound")
     errorHandler other = defaultErrorHandler other
 
