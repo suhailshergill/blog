@@ -5,3 +5,4 @@
 /robots.txt RobotsR GET
 
 / RootR GET
+/post/#Text PostR GET

@@ -42,6 +42,7 @@ import Network.Mail.Mime (sendmail)
 #endif
 
 import Utils
+import Data.Text (Text)
 
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
