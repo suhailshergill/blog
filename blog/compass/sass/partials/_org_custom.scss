@@ -1,7 +1,22 @@
 @import "org";
 
+$code-padding: 1em;
+
+@mixin su-src-annotation($lang,$comment-marker) {
+   &.src-#{$lang}:before {
+      @extend .org-comment;
+      content: $comment-marker + " " + $lang;
+      float: right;
+      display: block;
+      position: relative;
+      top: -$code-padding;
+   }
+}
+
 .src {
    background-color: #1c1c1c;
    color: #dadada;
-   padding: 1em;
+   padding: $code-padding;
+
+   @include su-src-annotation(haskell,"--");
 }
