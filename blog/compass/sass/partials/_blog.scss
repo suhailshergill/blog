@@ -1,0 +1,23 @@
+body.bp {
+   div.post-header h2 {
+      display: inline;
+   }
+
+   div.post-tags {
+      display: inline;
+      float: right;
+      padding-top: 1em;
+      ul {
+         list-style-type: none;
+         li {
+            display: inline;
+            padding-right: 0.5em;
+         }
+      }
+   }
+
+   div.post-body>p:first-child {
+      padding-left: 1em;
+   }
+
+}
