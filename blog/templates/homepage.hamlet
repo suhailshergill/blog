@@ -1,2 +1,15 @@
-<h1>#{title}
-<h1>#{body}
+$forall (entry, mTags) <- entry_mTags_s
+    < .post>
+
+      < .post-header>
+        <h2><a href="/post/#{entryCustomId entry}">#{entryHeading entry}</a>
+        < .post-tags>
+          <ul>
+            $forall mTag <- mTags
+              $maybe tag <- mTag
+                <li>#{tag}
+
+      < .post-body>#{preEscapedText $ entryPost entry}
+
+$maybe widget <- mWidget
+    < .pagination>^{widget}

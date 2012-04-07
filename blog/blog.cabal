@@ -74,8 +74,7 @@ executable         blog
                 GeneralizedNewtypeDeriving
                 FlexibleContexts
 
-    build-depends: yesod-platform                >= 0.10       && < 0.11
-                 , base                          >= 4          && < 5
+    build-depends: base                          >= 4          && < 5
                  , yesod                         >= 0.10       && < 0.11
                  , yesod-core                    >= 0.10       && < 0.11
                  , yesod-auth                    >= 0.8        && < 0.9
@@ -101,3 +100,5 @@ executable         blog
                  , process                       >= 1          && < 2
                  , transformers                  >= 0.2        && < 0.3
                  , time                          >= 1.2        && < 1.3
+                 , yesod-paginator               >= 0.2        && < 0.3
+                 , blaze-html                    >= 0.4.3      && < 0.4.4
