@@ -16,8 +16,11 @@ body.bp {
       }
    }
 
-   div.post-body>p:first-child {
-      padding-left: 1em;
+   div.post-body {
+      >p:first-child {
+         padding-left: 1em;
+      }
+
    }
 
 }
