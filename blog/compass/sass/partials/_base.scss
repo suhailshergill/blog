@@ -10,3 +10,20 @@ $blueprint-grid-margin: 10px;
 $blueprint-grid-width: ($blueprint-container-size + $blueprint-grid-margin) / $blueprint-grid-columns - $blueprint-grid-margin;
 
 $blueprint-font-size: 16px;
+
+/* [[https://github.com/nex3/sass/issues/156][source]] */
+/* USAGE: */
+/* @if su-import-once("_SharedBaseStuff.scss") { */
+
+/*     ...declare stuff that will only be imported once... */
+
+/* } */
+$su-imported-once-files: () !default;
+
+@function su-import-once($name) {
+    @if index($su-imported-once-files, $name) {
+        @return false;
+    }
+    $su-imported-once-files: append($su-imported-once-files, $name);
+    @return true;
+}
