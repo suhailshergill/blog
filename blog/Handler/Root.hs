@@ -66,12 +66,11 @@ getPostR customId = do
 
 getTagR :: Text -> Handler RepHtml
 getTagR tag = do
-  tagE <- runDB . getBy404 $ UniqueTagName tag
-  entryTagE_s <- runDB $ selectList [EntryTagTagId ==. (entityKey tagE)] []
-  (entryE_s, widget) <- runDB $ selectPaginated paginationLength [EntryId
-                                                                  <-. (map
-                                                                       (entryTagEntryId
-                                                                       . entityVal)
-                                                                       entryTagE_s)]
-                        entrySort
+  (entryE_s, widget) <- runDB $ do
+    tagE <- getBy404 $ UniqueTagName tag
+    entryTagE_s <- selectList [EntryTagTagId ==. (entityKey tagE)] []
+    selectPaginated paginationLength [EntryId <-. (map (entryTagEntryId
+                                                        . entityVal)
+                                                   entryTagE_s)]
+      entrySort
   renderEntries entryE_s entrySort (Just widget)
