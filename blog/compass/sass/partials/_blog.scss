@@ -1,26 +1,84 @@
-body.bp {
-   div.post-header h2 {
-      display: inline;
-   }
+@import "blueprint/colors";
+@import "blueprint/buttons";
 
-   div.post-tags {
-      display: inline;
-      float: right;
-      padding-top: 1em;
-      ul {
-         list-style-type: none;
-         li {
-            display: inline;
-            padding-right: 0.5em;
+@import "base";
+
+body.bp {
+
+   div.post {
+      border-top-style: ridge;
+      border-top-color: $blueprint-border-color;
+      border-width: 4px;
+      &:first-child {
+         border-width: 0;
+      }
+
+      div.post-header h2 {
+         display: inline;
+         a {
+            color: $header-color;
+            &:hover {
+               color: $link-visited-color;
+            }
+         }
+      }
+
+      div.post-tags {
+         display: inline;
+         float: right;
+         padding-top: 1em;
+         ul {
+            list-style-type: none;
+            li {
+               display: inline;
+               padding-right: 0.5em;
+            }
+         }
+      }
+
+      div.post-body {
+         >p:first-child {
+            padding-left: 1em;
+            color: $quiet-color;
+         }
+
+         .timestamp {
+            color: $info-color;
          }
       }
    }
 
-   div.post-body {
-      >p:first-child {
-         padding-left: 1em;
+   #footnotes {
+      h2.footnotes {
+         font-size: 1.3em;
+         margin-bottom: 0.3em;
       }
 
+      .footnote {
+         padding-left: 1em;
+      }
+   }
+
+   div.pagination {
+      ul {
+         text-align: center;
+         list-style-type: none;
+         li {
+            display: inline;
+            a {
+               @include anchor-button;
+               @include button-colors($link-color, $blueprint-background-color,
+               $blueprint-border-color);
+               @include button-hover-colors($link-hover-color,
+                  $blueprint-background-color, $blueprint-border-color);
+               @include button-active-colors($link-active-color,
+                     $blueprint-background-color, $blueprint-border-color);
+            }
+            &.disabled a {
+               /* @include button-colors( */
+            }
+         }
+      }
    }
 
 }
