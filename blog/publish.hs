@@ -39,16 +39,17 @@ main :: IO [Key SqlPersist (EntryTagGeneric SqlPersist)]
 main = do
   args <- getArgs
   case args of
-    mode_:custom_id:entered_on:heading_:tags_ -> do
+    mode_:custom_id:entered_on:heading_:hasMath_:tags_ -> do
       let mode = read mode_
           customId = pack custom_id
           heading = pack heading_
+          hasMath = read hasMath_
           tags = map pack tags_
           enteredOn = parseDateUTC entered_on
       text <- getContents
       let entryText = truncateWhitespace text
           in
-          runDBAction mode (insertEntry customId enteredOn heading tags
+          runDBAction mode (insertEntry customId enteredOn heading hasMath tags
                             entryText)
 
     _ -> do
@@ -59,7 +60,7 @@ main = do
 
 
 
-runDBAction :: DefaultEnv 
+runDBAction :: DefaultEnv
                -> SqlPersist IO a
                -> IO a
 runDBAction env action = do
@@ -90,16 +91,18 @@ type ÃEnteredOn = UTCTime
 type ÃHeading = Text
 type ÃTag = Text
 type ÃPost = Text
+type ÃHasMath = Bool
 insertEntry :: (PersistQuery backend m, PersistUnique backend m)
                => ÃCustomId
                -> ÃEnteredOn
                -> ÃHeading
+               -> ÃHasMath
                -> [ÃTag]
                -> ÃPost
                -> backend m [Key backend (EntryTagGeneric backend)]
-insertEntry customId enteredOn heading tags post = do
+insertEntry customId enteredOn heading hasMath tags post = do
   deleteEntry customId
-  blogPost <- insert $ Entry post customId enteredOn heading
+  blogPost <- insert $ Entry post customId enteredOn heading hasMath
   sequence $ map (addTag blogPost) tags
 
 addTag :: PersistUnique backend m

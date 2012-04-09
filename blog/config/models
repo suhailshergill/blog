@@ -12,6 +12,7 @@ Entry
     customId Text
     enteredOn UTCTime -- Su.Date.fromOrgDate
     heading Text
+    hasMath Bool
     UniqueCustomId customId
 Tag
     name Text

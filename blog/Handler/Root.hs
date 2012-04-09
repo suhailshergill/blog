@@ -12,6 +12,9 @@ import Text.Blaze (preEscapedText)
 paginationLength :: Int
 paginationLength = 10
 
+mathJaxSrc :: Text
+mathJaxSrc = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+
 -- This is a handler function for the GET request method on the RootR
 -- resource pattern. All of your resource patterns are defined in
 -- config/routes
@@ -50,6 +53,7 @@ renderEntries :: [Entity (EntryGeneric SqlPersist)]
 renderEntries entryE_s entryOrder mWidget = do
   entry_mTags_s <- getEntriesTags entryE_s entryOrder
   defaultLayout $ do
+    _ <- sequence $ [addScriptRemote mathJaxSrc | any (entryHasMath . fst) entry_mTags_s]
     $(widgetFile "homepage")
 
 
