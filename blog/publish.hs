@@ -73,7 +73,7 @@ runDBAction env action = do
                      ) pool
 
 deleteEntry :: (PersistQuery backend m, PersistUnique backend m)
-               => ÑCustomId
+               => ÃCustomId
                -> backend m ()
 deleteEntry customId = do
   mEntryE <- getBy $ UniqueCustomId customId
@@ -85,17 +85,17 @@ deleteEntry customId = do
     Nothing -> return ()
 
 
-type ÑCustomId = Text
-type ÑEnteredOn = UTCTime
-type ÑHeading = Text
-type ÑTag = Text
-type ÑPost = Text
+type ÃCustomId = Text
+type ÃEnteredOn = UTCTime
+type ÃHeading = Text
+type ÃTag = Text
+type ÃPost = Text
 insertEntry :: (PersistQuery backend m, PersistUnique backend m)
-               => ÑCustomId
-               -> ÑEnteredOn
-               -> ÑHeading
-               -> [ÑTag]
-               -> ÑPost
+               => ÃCustomId
+               -> ÃEnteredOn
+               -> ÃHeading
+               -> [ÃTag]
+               -> ÃPost
                -> backend m [Key backend (EntryTagGeneric backend)]
 insertEntry customId enteredOn heading tags post = do
   deleteEntry customId
@@ -104,7 +104,7 @@ insertEntry customId enteredOn heading tags post = do
 
 addTag :: PersistUnique backend m
           => Key backend (EntryGeneric backend)
-          -> ÑTag
+          -> ÃTag
           -> backend m (Key backend (EntryTagGeneric backend))
 addTag entryId tag = let
     normalizedTag = toLower tag
