@@ -8,6 +8,9 @@ import Import
 import Control.Monad (liftM)
 import Text.Blaze (preEscapedText)
 
+paginationLength :: Int
+paginationLength = 10
+
 -- This is a handler function for the GET request method on the RootR
 -- resource pattern. All of your resource patterns are defined in
 -- config/routes
@@ -24,11 +27,11 @@ getTag entryTagE = do
 getEntriesTags :: [Entity (EntryGeneric SqlPersist)]
                   -> [SelectOpt (EntryGeneric SqlPersist)]
                   -> Handler [(EntryGeneric SqlPersist, [Maybe Text])]
-getEntriesTags entriesE entryOrder = do
+getEntriesTags entryE_s entryOrder = do
   entryE_entryTagsE_s <- runDB . runJoin $ (selectOneMany (EntryTagEntryId <-.)
                                             entryTagEntryId)
                                                           { somFilterOne =
-                                                               [EntryId <-. (map entityKey entriesE)]
+                                                               [EntryId <-. (map entityKey entryE_s)]
                                                           , somOrderOne = entryOrder}
   mapM (\(e,eT) -> do
            mTags <- (mapM getTag eT)
@@ -43,17 +46,17 @@ renderEntries :: [Entity (EntryGeneric SqlPersist)]
                  -> [SelectOpt (EntryGeneric SqlPersist)]
                  -> Maybe Widget
                  -> Handler RepHtml
-renderEntries entriesE entryOrder mWidget = do
-  entry_mTags_s <- getEntriesTags entriesE entryOrder
+renderEntries entryE_s entryOrder mWidget = do
+  entry_mTags_s <- getEntriesTags entryE_s entryOrder
   defaultLayout $ do
     $(widgetFile "homepage")
 
 
 getRootR :: Handler RepHtml
 getRootR = do
-  (entriesE, widget) <- runDB $ selectPaginated 10 ([] :: [Filter Entry])
+  (entryE_s, widget) <- runDB $ selectPaginated paginationLength ([] :: [Filter Entry])
                         entrySort
-  renderEntries entriesE entrySort (Just widget)
+  renderEntries entryE_s entrySort (Just widget)
 
 getPostR :: Text -> Handler RepHtml
 getPostR customId = do
