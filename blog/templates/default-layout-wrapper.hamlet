@@ -10,6 +10,7 @@
         <title>#{pageTitle pc}
         <meta name="description" content="Personal website of Suhail Shergill">
         <meta name="author" content="Suhail Shergill">
+        <link rel="shortcut icon" href="@{FaviconR}" />
 
         $maybe verification <- extraVerification $ mySettings
           <meta name="google-site-verification" content="#{verification}" />
