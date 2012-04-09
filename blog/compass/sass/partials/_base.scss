@@ -11,6 +11,8 @@ $blueprint-grid-width: ($blueprint-container-size + $blueprint-grid-margin) / $b
 
 $blueprint-font-size: 16px;
 
+$link-hover-color: #005fff;
+
 /* [[https://github.com/nex3/sass/issues/156][source]] */
 /* USAGE: */
 /* @if su-import-once("_SharedBaseStuff.scss") { */

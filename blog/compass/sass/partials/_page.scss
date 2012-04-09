@@ -19,6 +19,10 @@ body.bp {
       margin: 0 auto;
       width: 800px;
    }
+
+   a {
+      text-decoration: none;
+   }
 }
 
 @import "blog";
