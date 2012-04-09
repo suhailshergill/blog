@@ -7,7 +7,8 @@ $forall (entry, mTags) <- entry_mTags_s
           <ul>
             $forall mTag <- mTags
               $maybe tag <- mTag
-                <li>#{tag}
+                <li>
+                  <a href="@{TagR tag}">#{tag}
 
       < .post-body>#{preEscapedText $ entryPost entry}
 

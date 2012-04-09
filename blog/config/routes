@@ -6,3 +6,4 @@
 
 / RootR GET
 /post/#Text PostR GET
+/tags/#Text TagR GET

@@ -1,6 +1,7 @@
 module Handler.Root
        ( getRootR
        , getPostR
+       , getTagR
        ) where
 
 import Import
@@ -62,3 +63,15 @@ getPostR :: Text -> Handler RepHtml
 getPostR customId = do
   entryE <- runDB . getBy404 $ UniqueCustomId customId
   renderEntries [entryE] [] Nothing
+
+getTagR :: Text -> Handler RepHtml
+getTagR tag = do
+  tagE <- runDB . getBy404 $ UniqueTagName tag
+  entryTagE_s <- runDB $ selectList [EntryTagTagId ==. (entityKey tagE)] []
+  (entryE_s, widget) <- runDB $ selectPaginated paginationLength [EntryId
+                                                                  <-. (map
+                                                                       (entryTagEntryId
+                                                                       . entityVal)
+                                                                       entryTagE_s)]
+                        entrySort
+  renderEntries entryE_s entrySort (Just widget)
