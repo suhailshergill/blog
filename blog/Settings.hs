@@ -69,6 +69,8 @@ data Extra = Extra
     , extraAnalytics :: Maybe Text -- ^ Google Analytics
     , extraVerification :: Maybe Text
     , extraTitle :: Text
+    , extraPaginationLength :: Int
+    , extraMathJaxSrc :: Text
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
@@ -80,3 +82,5 @@ parseExtra _ o = Extra
     <*> o .:? "analytics"
     <*> o .:? "verification"
     <*> o .: "title"
+    <*> o .: "paginationLength"
+    <*> o .: "mathJaxSrc"

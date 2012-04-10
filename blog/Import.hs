@@ -8,6 +8,7 @@ module Import
     , module Control.Applicative
     , module Yesod.Paginator
     , module Database.Persist.Query.Join
+    , module Yesod.Default.Config
     , runJoin
     , SqlPersist
     ) where
@@ -22,6 +23,7 @@ import Yesod.Paginator
 import Database.Persist.Query.Join hiding (runJoin)
 import Database.Persist.Query.Join.Sql (runJoin)
 import Database.Persist.GenericSql (SqlPersist)
+import Yesod.Default.Config
 
 infixr 5 <>
 (<>) :: Monoid m => m -> m -> m
