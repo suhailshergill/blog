@@ -15,6 +15,9 @@ import Data.Text (append)
 extraSettings :: Handler Extra
 extraSettings = appExtra . settings <$> getYesod
 
+entrySort :: [SelectOpt (EntryGeneric SqlPersist)]
+entrySort = [ Desc EntryEnteredOn, Desc EntryId]
+
 -- This is a handler function for the GET request method on the RootR
 -- resource pattern. All of your resource patterns are defined in
 -- config/routes
@@ -22,6 +25,30 @@ extraSettings = appExtra . settings <$> getYesod
 -- The majority of the code you will write in Yesod lives in these handler
 -- functions. You can spread them across multiple files if you are so
 -- inclined, or create a single monolithic file.
+
+getHomeR :: Handler RepHtml
+getHomeR = getPostsR
+
+getPostsR :: Handler RepHtml
+getPostsR = do
+  (entryE_s, widget) <- getPostsR_
+  renderEntries entryE_s entrySort (Just widget) Nothing
+
+getPostR :: Text -> Handler RepHtml
+getPostR customId = do
+  entryE <- runDB . getBy404 $ UniqueCustomId customId
+  renderEntries [entryE] [] Nothing $ Just ("shergill: " `append` (entryHeading
+                                                                   . entityVal
+                                                                   $ entryE))
+
+getTagR :: Text -> Handler RepHtml
+getTagR tag = do
+  (entryE_s, widget) <- getTagR_ tag
+  renderEntries entryE_s entrySort (Just widget) $ Just ("shergill: #" `append` tag)
+
+
+-- {{{ internal methods
+
 getTag :: Entity (EntryTagGeneric SqlPersist)
           -> Handler (Maybe Text)
 getTag entryTagE = do
@@ -42,9 +69,6 @@ getEntriesTags entryE_s entryOrder = do
            return (entityVal e, mTags))
     entryE_entryTagsE_s
 
-
-entrySort :: [SelectOpt (EntryGeneric SqlPersist)]
-entrySort = [ Desc EntryEnteredOn, Desc EntryId]
 
 type ÃTitle = Text
 renderEntries :: [Entity (EntryGeneric SqlPersist)]
@@ -67,33 +91,23 @@ renderEntries entryE_s entryOrder mWidget mTitle = do
      $(widgetFile "homepage")
 
 
-getPostsR :: Handler RepHtml
-getPostsR = do
+getPostsR_ :: Handler ([Entity Entry], Widget)
+getPostsR_ = do
   len <- extraPaginationLength <$> extraSettings
-  (entryE_s, widget) <- runDB $
-                        selectPaginated len
-                        ([] :: [Filter Entry])
-                        entrySort
-  renderEntries entryE_s entrySort (Just widget) Nothing
-getHomeR :: Handler RepHtml
-getHomeR = getPostsR
+  runDB $
+    selectPaginated len
+    ([] :: [Filter Entry])
+    entrySort
 
 
-getPostR :: Text -> Handler RepHtml
-getPostR customId = do
-  entryE <- runDB . getBy404 $ UniqueCustomId customId
-  renderEntries [entryE] [] Nothing $ Just ("shergill: " `append` (entryHeading
-                                                                   . entityVal
-                                                                   $ entryE))
+getTagR_ :: Text -> Handler ([Entity (EntryGeneric SqlPersist)], Widget)
+getTagR_ tag = runDB $ do
+  tagE <- getBy404 $ UniqueTagName tag
+  entryTagE_s <- selectList [EntryTagTagId ==. (entityKey tagE)] []
+  len <- lift (extraPaginationLength <$> extraSettings)
+  selectPaginated
+    len
+    [EntryId <-. (map (entryTagEntryId . entityVal) entryTagE_s)]
+    entrySort
 
-getTagR :: Text -> Handler RepHtml
-getTagR tag = do
-  (entryE_s, widget) <- runDB $ do
-    tagE <- getBy404 $ UniqueTagName tag
-    entryTagE_s <- selectList [EntryTagTagId ==. (entityKey tagE)] []
-    len <- lift (extraPaginationLength <$> extraSettings)
-    selectPaginated
-      len
-      [EntryId <-. (map (entryTagEntryId . entityVal) entryTagE_s)]
-      entrySort
-  renderEntries entryE_s entrySort (Just widget) $ Just ("shergill: #" `append` tag)
+-- }}}
