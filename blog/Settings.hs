@@ -71,6 +71,8 @@ data Extra = Extra
     , extraTitle :: Text
     , extraPaginationLength :: Int
     , extraMathJaxSrc :: Text
+    , extraDisqusShortname :: Text
+    , extraDisqusDeveloper :: Int
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
@@ -84,3 +86,5 @@ parseExtra _ o = Extra
     <*> o .: "title"
     <*> o .: "paginationLength"
     <*> o .: "mathJaxSrc"
+    <*> o .: "disqusShortname"
+    <*> o .: "disqusDeveloper"

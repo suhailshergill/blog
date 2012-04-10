@@ -52,6 +52,10 @@ renderEntries :: [Entity (EntryGeneric SqlPersist)]
                  -> Handler RepHtml
 renderEntries entryE_s entryOrder mWidget mTitle = do
   entry_mTags_s <- getEntriesTags entryE_s entryOrder
+  shortname <- extraDisqusShortname <$> extraSettings
+  developer <- extraDisqusDeveloper <$> extraSettings
+  let loadDisqusCommentThreads = (1==) . length $ entryE_s
+    in
    defaultLayout $ do
      case mTitle of
        Just title -> setTitle . toHtml $ title
