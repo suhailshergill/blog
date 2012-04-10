@@ -8,6 +8,7 @@ import Import
 
 import Control.Monad (liftM)
 import Text.Blaze (preEscapedText)
+import Data.Text (append)
 
 extraSettings :: Handler Extra
 extraSettings = appExtra . settings <$> getYesod
@@ -43,13 +44,18 @@ getEntriesTags entryE_s entryOrder = do
 entrySort :: [SelectOpt (EntryGeneric SqlPersist)]
 entrySort = [ Desc EntryEnteredOn, Desc EntryId]
 
+type ÃTitle = Text
 renderEntries :: [Entity (EntryGeneric SqlPersist)]
                  -> [SelectOpt (EntryGeneric SqlPersist)]
                  -> Maybe Widget
+                 -> Maybe ÃTitle
                  -> Handler RepHtml
-renderEntries entryE_s entryOrder mWidget = do
+renderEntries entryE_s entryOrder mWidget mTitle = do
   entry_mTags_s <- getEntriesTags entryE_s entryOrder
    defaultLayout $ do
+     case mTitle of
+       Just title -> setTitle . toHtml $ title
+       Nothing -> return ()
      mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
      _ <- sequence $ [addScriptRemote mathJaxSrc | any (entryHasMath . fst) entry_mTags_s]
      $(widgetFile "homepage")
@@ -62,12 +68,14 @@ getRootR = do
                         selectPaginated len
                         ([] :: [Filter Entry])
                         entrySort
-  renderEntries entryE_s entrySort (Just widget)
+  renderEntries entryE_s entrySort (Just widget) Nothing
 
 getPostR :: Text -> Handler RepHtml
 getPostR customId = do
   entryE <- runDB . getBy404 $ UniqueCustomId customId
-  renderEntries [entryE] [] Nothing
+  renderEntries [entryE] [] Nothing $ Just ("shergill: " `append` (entryHeading
+                                                                   . entityVal
+                                                                   $ entryE))
 
 getTagR :: Text -> Handler RepHtml
 getTagR tag = do
@@ -79,4 +87,4 @@ getTagR tag = do
       len
       [EntryId <-. (map (entryTagEntryId . entityVal) entryTagE_s)]
       entrySort
-  renderEntries entryE_s entrySort (Just widget)
+  renderEntries entryE_s entrySort (Just widget) $ Just ("shergill: #" `append` tag)
