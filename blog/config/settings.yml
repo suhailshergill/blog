@@ -2,7 +2,7 @@ Default: &defaults
   host: "*4" # any IPv4 host
   port: 3000
 
-  staticroot: "http://static.blog.shergill.su"
+  staticroot: "http://static.shergill.su"
   copyright: Except where otherwise noted, content on this site is licensed under a Creative Commons BY-NC-SA 3.0 License.
   #analytics: UA-YOURCODE
   verification: fHM_yAw2cluSQ1j0USmMnj3SwZXeKCQrYzkCC71Zado
@@ -28,7 +28,7 @@ Staging:
 Production:
   approot: "http://shergill.su"
   port: 53000
-  staticroot: "http://static.blog.shergill.su"
+  staticroot: "http://static.shergill.su"
 
   disqusDeveloper: 0
   <<: *defaults
