@@ -1,5 +1,6 @@
 module Handler.Root
        ( getRootR
+       , getPostsR
        , getPostR
        , getTagR
        ) where
@@ -65,14 +66,17 @@ renderEntries entryE_s entryOrder mWidget mTitle = do
      $(widgetFile "homepage")
 
 
-getRootR :: Handler RepHtml
-getRootR = do
+getPostsR :: Handler RepHtml
+getPostsR = do
   len <- extraPaginationLength <$> extraSettings
   (entryE_s, widget) <- runDB $
                         selectPaginated len
                         ([] :: [Filter Entry])
                         entrySort
   renderEntries entryE_s entrySort (Just widget) Nothing
+getRootR :: Handler RepHtml
+getRootR = getPostsR
+
 
 getPostR :: Text -> Handler RepHtml
 getPostR customId = do
