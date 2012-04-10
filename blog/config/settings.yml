@@ -26,7 +26,7 @@ Staging:
   <<: *defaults
 
 Production:
-  approot: "http://www.shergill.su"
+  approot: "http://shergill.su"
   port: 53000
   staticroot: "http://static.blog.shergill.su"
 
