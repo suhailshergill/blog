@@ -46,6 +46,16 @@ body.bp {
             color: $info-color;
          }
       }
+
+      div.post-footer {
+
+         &>a {
+            display: block;
+            text-align: right;
+            position: relative;
+            top: -1em;
+         }
+      }
    }
 
    #footnotes {
