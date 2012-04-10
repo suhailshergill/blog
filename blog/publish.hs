@@ -5,7 +5,8 @@ import Settings -- database backend settings
 -- file. Yesod.Default.Config provides withYamlEnvironment. see it being used
 -- [[file:Application.hs::dbconf%20<-%20withYamlEnvironment%20"config/postgresql.yml"%20(appEnv%20conf)][here]].
 
-import Yesod.Default.Config
+-- import Yesod.Default.Config
+-- ^is now being exported by Import
 
 -- this also brings into scope appEnv etc. to see what else is in scope see
 --   [[file:~/.haskdogs/yesod-default-0.6.1/Yesod/Default/Config.hs::module%20Yesod.Default.Config][source]].
