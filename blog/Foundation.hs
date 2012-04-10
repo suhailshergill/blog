@@ -42,7 +42,7 @@ import Network.Mail.Mime (sendmail)
 #endif
 
 import Utils
-import Data.Text (Text)
+import Data.Text (Text, append)
 
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -94,6 +94,8 @@ instance Yesod Blog where
     defaultLayout widget = do
         master <- getYesod
         mmsg <- getMessage
+
+        (breadcrumbsT, breadcrumbsH) <- breadcrumbs
 
         let mySettings = appExtra $ settings master
 
@@ -148,6 +150,19 @@ instance YesodPersist Blog where
             (persistConfig master)
             f
             (connPool master)
+
+-- Add breadcrumb support
+instance YesodBreadcrumbs Blog where
+  breadcrumb (StaticR _) = return ("Static content", Nothing)
+  breadcrumb (AuthR _) = return ("", Nothing)
+  breadcrumb FaviconR = return ("favicon.ico", Nothing)
+  breadcrumb RobotsR = return ("robots.txt", Nothing)
+  breadcrumb RootR = do
+    title <- (extraTitle . appExtra . settings) `fmap` getYesod
+    return (title, Nothing)
+  breadcrumb PostsR = return ("shergill: Posts", Just RootR)
+  breadcrumb (PostR postId) = return ("shergill: Post #" `append` postId, Just PostsR)
+  breadcrumb (TagR tag) = return ("shergill: #" `append` tag, Just RootR)
 
 instance YesodAuth Blog where
     type AuthId Blog = UserId
