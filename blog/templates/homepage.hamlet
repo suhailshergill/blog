@@ -1,8 +1,9 @@
 $forall (entry, mTags) <- entry_mTags_s
+  $with customId <- entryCustomId entry
     < .post>
 
       < .post-header>
-        <h2><a href="@{PostR $ entryCustomId entry}">#{entryHeading entry}</a>
+        <h2><a href="@{PostR customId}">#{entryHeading entry}</a>
         < .post-tags>
           <ul>
             $forall mTag <- mTags
@@ -11,6 +12,38 @@ $forall (entry, mTags) <- entry_mTags_s
                   <a href="@{TagR tag}">#{tag}
 
       < .post-body>#{preEscapedText $ entryPost entry}
+
+      < .post-footer>
+        <script type="text/javascript">
+          var disqus_shortname = "#{shortname}";
+          var disqus_developer = #{developer};
+
+        $if loadDisqusCommentThreads
+            <div id="disqus_thread">
+            <script type="text/javascript">
+              var disqus_identifier = "#{customId}";
+              var disqus_url = "@{PostR customId}";
+
+              (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+            <a href="http://disqus.com" class="dsq-brlink">
+              blog comments powered by <span class="logo-disqus">Disqus</span>
+
+        $else
+            <a href="@{PostR customId}#disqus_thread" data-disqus-identifier="#{customId}">Comment
+            <script type="text/javascript">
+              (function () {
+              var s = document.createElement('script'); s.async = true;
+              s.type = 'text/javascript';
+              s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+              (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+              }());
+
 
 $maybe widget <- mWidget
     < .pagination>^{widget}

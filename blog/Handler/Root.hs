@@ -8,12 +8,10 @@ import Import
 
 import Control.Monad (liftM)
 import Text.Blaze (preEscapedText)
+import Data.Text (append)
 
-paginationLength :: Int
-paginationLength = 10
-
-mathJaxSrc :: Text
-mathJaxSrc = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+extraSettings :: Handler Extra
+extraSettings = appExtra . settings <$> getYesod
 
 -- This is a handler function for the GET request method on the RootR
 -- resource pattern. All of your resource patterns are defined in
@@ -46,35 +44,51 @@ getEntriesTags entryE_s entryOrder = do
 entrySort :: [SelectOpt (EntryGeneric SqlPersist)]
 entrySort = [ Desc EntryEnteredOn, Desc EntryId]
 
+type ÃTitle = Text
 renderEntries :: [Entity (EntryGeneric SqlPersist)]
                  -> [SelectOpt (EntryGeneric SqlPersist)]
                  -> Maybe Widget
+                 -> Maybe ÃTitle
                  -> Handler RepHtml
-renderEntries entryE_s entryOrder mWidget = do
+renderEntries entryE_s entryOrder mWidget mTitle = do
   entry_mTags_s <- getEntriesTags entryE_s entryOrder
-  defaultLayout $ do
-    _ <- sequence $ [addScriptRemote mathJaxSrc | any (entryHasMath . fst) entry_mTags_s]
-    $(widgetFile "homepage")
+  shortname <- extraDisqusShortname <$> extraSettings
+  developer <- extraDisqusDeveloper <$> extraSettings
+  let loadDisqusCommentThreads = (1==) . length $ entryE_s
+    in
+   defaultLayout $ do
+     case mTitle of
+       Just title -> setTitle . toHtml $ title
+       Nothing -> return ()
+     mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
+     _ <- sequence $ [addScriptRemote mathJaxSrc | any (entryHasMath . fst) entry_mTags_s]
+     $(widgetFile "homepage")
 
 
 getRootR :: Handler RepHtml
 getRootR = do
-  (entryE_s, widget) <- runDB $ selectPaginated paginationLength ([] :: [Filter Entry])
+  len <- extraPaginationLength <$> extraSettings
+  (entryE_s, widget) <- runDB $
+                        selectPaginated len
+                        ([] :: [Filter Entry])
                         entrySort
-  renderEntries entryE_s entrySort (Just widget)
+  renderEntries entryE_s entrySort (Just widget) Nothing
 
 getPostR :: Text -> Handler RepHtml
 getPostR customId = do
   entryE <- runDB . getBy404 $ UniqueCustomId customId
-  renderEntries [entryE] [] Nothing
+  renderEntries [entryE] [] Nothing $ Just ("shergill: " `append` (entryHeading
+                                                                   . entityVal
+                                                                   $ entryE))
 
 getTagR :: Text -> Handler RepHtml
 getTagR tag = do
   (entryE_s, widget) <- runDB $ do
     tagE <- getBy404 $ UniqueTagName tag
     entryTagE_s <- selectList [EntryTagTagId ==. (entityKey tagE)] []
-    selectPaginated paginationLength [EntryId <-. (map (entryTagEntryId
-                                                        . entityVal)
-                                                   entryTagE_s)]
+    len <- lift (extraPaginationLength <$> extraSettings)
+    selectPaginated
+      len
+      [EntryId <-. (map (entryTagEntryId . entityVal) entryTagE_s)]
       entrySort
-  renderEntries entryE_s entrySort (Just widget)
+  renderEntries entryE_s entrySort (Just widget) $ Just ("shergill: #" `append` tag)

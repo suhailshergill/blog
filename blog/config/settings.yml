@@ -1,12 +1,20 @@
 Default: &defaults
   host: "localhost"
   port: 3000
+
   staticroot: "http://static.blog.shergill.su"
   copyright: Except where otherwise noted, content on this site is licensed under a Creative Commons BY-NC-SA 3.0 License.
   #analytics: UA-YOURCODE
   verification: fHM_yAw2cluSQ1j0USmMnj3SwZXeKCQrYzkCC71Zado
+
+  disqusShortname: "shergill"
+  disqusDeveloper: 1
+
   jquery: https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js
+  mathJaxSrc: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+
   title: "$> su - shergill"
+  paginationLength: 10
 
 Development:
   <<: *defaults
@@ -21,4 +29,6 @@ Production:
   approot: "http://www.shergill.su"
   port: 53000
   staticroot: "http://static.blog.shergill.su"
+
+  disqusDeveloper: 0
   <<: *defaults
