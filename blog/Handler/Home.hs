@@ -1,5 +1,6 @@
-module Handler.Root
-       ( getRootR
+{-# LANGUAGE TupleSections, OverloadedStrings #-}
+module Handler.Home
+       ( getHomeR
        , getPostsR
        , getPostR
        , getTagR
@@ -74,8 +75,8 @@ getPostsR = do
                         ([] :: [Filter Entry])
                         entrySort
   renderEntries entryE_s entrySort (Just widget) Nothing
-getRootR :: Handler RepHtml
-getRootR = getPostsR
+getHomeR :: Handler RepHtml
+getHomeR = getPostsR
 
 
 getPostR :: Text -> Handler RepHtml
