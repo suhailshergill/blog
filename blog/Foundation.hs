@@ -157,6 +157,8 @@ instance YesodBreadcrumbs App where
   breadcrumb PostsR = return ("shergill: Posts", Just HomeR)
   breadcrumb (PostR postId) = return ("shergill: Post #" `append` postId, Just PostsR)
   breadcrumb (TagR tag) = return ("shergill: #" `append` tag, Just HomeR)
+  breadcrumb FeedR = return ("shergill: RSS", Just HomeR)
+  breadcrumb (FeedTagR tag) = return ("shergill: RSS #" `append` tag, Just HomeR)
 
 instance YesodAuth App where
     type AuthId App = UserId
