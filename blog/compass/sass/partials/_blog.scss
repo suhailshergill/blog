@@ -3,7 +3,31 @@
 
 @import "base";
 
+$footnotes-title-font-size: 1.3em;
+$header-text-color: #dadbb1;
+$header-bg-color: #7f7f7f;
+$header-link-color: #84bcde;
+
 body.bp {
+
+   div.blog-header {
+      ul {
+         list-style-type: none;
+         &>li {
+            display: inline;
+            &:last-child { float: right; }
+         }
+      }
+      background-color: $header-bg-color;
+      color: $header-text-color;
+      margin-top: 5px;
+      a {
+         color: $header-link-color;
+         &:hover { color: $header-text-color; }
+      }
+   }
+
+// {{{ individual post
 
    div.post {
       border-top-style: ridge;
@@ -48,6 +72,9 @@ body.bp {
       }
 
       div.post-footer {
+         h3 {
+            font-size: $footnotes-title-font-size * 0.85;
+         }
 
          &>a {
             display: block;
@@ -60,7 +87,7 @@ body.bp {
 
    #footnotes {
       h2.footnotes {
-         font-size: 1.3em;
+         font-size: $footnotes-title-font-size;
          margin-bottom: 0.3em;
       }
 
@@ -68,6 +95,8 @@ body.bp {
          padding-left: 1em;
       }
    }
+
+// }}}
 
    div.pagination {
       ul {
