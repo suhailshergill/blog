@@ -9,3 +9,6 @@
 /posts PostsR GET
 /posts/#Text PostR GET
 /tags/#Text TagR GET
+
+/feed FeedR GET
+/feed/#Text FeedTagR GET

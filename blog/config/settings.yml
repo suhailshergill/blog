@@ -1,4 +1,5 @@
 Default: &defaults
+  approot: "http://localhost:3000"
   host: "*4" # any IPv4 host
   port: 3000
 
@@ -14,6 +15,8 @@ Default: &defaults
   mathJaxSrc: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 
   title: "$> su - shergill"
+  feedDescription: "Random musings of a boy named Su"
+
   paginationLength: 10
 
 Development:

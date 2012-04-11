@@ -73,6 +73,7 @@ data Extra = Extra
     , extraMathJaxSrc :: Text
     , extraDisqusShortname :: Text
     , extraDisqusDeveloper :: Int
+    , extraFeedDescription :: Text
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
@@ -88,3 +89,4 @@ parseExtra _ o = Extra
     <*> o .: "mathJaxSrc"
     <*> o .: "disqusShortname"
     <*> o .: "disqusDeveloper"
+    <*> o .: "feedDescription"

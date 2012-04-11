@@ -4,6 +4,8 @@ module Handler.Home
        , getPostsR
        , getPostR
        , getTagR
+       , getFeedR
+       , getFeedTagR
        ) where
 
 import Import
@@ -11,6 +13,7 @@ import Import
 import Control.Monad (liftM)
 import Text.Blaze (preEscapedText)
 import Data.Text (append)
+import Yesod.AtomFeed
 
 extraSettings :: Handler Extra
 extraSettings = appExtra . settings <$> getYesod
@@ -46,6 +49,15 @@ getTagR tag = do
   (entryE_s, widget) <- getTagR_ tag
   renderEntries entryE_s entrySort (Just widget) $ Just ("shergill: #" `append` tag)
 
+getFeedR :: Handler RepAtom
+getFeedR = do
+  (entryE_s, _) <- getPostsR_
+  renderEntriesRss entryE_s
+
+getFeedTagR :: Text -> Handler RepAtom
+getFeedTagR tag = do
+  (entryE_s, _) <- getTagR_ tag
+  renderEntriesRss entryE_s
 
 -- {{{ internal methods
 
@@ -90,6 +102,36 @@ renderEntries entryE_s entryOrder mWidget mTitle = do
      _ <- sequence $ [addScriptRemote mathJaxSrc | any (entryHasMath . fst) entry_mTags_s]
      $(widgetFile "homepage")
 
+renderEntriesRss :: [Entity (EntryGeneric SqlPersist)]
+                    -> Handler RepAtom
+renderEntriesRss entryE_s = case entryE_s of
+  headEntryE:_ -> do
+    description <- toHtml . extraFeedDescription <$> extraSettings
+    entryRss_s <- mapM entryEToRss entryE_s
+    atomFeed Feed
+                { feedTitle = "shergill.su"
+                , feedDescription = description
+                , feedLanguage = "en-us"
+                , feedLinkSelf = FeedR
+                , feedLinkHome = HomeR
+                , feedUpdated = entryEnteredOn . entityVal $ headEntryE
+                , feedEntries = entryRss_s
+                }
+  _ -> notFound
+
+
+entryEToRss :: Entity (EntryGeneric SqlPersist)
+               -> Handler (FeedEntry (Route App))
+entryEToRss entryE =
+  let entryV = entityVal entryE
+               in
+   do
+     return $! FeedEntry
+                         { feedEntryLink = PostR $ entryCustomId entryV
+                         , feedEntryUpdated = entryEnteredOn $ entryV
+                         , feedEntryTitle = entryHeading $ entryV
+                         , feedEntryContent = preEscapedText $ entryPost entryV
+                         }
 
 getPostsR_ :: Handler ([Entity Entry], Widget)
 getPostsR_ = do
