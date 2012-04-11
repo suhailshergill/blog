@@ -18,7 +18,9 @@
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
         <link href="@{StaticR sass_screen_css}" rel="stylesheet" media="screen,projection">
-        <link href="@{StaticR sass_ie_css}" rel="stylesheet" media="screen,projection">
+        \<!--[if lt IE 9]>
+        \<link href="@{StaticR sass_ie_css}" rel="stylesheet" media="screen,projection">
+        \<![endif]-->
         <link href="@{StaticR sass_print_css}" rel="stylesheet" media="print">
 
         ^{pageHead pc}
