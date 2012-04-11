@@ -38,7 +38,7 @@ body.bp {
       }
 
       div.post-header h2 {
-         display: inline;
+         margin-bottom: 0px;
          a {
             color: $header-color;
             &:hover {
@@ -48,14 +48,16 @@ body.bp {
       }
 
       div.post-tags {
-         display: inline;
          float: right;
-         padding-top: 1em;
          ul {
+            margin-right: 0px;
             list-style-type: none;
             li {
                display: inline;
                padding-right: 0.5em;
+               &:last-child {
+                  padding-right: 0;
+               }
             }
          }
       }
