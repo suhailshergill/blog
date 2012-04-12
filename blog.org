@@ -1,5 +1,5 @@
-* STARTED setup blog [1/4]
-  SCHEDULED: <2012-03-10 Sat>
+* STARTED setup blog [2/4]
+  SCHEDULED: <2012-04-15 Sun>
   - State "STARTED"    from "TODO"       [2012-03-12 Mon 09:56]
 
   - [X] css [2/2]
@@ -9,20 +9,24 @@
       needed because compass is ruby based (uses sass)
       - [X] install [[https://github.com/nkryptic/sandbox][sandbox]]
       - [X] integrate it with virtualenv: using postactivate.sh
-  - [-] workflow/capabilities [1/3]
+  - [-] workflow/capabilities [2/3]
     - [X] org-mode integration [1/1]
       - [X] format: markdown?. nope this wouldn't really make much
         sense. org-mode syntax is as expressive as i need to be. sure if i want
         to write blog posts from outside emacs this will be cool. but meh
-    - [ ] content based. i.e., changes get reflected to: [0/2]
-      - [ ] actual posts
-      - [ ] views based on posts
+    - [X] content based. i.e., changes get reflected to: [2/2]
+      - [X] actual posts
+        have the ability to update tags and content etc. using CUSTOM_ID
+        property as the unique identifier
+      - [X] views based on posts
     - [ ] integration with google+ etc? not all that hopeful, but would be nice
       to see options there.
-  - [ ] database connectivity [0/2]
-    - [ ] main content (exported from org)?
-    - [ ] comments
-  - [ ] rss feed
+  - [-] database connectivity [1/2]
+    - [X] main content (exported from org)?
+    - [-] comments
+      using [[http://disqus.com][disqus]] right now. probably want to make local backups using their
+      [[http://docs.disqus.com/help/58/][api]].
+  - [X] rss feed
   - State "TODO"       from ""           [2012-03-09 Fri 10:59] \\
     
   :PROPERTIES:
