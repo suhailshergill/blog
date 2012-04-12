@@ -54,10 +54,12 @@ body.bp {
             list-style-type: none;
             li {
                display: inline;
-               padding-right: 0.5em;
+               margin-right: 0.2em;
                &:last-child {
-                  padding-right: 0;
+                  margin-right: 0;
                }
+               @include su-tagify();
+               background-color: #d7d7d7;
             }
          }
       }
