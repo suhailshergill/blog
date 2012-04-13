@@ -15,6 +15,7 @@ body.bp {
          list-style-type: none;
          &>li {
             display: inline;
+            margin-right: 1em;
             &:last-child { float: right; }
          }
       }
