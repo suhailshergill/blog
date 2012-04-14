@@ -31,7 +31,6 @@ Staging:
 Production:
   approot: "http://shergill.su"
   port: 53000
-  staticroot: "http://static.shergill.su"
 
   disqusDeveloper: 0
   <<: *defaults
