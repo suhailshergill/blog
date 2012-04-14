@@ -4,29 +4,8 @@
 @import "base";
 
 $footnotes-title-font-size: 1.3em;
-$header-text-color: #dadbb1;
-$header-bg-color: #7f7f7f;
-$header-link-color: #84bcde;
 
 body.bp {
-
-   div.blog-header {
-      ul {
-         list-style-type: none;
-         &>li {
-            display: inline;
-            margin-right: 1em;
-            &:last-child { float: right; }
-         }
-      }
-      background-color: $header-bg-color;
-      color: $header-text-color;
-      margin-top: 5px;
-      a {
-         color: $header-link-color;
-         &:hover { color: $header-text-color; }
-      }
-   }
 
 // {{{ individual post
 

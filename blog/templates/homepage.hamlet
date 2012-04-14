@@ -1,12 +1,3 @@
-< .blog-header>
-  <ul>
-    <li><a href="@{HomeR}" title="Home">Home
-    <li><a href="https://github.com/suhailshergill"
-           title="GitHub profile">GitHub
-    <li><a href="https://plus.google.com/108586390250515214966/posts"
-           title="Google+ profile">Google+
-    <li><a href="@{FeedR}" title="Atom Feed">Subscribe
-
 < .posts>
   $forall (entry, mTags) <- entry_mTags_s
     $with customId <- entryCustomId entry
