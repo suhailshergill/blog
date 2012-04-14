@@ -12,7 +12,7 @@
       <a href="@{FeedR}" title="Atom Feed">Subscribe
 
 $maybe msg <- mmsg
-    <div #message>#{msg}
+  <div #message>#{msg}
 ^{widget}
 $maybe copyright <- extraLocalCopyright $ mySettings
-    <footer>#{copyright}
+  <footer>#{copyright}
