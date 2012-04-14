@@ -1,11 +1,15 @@
 < .blog-header>
   <ul>
-    <li><a href="@{HomeR}" title="Home">Home
-    <li><a href="https://github.com/suhailshergill"
-           title="GitHub profile">GitHub
-    <li><a href="https://plus.google.com/108586390250515214966/posts"
-           title="Google+ profile">Google+
-    <li><a href="@{FeedR}" title="Atom Feed">Subscribe
+    <li>
+      <a href="@{HomeR}" title="Home">Home
+    <li>
+      <a href="https://github.com/suhailshergill"
+         title="GitHub profile">GitHub
+    <li>
+      <a href="https://plus.google.com/108586390250515214966/posts"
+         title="Google+ profile">Google+
+    <li>
+      <a href="@{FeedR}" title="Atom Feed">Subscribe
 
 $maybe msg <- mmsg
     <div #message>#{msg}
