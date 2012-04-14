@@ -59,7 +59,7 @@ executable         blog
         cpp-options:   -DDEVELOPMENT
         ghc-options:   -Wall -Werror -threaded -O0 -ddump-splices -dppr-debug
     else
-        ghc-options:   -Wall -Werror -threaded -O2 -fspec-constr-count=10
+        ghc-options:   -Wall -Werror -threaded -O2
 
     main-is:       main.hs
 
@@ -141,7 +141,7 @@ executable         publish-entry
         cpp-options:   -DDEVELOPMENT
         ghc-options:   -Wall -Werror -threaded -O0 -i/home/shergill/workspace/hacking/haskell/ -dppr-debug
     else
-        ghc-options:   -Wall -Werror -threaded -O2 -i/home/shergill/workspace/hacking/haskell/ -fspec-constr-count=10
+        ghc-options:   -Wall -Werror -threaded -O2 -i/home/shergill/workspace/hacking/haskell/
 
     main-is:       publish.hs
 
