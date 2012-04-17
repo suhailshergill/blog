@@ -57,9 +57,9 @@ executable         blog
 
     if flag(dev)
         cpp-options:   -DDEVELOPMENT
-        ghc-options:   -Wall -Werror -threaded -O0 -ddump-splices -dppr-debug
+        ghc-options:   -Wall -Werror -threaded -O0 -ddump-splices -dppr-debug -dcore-lint -debug
     else
-        ghc-options:   -Wall -Werror -threaded -O2
+        ghc-options:   -Wall -Werror -threaded -O2 -dcore-lint -debug
 
     main-is:       main.hs
 
@@ -139,9 +139,9 @@ executable         publish-entry
 
     if flag(dev)
         cpp-options:   -DDEVELOPMENT
-        ghc-options:   -Wall -Werror -threaded -O0 -i/home/shergill/workspace/hacking/haskell/ -dppr-debug
+        ghc-options:   -Wall -Werror -threaded -O0 -i/home/shergill/workspace/hacking/haskell/ -dppr-debug -dcore-lint -debug
     else
-        ghc-options:   -Wall -Werror -threaded -O2 -i/home/shergill/workspace/hacking/haskell/
+        ghc-options:   -Wall -Werror -threaded -O2 -i/home/shergill/workspace/hacking/haskell/ -dcore-lint -debug
 
     main-is:       publish.hs
 
