@@ -5,10 +5,10 @@
 
 $code-padding: 1em;
 
-@mixin su-src-annotation($lang,$comment-marker) {
+@mixin su-src-annotation($lang, $comment-marker, $secondary: "") {
    &.src-#{$lang}:before {
       @extend .org-comment;
-      content: $comment-marker + " " + $lang;
+      content: $comment-marker + " " + $lang + " " + $secondary + " ";
       float: right;
       display: block;
       position: relative;
@@ -23,6 +23,7 @@ $code-padding: 1em;
    border-radius: $code-padding/2;
 
    @include su-src-annotation(haskell,"--");
+   @include su-src-annotation(css,"/*","*/");
 }
 
 .timestamp {
