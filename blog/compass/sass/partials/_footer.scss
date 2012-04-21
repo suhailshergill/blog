@@ -1,7 +1,20 @@
+@import "blueprint/colors";
 @import "base";
 
 $footer-height: 20px;
 $footer-font-size: $blueprint-font-size/1.3;
+
+@mixin su-footer-positioning($is-fixed: false) {
+   @if $is-fixed {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: $blueprint-background-color;
+   }
+   @else {
+      position: relative;
+   }
+}
 
 html.bp, body.bp {
    height: 100%;
@@ -18,7 +31,9 @@ body.bp {
    }
 
    footer {
-      position: relative;
+      @include su-footer-positioning(true);
+      margin-left: auto;
+      margin-right: auto;
       margin-top: -$footer-height;
       height: $footer-height;
       font-size: $footer-font-size;
