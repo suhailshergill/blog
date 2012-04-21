@@ -1,0 +1,20 @@
+@header_text_color: #dadbb1;
+@header_bg_color: #7f7f7f;
+@header_link_color: #84bcde;
+
+div.blog-header {
+   ul {
+      list-style-type: none;
+      li {
+         display: inline;
+         margin-right: 1em;
+      }
+      li:last-child { float: right; }
+   }
+
+   background-color: #{header_bg_color};
+   color: #{header_text_color};
+   margin-top: 5px;
+   a { color: #{header_link_color}; }
+   a:hover { color: #{header_text_color}; }
+}
