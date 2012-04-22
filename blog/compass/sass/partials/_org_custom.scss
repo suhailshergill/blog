@@ -19,8 +19,9 @@ $code-padding: 1em;
 .src {
    background-color: #1c1c1c;
    color: #dadada;
-   padding: $code-padding 0 $code-padding 0;
-   /* border-radius: $code-padding/2; */
+   font-size: 0.96em !important;
+   padding: $code-padding;
+   border-radius: $code-padding/2.5;
 
    @include su-src-annotation(haskell,"--");
    @include su-src-annotation(css,"/*","*/");
