@@ -1,7 +1,8 @@
 < .posts>
   $forall (entry, mTags) <- entry_mTags_s
     $with customId <- entryCustomId entry
-      < .post>
+      < .post id="#{customId}"
+        data-last-modified="#{humanReadableTime' now $ entryUpdatedOn entry}">
 
         < .post-header>
           <h2><a href="@{PostR customId}">#{entryHeading entry}</a>

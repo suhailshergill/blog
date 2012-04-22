@@ -19,7 +19,7 @@ extraSettings :: Handler Extra
 extraSettings = appExtra . settings <$> getYesod
 
 entrySort :: [SelectOpt (EntryGeneric SqlPersist)]
-entrySort = [ Desc EntryEnteredOn, Desc EntryId]
+entrySort = [ Desc EntryUpdatedOn, Desc EntryEnteredOn, Desc EntryId]
 
 -- This is a handler function for the GET request method on the RootR
 -- resource pattern. All of your resource patterns are defined in
@@ -92,6 +92,8 @@ renderEntries entryE_s entryOrder mWidget mTitle = do
   entry_mTags_s <- getEntriesTags entryE_s entryOrder
   shortname <- extraDisqusShortname <$> extraSettings
   developer <- extraDisqusDeveloper <$> extraSettings
+  getLastModifiedStr entryE_s >>= setHeader "Last-Modified"
+  now <- liftIO getCurrentTime
   let loadDisqusCommentThreads = (1==) . length $ entryE_s
     in
    defaultLayout $ do
@@ -104,8 +106,8 @@ renderEntries entryE_s entryOrder mWidget mTitle = do
 
 renderEntriesRss :: [Entity (EntryGeneric SqlPersist)]
                     -> Handler RepAtom
-renderEntriesRss entryE_s = case entryE_s of
-  headEntryE:_ -> do
+renderEntriesRss entryE_s = case headMay entryE_s of
+  Just headEntryE -> do
     description <- toHtml . extraFeedDescription <$> extraSettings
     entryRss_s <- mapM entryEToRss entryE_s
     atomFeed Feed
@@ -114,7 +116,7 @@ renderEntriesRss entryE_s = case entryE_s of
                 , feedLanguage = "en-us"
                 , feedLinkSelf = FeedR
                 , feedLinkHome = HomeR
-                , feedUpdated = entryEnteredOn . entityVal $ headEntryE
+                , feedUpdated = entryUpdatedOn . entityVal $ headEntryE
                 , feedEntries = entryRss_s
                 }
   _ -> notFound
@@ -128,7 +130,7 @@ entryEToRss entryE =
    do
      return $! FeedEntry
                          { feedEntryLink = PostR $ entryCustomId entryV
-                         , feedEntryUpdated = entryEnteredOn $ entryV
+                         , feedEntryUpdated = entryUpdatedOn $ entryV
                          , feedEntryTitle = entryHeading $ entryV
                          , feedEntryContent = preEscapedText $ entryPost entryV
                          }
@@ -151,5 +153,26 @@ getTagR_ tag = runDB $ do
     len
     [EntryId <-. (map (entryTagEntryId . entityVal) entryTagE_s)]
     entrySort
+
+
+-- {{{ utility
+
+getLastModified :: [Entity (EntryGeneric SqlPersist)]
+                   -> Handler UTCTime
+getLastModified entryE_s = do
+  case headMay entryE_s of
+    Just headEntryE -> return $! entryUpdatedOn . entityVal $ headEntryE
+    Nothing -> liftIO getCurrentTime
+
+getLastModifiedStr :: [Entity (EntryGeneric SqlPersist)]
+                      -> Handler Text
+getLastModifiedStr = (pack . formatTime defaultTimeLocale rfc822DateFormat <$>)
+                     . getLastModified
+
+getLastModifiedStrFriendly :: [Entity (EntryGeneric SqlPersist)]
+                              -> Handler Text
+getLastModifiedStrFriendly = (liftIO . (pack <$>) . humanReadableTime =<<) . getLastModified
+
+-- }}}
 
 -- }}}

@@ -17,6 +17,14 @@ body.bp {
          border-width: 0;
       }
 
+      &:before {
+         content: "⤷ " attr(data-last-modified);
+         color: $quiet-color;
+         float: right;
+         position: relative;
+         top: 1em;
+      }
+
       div.post-header h2 {
          margin-bottom: 0px;
          a {

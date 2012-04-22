@@ -11,6 +11,7 @@ Entry
     post Text
     customId Text
     enteredOn UTCTime -- Su.Date.fromOrgDate
+    updatedOn UTCTime default=now()
     heading Text
     hasMath Bool
     UniqueCustomId customId

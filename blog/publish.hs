@@ -25,13 +25,10 @@ import Data.Text (toLower)
 import System.Environment (getArgs, getProgName)
 import System.IO
 import System.Exit (exitFailure)
-import Data.Text (pack, strip)
+import Data.Text (strip)
 
 import Su.Date
 
--- stupid type signatures. need the following imports for them
-
-import Data.Time.Clock (UTCTime)
 
 truncateWhitespace :: String -> Text
 truncateWhitespace = strip . pack
@@ -40,22 +37,25 @@ main :: IO [Key SqlPersist (EntryTagGeneric SqlPersist)]
 main = do
   args <- getArgs
   case args of
-    mode_:custom_id:entered_on:heading_:hasMath_:tags_ -> do
+    mode_:custom_id:entered_on:updated_on:heading_:hasMath_:tags_ -> do
       let mode = read mode_
           customId = pack custom_id
           heading = pack heading_
           hasMath = read hasMath_
           tags = map pack tags_
           enteredOn = parseDateUTC entered_on
+          updatedOn = parseDateUTC updated_on
       text <- getContents
       let entryText = truncateWhitespace text
           in
-          runDBAction mode (insertEntry customId enteredOn heading hasMath tags
+          runDBAction mode (insertEntry customId enteredOn updatedOn heading
+                            hasMath tags
                             entryText)
 
     _ -> do
       name <- getProgName
-      hPutStrLn stderr $ "usage: " ++ name ++ "mode customID enteredOn heading [tags]"
+      hPutStrLn stderr $ "usage: " ++ name ++
+        "mode customID enteredOn updatedOn heading [tags]"
       exitFailure
 
 
@@ -89,6 +89,7 @@ deleteEntry customId = do
 
 type ÃCustomId = Text
 type ÃEnteredOn = UTCTime
+type ÃUpdatedOn = UTCTime
 type ÃHeading = Text
 type ÃTag = Text
 type ÃPost = Text
@@ -96,14 +97,15 @@ type ÃHasMath = Bool
 insertEntry :: (PersistQuery backend m, PersistUnique backend m)
                => ÃCustomId
                -> ÃEnteredOn
+               -> ÃUpdatedOn
                -> ÃHeading
                -> ÃHasMath
                -> [ÃTag]
                -> ÃPost
                -> backend m [Key backend (EntryTagGeneric backend)]
-insertEntry customId enteredOn heading hasMath tags post = do
+insertEntry customId enteredOn updatedOn heading hasMath tags post = do
   deleteEntry customId
-  blogPost <- insert $ Entry post customId enteredOn heading hasMath
+  blogPost <- insert $ Entry post customId enteredOn updatedOn heading hasMath
   sequence $ map (addTag blogPost) tags
 
 addTag :: PersistUnique backend m
