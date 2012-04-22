@@ -86,26 +86,26 @@ instance Yesod App where
         return . Just $ clientSessionBackend key 120
 
     defaultLayout widget = do
-        master <- getYesod
-        mmsg <- getMessage
+      master <- getYesod
+      mmsg <- getMessage
 
-        (breadcrumbsT, breadcrumbsH) <- breadcrumbs
+      (breadcrumbsT, breadcrumbsH) <- breadcrumbs
 
-        let mySettings = appExtra $ settings master
+      let mySettings = appExtra $ settings master
 
-        -- We break up the default layout into two components:
-        -- default-layout is the contents of the body tag, and
-        -- default-layout-wrapper is the entire page. Since the final
-        -- value passed to hamletToRepHtml cannot be a widget, this allows
-        -- you to use normal widget features in default-layout.
+      -- We break up the default layout into two components:
+      -- default-layout is the contents of the body tag, and
+      -- default-layout-wrapper is the entire page. Since the final
+      -- value passed to hamletToRepHtml cannot be a widget, this allows
+      -- you to use normal widget features in default-layout.
 
-        pc <- widgetToPageContent $ do
-            setTitle (toHtml $ extraTitle $ mySettings)
-            $(widgetFile "normalize")
-            addScriptRemoteAttrs (extraJquery $ mySettings)
-              [("type", "text/javascript")]
-            $(widgetFile "default-layout")
-        hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
+      pc <- widgetToPageContent $ do
+        setTitle (toHtml $ extraTitle $ mySettings)
+        $(widgetFile "normalize")
+        addScriptRemoteAttrs (extraJquery $ mySettings)
+          [("type", "text/javascript")]
+        $(widgetFile "default-layout")
+      hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
 
     -- This is done to provide an optimization for serving static files from
     -- a separate domain. Please see the staticRoot setting in Settings.hs
