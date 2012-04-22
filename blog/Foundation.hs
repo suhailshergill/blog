@@ -93,6 +93,8 @@ instance Yesod App where
 
       let mySettings = appExtra $ settings master
 
+      setHeader "Server" $ extraHeaderServer mySettings
+
       -- We break up the default layout into two components:
       -- default-layout is the contents of the body tag, and
       -- default-layout-wrapper is the entire page. Since the final

@@ -6,6 +6,7 @@ module Handler.Home
        , getTagR
        , getFeedR
        , getFeedTagR
+       , headHomeR
        ) where
 
 import Import
@@ -28,6 +29,9 @@ entrySort = [ Desc EntryUpdatedOn, Desc EntryEnteredOn, Desc EntryId]
 -- The majority of the code you will write in Yesod lives in these handler
 -- functions. You can spread them across multiple files if you are so
 -- inclined, or create a single monolithic file.
+
+headHomeR :: Handler RepHtml
+headHomeR = defaultLayout $! return ()
 
 getHomeR :: Handler RepHtml
 getHomeR = getPostsR

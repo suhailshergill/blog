@@ -3,6 +3,8 @@ Default: &defaults
   host: "*4" # any IPv4 host
   port: 3000
 
+  header-server: Yaws 1.92
+
   staticroot: "http://static.shergill.su"
   copyright: Except where otherwise noted, content on this site is licensed under a Creative Commons BY-NC-SA 3.0 License.
   #analytics: UA-YOURCODE
