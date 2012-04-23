@@ -77,15 +77,18 @@ body.bp {
       }
 
       div.post-footer {
+         overflow: auto;
+         width: 100%;
+         position: relative;
+         top: -1em;
+
          h3 {
             font-size: $footnotes-title-font-size * 0.85;
          }
 
          &>a {
             display: block;
-            text-align: right;
-            position: relative;
-            top: -1em;
+            float: right;
          }
       }
    }
