@@ -78,10 +78,10 @@ getEntriesTags entryE_s entryOrder = do
   entryE_entryTagsE_s <- runDB . runJoin $ (selectOneMany (EntryTagEntryId <-.)
                                             entryTagEntryId)
                                                           { somFilterOne =
-                                                               [EntryId <-. (map entityKey entryE_s)]
+                                                               [EntryId <-. map entityKey entryE_s]
                                                           , somOrderOne = entryOrder}
   mapM (\(e,eT) -> do
-           mTags <- (mapM getTag eT)
+           mTags <- mapM getTag eT
            return (entityVal e, mTags))
     entryE_entryTagsE_s
 
@@ -105,7 +105,7 @@ renderEntries entryE_s entryOrder mWidget mTitle = do
        Just title -> setTitle . toHtml $ title
        Nothing -> return ()
      mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
-     _ <- sequence $ [addScriptRemote mathJaxSrc | any (entryHasMath . fst) entry_mTags_s]
+     _ <- sequence [addScriptRemote mathJaxSrc | any (entryHasMath . fst) entry_mTags_s]
      $(widgetFile "homepage")
 
 renderEntriesRss :: [Entity (EntryGeneric SqlPersist)]
@@ -128,16 +128,15 @@ renderEntriesRss entryE_s = case headMay entryE_s of
 
 entryEToRss :: Entity (EntryGeneric SqlPersist)
                -> Handler (FeedEntry (Route App))
-entryEToRss entryE =
+entryEToRss entryE = do
   let entryV = entityVal entryE
-               in
-   do
-     return $! FeedEntry
-                         { feedEntryLink = PostR $ entryCustomId entryV
-                         , feedEntryUpdated = entryUpdatedOn $ entryV
-                         , feedEntryTitle = entryHeading $ entryV
-                         , feedEntryContent = preEscapedText $ entryPost entryV
-                         }
+  return $! FeedEntry
+                      {
+                        feedEntryLink = PostR $ entryCustomId entryV
+                      , feedEntryUpdated = entryUpdatedOn $ entryV
+                      , feedEntryTitle = entryHeading $ entryV
+                      , feedEntryContent = preEscapedText $ entryPost entryV
+                      }
 
 getPostsR_ :: Handler ([Entity Entry], Widget)
 getPostsR_ = do
@@ -151,11 +150,11 @@ getPostsR_ = do
 getTagR_ :: Text -> Handler ([Entity (EntryGeneric SqlPersist)], Widget)
 getTagR_ tag = runDB $ do
   tagE <- getBy404 $ UniqueTagName tag
-  entryTagE_s <- selectList [EntryTagTagId ==. (entityKey tagE)] []
+  entryTagE_s <- selectList [EntryTagTagId ==. entityKey tagE] []
   len <- lift (extraPaginationLength <$> extraSettings)
   selectPaginated
     len
-    [EntryId <-. (map (entryTagEntryId . entityVal) entryTagE_s)]
+    [EntryId <-. map (entryTagEntryId . entityVal) entryTagE_s]
     entrySort
 
 
@@ -163,10 +162,9 @@ getTagR_ tag = runDB $ do
 
 getLastModified :: [Entity (EntryGeneric SqlPersist)]
                    -> Handler UTCTime
-getLastModified entryE_s = do
-  case headMay entryE_s of
-    Just headEntryE -> return $! entryUpdatedOn . entityVal $ headEntryE
-    Nothing -> liftIO getCurrentTime
+getLastModified entryE_s = case headMay entryE_s of
+  Just headEntryE -> return $! entryUpdatedOn . entityVal $ headEntryE
+  Nothing -> liftIO getCurrentTime
 
 getLastModifiedStr :: [Entity (EntryGeneric SqlPersist)]
                       -> Handler Text
