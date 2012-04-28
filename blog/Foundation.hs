@@ -12,28 +12,12 @@ module Foundation
     , module Model
     ) where
 
-import Prelude
-import Yesod
-import Yesod.Static
-import Yesod.Auth
-import Yesod.Auth.BrowserId
-import Yesod.Auth.GoogleEmail
-import Yesod.Default.Config
-import Yesod.Default.Util (addStaticContentExternal)
-import Yesod.Logger (Logger, logMsg, formatLogText)
-import Network.HTTP.Conduit (Manager)
 import qualified Settings
-import qualified Database.Persist.Store
-import Settings.StaticFiles
 import Database.Persist.GenericSql
-import Settings (widgetFile, Extra (..))
+import qualified Database.Persist.Store
 import Model
-import Text.Jasmine (minifym)
-import Web.ClientSession (getKey)
-import Text.Hamlet (hamletFile)
 
-import Utils
-import Data.Text (Text, append)
+import FoundationImports
 
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
