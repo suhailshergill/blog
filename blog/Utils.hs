@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-cse -fno-full-laziness #-}
 module Utils
        ( getBOFHExcuses
          , getBOFHExcusesC
@@ -85,6 +86,7 @@ type BOFHExcuse = (Title, Body)
 type CacheState = (DiffTime, BOFHExcuse)
 type CacheWindow = DiffTime
 
+{-# NOINLINE bofhExcuseCacheR #-}
 bofhExcuseCacheR :: IORef (Maybe CacheState)
 bofhExcuseCacheR = unsafePerformIO $ newIORef Nothing
 
@@ -108,7 +110,7 @@ _getBOFHExcusesC windowSize cacheR = do
     getFreshBOFHExcuses = do
       t <- date
       e <- getBOFHExcuses
-      writeIORef bofhExcuseCacheR (Just (t, e))
+      writeIORef cacheR (Just (t, e))
       return $! e
 
 
