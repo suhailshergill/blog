@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -fno-cse -fno-full-laziness #-}
 module Utils
        ( getBOFHExcuses
          , getBOFHExcusesC
@@ -13,7 +12,6 @@ import Control.Monad.IO.Class (MonadIO)
 
 import Data.Time.Clock (getCurrentTime, utctDayTime, DiffTime)
 
-import System.IO.Unsafe
 import Data.IORef
 
 -- {{{ [[https://github.com/pbrisbin/renters-reality/blob/master/Helpers/Model.hs][source]]
@@ -86,16 +84,15 @@ type BOFHExcuse = (Title, Body)
 type CacheState = (DiffTime, BOFHExcuse)
 type CacheWindow = DiffTime
 
-{-# NOINLINE bofhExcuseCacheR #-}
-bofhExcuseCacheR :: IORef (Maybe CacheState)
-bofhExcuseCacheR = unsafePerformIO $ newIORef Nothing
+bofhExcuseCacheR :: IO (IORef (Maybe CacheState))
+bofhExcuseCacheR = newIORef Nothing
 
 getBOFHExcusesC :: (MonadIO m) => CacheWindow -> m BOFHExcuse
 getBOFHExcusesC w = _getBOFHExcusesC w bofhExcuseCacheR
 
-_getBOFHExcusesC :: (MonadIO m) => CacheWindow -> IORef (Maybe CacheState) -> m BOFHExcuse
+_getBOFHExcusesC :: (MonadIO m) => CacheWindow -> IO (IORef (Maybe CacheState)) -> m BOFHExcuse
 _getBOFHExcusesC windowSize cacheR = do
-  cache <- liftIO (readIORef cacheR)
+  cache <- liftIO (readIORef =<< cacheR)
   case cache of
     Just (diffTime,bofhExcuse) ->
       liftIO (
@@ -103,14 +100,14 @@ _getBOFHExcusesC windowSize cacheR = do
           x <- isStale windowSize diffTime
           if x
             then getFreshBOFHExcuses
-            else (return bofhExcuse)
+            else return bofhExcuse
         )
     Nothing -> liftIO getFreshBOFHExcuses
   where
     getFreshBOFHExcuses = do
       t <- date
       e <- getBOFHExcuses
-      writeIORef cacheR (Just (t, e))
+      cacheR >>= flip writeIORef (Just (t, e))
       return $! e
 
 
