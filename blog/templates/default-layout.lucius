@@ -1,6 +1,6 @@
 @header_text_color: #dadbb1;
 @header_bg_color: #afafaf;
-@header_link_color: #84bcde;
+@header_link_color: #004c99;
 
 div.blog-header {
    ul {
