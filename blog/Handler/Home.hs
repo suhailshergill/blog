@@ -105,7 +105,8 @@ renderEntries entryE_s entryOrder mWidget mTitle = do
        Just title -> setTitle . toHtml $ title
        Nothing -> return ()
      mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
-     _ <- sequence [addScriptRemote mathJaxSrc | any (entryHasMath . fst) entry_mTags_s]
+     _ <- sequence [addScriptRemote mathJaxSrc | any (entryHasMath . fst)
+                                                 entry_mTags_s]
      $(widgetFile "homepage")
 
 renderEntriesRss :: [Entity (EntryGeneric SqlPersist)]
@@ -133,8 +134,8 @@ entryEToRss entryE = do
   return $! FeedEntry
                       {
                         feedEntryLink = PostR $ entryCustomId entryV
-                      , feedEntryUpdated = entryUpdatedOn $ entryV
-                      , feedEntryTitle = entryHeading $ entryV
+                      , feedEntryUpdated = entryUpdatedOn entryV
+                      , feedEntryTitle = entryHeading entryV
                       , feedEntryContent = preEscapedText $ entryPost entryV
                       }
 
