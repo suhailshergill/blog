@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'bundler/setup'
 # Require any additional compass plugins here.
 require 'compass_twitter_bootstrap'
 
