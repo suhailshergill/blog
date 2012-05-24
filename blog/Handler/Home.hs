@@ -44,14 +44,12 @@ getPostsR = do
 getPostR :: Text -> Handler RepHtml
 getPostR customId = do
   entryE <- runDB . getBy404 $ UniqueCustomId customId
-  renderEntries [entryE] [] Nothing $ Just ("shergill: " `append` (entryHeading
-                                                                   . entityVal
-                                                                   $ entryE))
+  renderEntries [entryE] [] Nothing Nothing
 
 getTagR :: Text -> Handler RepHtml
 getTagR tag = do
   (entryE_s, widget) <- getTagR_ tag
-  renderEntries entryE_s entrySort (Just widget) $ Just ("shergill: #" `append` tag)
+  renderEntries entryE_s entrySort (Just widget) $ Just tag
 
 getFeedR :: Handler RepAtom
 getFeedR = do
@@ -86,28 +84,26 @@ getEntriesTags entryE_s entryOrder = do
     entryE_entryTagsE_s
 
 
-type ÃTitle = Text
+type ÃTag = Text
 renderEntries :: [Entity (EntryGeneric SqlPersist)]
                  -> [SelectOpt (EntryGeneric SqlPersist)]
                  -> Maybe Widget
-                 -> Maybe ÃTitle
+                 -> Maybe ÃTag
                  -> Handler RepHtml
-renderEntries entryE_s entryOrder mPaginationWidget mTitle = do
+renderEntries entryE_s entryOrder mPaginationWidget mTag = do
   entry_mTags_s <- getEntriesTags entryE_s entryOrder
   shortname <- extraDisqusShortname <$> extraSettings
   developer <- extraDisqusDeveloper <$> extraSettings
   getLastModifiedStr entryE_s >>= setHeader "Last-Modified"
   now <- liftIO getCurrentTime
   let loadDisqusCommentThreads = (1==) . length $ entryE_s
-    in
-   defaultLayout $ do
-     case mTitle of
-       Just title -> setTitle . toHtml $ title
-       Nothing -> return ()
-     mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
-     _ <- sequence [addScriptRemote mathJaxSrc | any (entryHasMath . fst)
-                                                 entry_mTags_s]
-     $(widgetFile "homepage")
+  defaultLayout
+    $ do
+      modifyTitle entryE_s mTag
+      mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
+      _ <- sequence [addScriptRemote mathJaxSrc | any (entryHasMath . fst)
+                                                entry_mTags_s]
+      $(widgetFile "homepage")
 
 renderEntriesRss :: [Entity (EntryGeneric SqlPersist)]
                     -> Handler RepAtom
@@ -160,6 +156,21 @@ getTagR_ tag = runDB $ do
 
 
 -- {{{ utility
+
+modifyTitle :: [Entity (EntryGeneric SqlPersist)]
+               -> Maybe Text
+               -> Widget
+modifyTitle entryE_s mTag =
+  let titlePrefix = "shergill: "
+      updateTitle = setTitle . toHtml
+      in
+   case mTag of
+     Just tag -> updateTitle $ titlePrefix `append` "#" `append` tag
+     Nothing -> case entryE_s of
+       [entryE] -> updateTitle $ titlePrefix `append` (entryHeading
+                                                             . entityVal $
+                                                             entryE)
+       _ -> return ()
 
 getLastModified :: [Entity (EntryGeneric SqlPersist)]
                    -> Handler UTCTime
