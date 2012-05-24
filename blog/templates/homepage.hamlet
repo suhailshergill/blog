@@ -47,5 +47,5 @@
                 }());
 
 
-$maybe widget <- mWidget
+$maybe widget <- mPaginationWidget
     < .pagination>^{widget}

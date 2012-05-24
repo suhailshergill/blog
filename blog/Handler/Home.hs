@@ -92,7 +92,7 @@ renderEntries :: [Entity (EntryGeneric SqlPersist)]
                  -> Maybe Widget
                  -> Maybe ÃTitle
                  -> Handler RepHtml
-renderEntries entryE_s entryOrder mWidget mTitle = do
+renderEntries entryE_s entryOrder mPaginationWidget mTitle = do
   entry_mTags_s <- getEntriesTags entryE_s entryOrder
   shortname <- extraDisqusShortname <$> extraSettings
   developer <- extraDisqusDeveloper <$> extraSettings
