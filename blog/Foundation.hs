@@ -35,7 +35,7 @@ instance AppVaultMethods App where
       master <- getYesod
       mmsg <- getMessage
 
-      (breadcrumbsT, breadcrumbsH) <- breadcrumbs
+      (breadcrumbsT, breadcrumbsH_RTs) <- breadcrumbs
 
       let mySettings = appExtra $ settings master
           subscription = subscriptionWidget $ vaultMFeed vault
@@ -49,7 +49,7 @@ instance AppVaultMethods App where
       -- you to use normal widget features in default-layout.
 
       pc <- widgetToPageContent $ do
-        setTitle (toHtml $ extraTitle $ mySettings)
+        setTitle . toHtml $ breadcrumbsT
         $(widgetFile "normalize")
         addScriptRemoteAttrs (extraJquery $ mySettings)
           [("type", "text/javascript")]

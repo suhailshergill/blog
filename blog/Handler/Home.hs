@@ -163,17 +163,11 @@ getTagR_ tag = runDB $ do
 modifyTitle :: [Entity (EntryGeneric SqlPersist)]
                -> Maybe Text
                -> Widget
-modifyTitle entryE_s mTag =
-  let titlePrefix = "shergill: "
-      updateTitle = setTitle . toHtml
-      in
-   case mTag of
-     Just tag -> updateTitle $ titlePrefix `append` "#" `append` tag
-     Nothing -> case entryE_s of
-       [entryE] -> updateTitle $ titlePrefix `append` (entryHeading
-                                                             . entityVal $
-                                                             entryE)
-       _ -> return ()
+modifyTitle [entryE] Nothing =
+   setTitle . toHtml $ vaultTitlePrefix defaultVault `append` (entryHeading
+                                                               . entityVal $
+                                                               entryE)
+modifyTitle _ _ = return ()
 
 getLastModified :: [Entity (EntryGeneric SqlPersist)]
                    -> Handler UTCTime
