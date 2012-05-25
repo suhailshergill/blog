@@ -43,6 +43,8 @@ css_dir = "."
 images_dir = File.join(staticDir, "img")
 print "images dir: #{images_dir}\n"
 
+# fonts_path = File.join(staticDir, "fonts")
+# print "fontspath = #{fonts_path}\n"
 
 # Specify the output style/environment
 #output_style = :expanded #:compressed
