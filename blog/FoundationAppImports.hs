@@ -1,4 +1,4 @@
-module FoundationImports
+module FoundationAppImports
        ( module Prelude
        , module Yesod
        , module Yesod.Static
@@ -18,6 +18,8 @@ module FoundationImports
        , module Utils
        , module Data.Text
 
+       -- , module Data.Reflection
+       -- , module Data.Proxy
        )
     where
 
@@ -39,3 +41,6 @@ import Text.Hamlet (hamletFile)
 
 import Utils
 import Data.Text (Text, append)
+
+-- import Data.Reflection
+-- import Data.Proxy

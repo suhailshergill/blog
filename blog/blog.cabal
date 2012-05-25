@@ -34,7 +34,7 @@ library
                      Settings.StaticFiles
                      Handler.Home
                      Utils
-                     FoundationImports
+                     FoundationAppImports
 
     ghc-options:   -Wall -Werror -threaded -O0 -ddump-splices
     cpp-options:   -DDEVELOPMENT
@@ -112,6 +112,8 @@ executable         blog
                  , yesod-newsfeed                >= 1.0        && < 1.1
                  , safe                          >= 0.3        && < 0.4
                  , friendly-time                 >= 0.2        && < 0.3
+                 -- , reflection                    >= 1.1        && < 1.2
+                 -- , tagged                        >= 0.2        && < 0.3
 
                  , yesod-test
 test-suite integration-tests
