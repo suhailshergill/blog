@@ -1,0 +1,7 @@
+<ul .subscriptions>
+  $maybe (route, title) <- mFeed
+    <li>
+      <a href="@{route}" title="#{title}">#{title}
+
+  <li>
+    <a href="@{FeedR}" title="Atom Feed">Subscribe

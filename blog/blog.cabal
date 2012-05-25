@@ -34,7 +34,10 @@ library
                      Settings.StaticFiles
                      Handler.Home
                      Utils
+                     AppVault
                      FoundationAppImports
+                     FoundationApp
+                     Widgets
 
     ghc-options:   -Wall -Werror -threaded -O0 -ddump-splices
     cpp-options:   -DDEVELOPMENT

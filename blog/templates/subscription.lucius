@@ -1,0 +1,9 @@
+body {
+
+   ul.subscriptions {
+      display: inline;
+      margin: 0;
+      padding: 0;
+   }
+
+}

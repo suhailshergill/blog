@@ -97,7 +97,10 @@ renderEntries entryE_s entryOrder mPaginationWidget mTag = do
   getLastModifiedStr entryE_s >>= setHeader "Last-Modified"
   now <- liftIO getCurrentTime
   let loadDisqusCommentThreads = (1==) . length $ entryE_s
-  defaultLayout
+  ãDefaultLayout
+    defaultVault {
+      vaultMFeed = vaultMFeedCons vaultCons $ mTag
+      }
     $ do
       modifyTitle entryE_s mTag
       mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
