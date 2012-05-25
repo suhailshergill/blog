@@ -1,6 +1,6 @@
 blog/dist/
 blog/static/tmp/
-blog/compass/.sass-cache
+blog/static/.sass-cache
 blog/static/sass/
 blog/static/extra
 blog/SourceGraph/

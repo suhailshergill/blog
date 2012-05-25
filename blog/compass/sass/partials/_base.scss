@@ -1,6 +1,8 @@
 // Here is where you can define your constants for your application and to configure the blueprint framework.
 // Feel free to delete these if you want keep the defaults:
 
+// camelCase signifies bootstrap settings
+
 $blueprint-grid-columns: 24;
 $blueprint-container-size: 950px;
 $blueprint-grid-margin: 10px;
@@ -10,8 +12,23 @@ $blueprint-grid-margin: 10px;
 $blueprint-grid-width: ($blueprint-container-size + $blueprint-grid-margin) / $blueprint-grid-columns - $blueprint-grid-margin;
 
 $blueprint-font-size: 16px;
+$baseFontSize: $blueprint-font-size; // bootstrap
+$baseLineHeight: $baseFontSize * 1.5; // bootstrap
 
-$link-hover-color: #005fff;
+// {{{ colors
+
+$link-color: #0066cc;
+$link-hover-color: darken($link-color, 15%);
+$linkColor: $link-color;
+$linkColorHover: $link-hover-color;
+
+$blueprint-background-color: #e5e5e5;
+$bodyBackground: $blueprint-background-color;
+
+$font-color: #333333;
+$textColor: $font-color;
+
+// }}}
 
 /* [[https://github.com/nex3/sass/issues/156][source]] */
 /* USAGE: */

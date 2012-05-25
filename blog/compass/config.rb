@@ -1,4 +1,7 @@
+require 'rubygems'
+require 'bundler/setup'
 # Require any additional compass plugins here.
+require 'compass_twitter_bootstrap'
 
 # # Set this to the root of your project when deployed:
 # http_path = "/"
@@ -23,18 +26,25 @@
 # and then run:
 # sass-convert -R --from scss --to sass sass scss && rm -rf sass && mv scss sass
 
+compassDir = "compass"
+staticDir = "static"
+
+http_path = "/" # css files are served via the static subsite and so are
+                # resolved wrt the static folder automagically
+project_path = staticDir # directory under which generated files are stored
+
 #Delineate the directory for our SASS/SCSS files (this directory)
-sass_path = "compass" #  File.dirname(.);
+sass_path = compassDir #  File.dirname(.);
+print "sasspath = #{sass_path}\n"
 
-staticDir = File.join(sass_path, "..", "static")
-
-print "sasspath = #{sass_path} \n"
-css_path = staticDir
+css_dir = "."
 
 # Delinate the images directory
 images_dir = File.join(staticDir, "img")
+print "images dir: #{images_dir}\n"
 
-print "images dir: #{images_dir} \n"
+# fonts_path = File.join(staticDir, "fonts")
+# print "fontspath = #{fonts_path}\n"
 
 # Specify the output style/environment
 #output_style = :expanded #:compressed

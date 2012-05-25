@@ -1,0 +1,4 @@
+source :rubygems
+
+gem "compass", "~>0.12.1"
+gem "compass_twitter_bootstrap", "~>2.0.3"
