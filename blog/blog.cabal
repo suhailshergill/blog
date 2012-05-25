@@ -33,6 +33,7 @@ library
                      Settings
                      Settings.StaticFiles
                      Handler.Home
+                     Handler.About
                      Utils
                      AppVault
                      FoundationAppImports

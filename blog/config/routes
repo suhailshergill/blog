@@ -6,6 +6,9 @@
 
 / HomeR GET HEAD
 
+/cv CVR GET
+/about AboutR GET
+
 /posts PostsR GET
 /posts/#Text PostR GET
 /tags/#Text TagR GET

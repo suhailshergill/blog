@@ -127,6 +127,10 @@ instance YesodBreadcrumbs App where
                                                                            HomeR)
   breadcrumb (FeedTagR tag) = return (vaultTitlePrefix defaultVault `append`
                                       "RSS #" `append` tag, Just HomeR)
+  breadcrumb AboutR = return (vaultTitlePrefix defaultVault `append` "About Me",
+                              Just HomeR)
+  breadcrumb CVR = return (vaultTitlePrefix defaultVault `append` "CV", Just
+                                                                        HomeR)
 
 instance YesodAuth App where
     type AuthId App = UserId
