@@ -116,10 +116,11 @@ body.bp {
                      $blueprint-background-color, $blueprint-border-color);
             }
             &.disabled a {
-               /* @include button-colors( */
+               /* @include button-colors */
             }
          }
       }
+      &:empty { @extend .hide; }
    }
 
 }
