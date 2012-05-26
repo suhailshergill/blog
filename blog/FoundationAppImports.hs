@@ -1,46 +1,26 @@
 module FoundationAppImports
-       ( module Prelude
-       , module Yesod
-       , module Yesod.Static
-       , module Yesod.Auth
-       , module Yesod.Auth.BrowserId
-       , module Yesod.Auth.GoogleEmail
-       , module Yesod.Default.Config
-       , module Yesod.Default.Util
-       , module Yesod.Logger
-       , module Network.HTTP.Conduit
-       , module Settings.StaticFiles
-       , module Settings
-       , module Text.Jasmine
-       , module Web.ClientSession
-       , module Text.Hamlet
-
-       , module Utils
-       , module Data.Text
-
-       -- , module Data.Reflection
-       -- , module Data.Proxy
+       ( module X
        )
     where
 
-import Prelude
-import Yesod
-import Yesod.Static hiding (Route)
-import Yesod.Auth hiding (Route)
-import Yesod.Auth.BrowserId
-import Yesod.Auth.GoogleEmail
-import Yesod.Default.Config
-import Yesod.Default.Util (addStaticContentExternal)
-import Yesod.Logger (Logger, logMsg, formatLogText)
-import Network.HTTP.Conduit (Manager)
-import Settings.StaticFiles
-import Settings (widgetFile, Extra (..))
-import Text.Jasmine (minifym)
-import Web.ClientSession (getKey)
-import Text.Hamlet (hamletFile)
+import Prelude as X
+import Yesod as X
+import Yesod.Static as X hiding (Route)
+import Yesod.Auth as X hiding (Route)
+import Yesod.Auth.BrowserId as X
+import Yesod.Auth.GoogleEmail as X
+import Yesod.Default.Config as X
+import Yesod.Default.Util as X (addStaticContentExternal)
+import Yesod.Logger as X (Logger, logMsg, formatLogText)
+import Network.HTTP.Conduit as X (Manager)
+import Settings.StaticFiles as X
+import Settings as X (widgetFile, Extra (..))
+import Text.Jasmine as X (minifym)
+import Web.ClientSession as X (getKey)
+import Text.Hamlet as X (hamletFile)
 
-import Utils
-import Data.Text (Text, append)
+import Utils as X
+import Data.Text as X (Text, append)
 
--- import Data.Reflection
--- import Data.Proxy
+-- import Data.Reflection as X
+-- import Data.Proxy as X

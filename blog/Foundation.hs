@@ -1,14 +1,12 @@
 {-# LANGUAGE ScopedTypeVariables, FlexibleInstances #-}
 {-# OPTIONS_GHC -fno-warn-orphans -fno-warn-name-shadowing #-}
 module Foundation
-    ( module FoundationApp
+    ( module X
     , Form
     , maybeAuth
     , requireAuth
     , module Settings
-    , module Model
 
-    , module AppVault
     , defaultVault
     ) where
 
@@ -16,11 +14,11 @@ import qualified Settings
 import Database.Persist.GenericSql
 import qualified Database.Persist.Store
 
-import Model
+import Model as X
 
 import FoundationAppImports
-import FoundationApp
-import AppVault
+import FoundationApp as X
+import AppVault as X
 
 type Form x = Html -> MForm App App (FormResult x, Widget)
 
