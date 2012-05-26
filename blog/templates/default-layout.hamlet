@@ -1,11 +1,17 @@
 < .blog-header>
   <ul>
     <li>
-      <a href="@{HomeR}" title="Home">Home
+      <a href="@{HomeR}" title="Home">
+        <i class="icon-home">
+        Home
     <li>
-      <a href="@{AboutR}" title="About Me">About
+      <a href="@{AboutR}" title="About Me">
+        <i class="icon-user">
+        About
     <li>
-      <a href="@{CVR}" title="CV">CV
+      <a href="@{CVR}" title="CV">
+        <i class="icon-list-alt">
+        CV
     ^{subscription}
 
 $maybe msg <- mmsg
