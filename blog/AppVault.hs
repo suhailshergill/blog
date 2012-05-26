@@ -1,3 +1,4 @@
+{-# LANGUAGE RankNTypes #-}
 module AppVault
        ( module Widgets
        , AppVault (..)
@@ -26,7 +27,7 @@ class RenderRoute a => AppVaultMethods a where
 
 data AppVault = AppVault {
   vaultMFeed :: ÃMFeed
-  , vaultTitlePrefix :: Text
+  , vaultExtraSettings :: forall sub. GHandler sub App Extra
   }
 data AppVaultCons = AppVaultCons { vaultMFeedCons :: Maybe Text -> ÃMFeed }
 

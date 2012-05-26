@@ -17,6 +17,7 @@ Default: &defaults
   mathJaxSrc: "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 
   title: "$> su - shergill"
+  titlePrefix: "shergill: "
   feedDescription: "Random musings of a boy named Su"
 
   paginationLength: 10

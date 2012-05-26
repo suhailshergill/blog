@@ -96,13 +96,14 @@ renderEntries entryE_s entryOrder mPaginationWidget mTag = do
   developer <- extraDisqusDeveloper <$> extraSettings
   getLastModifiedStr entryE_s >>= setHeader "Last-Modified"
   now <- liftIO getCurrentTime
+  titlePrefix <- extraTitlePrefix `fmap` vaultExtraSettings defaultVault
   let loadDisqusCommentThreads = (1==) . length $ entryE_s
   ãDefaultLayout
     defaultVault {
       vaultMFeed = vaultMFeedCons vaultCons $ mTag
       }
     $ do
-      modifyTitle entryE_s mTag
+      modifyTitle titlePrefix entryE_s mTag
       mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
       _ <- sequence [addScriptRemote mathJaxSrc | any (entryHasMath . fst)
                                                 entry_mTags_s]
@@ -160,14 +161,14 @@ getTagR_ tag = runDB $ do
 
 -- {{{ utility
 
-modifyTitle :: [Entity (EntryGeneric SqlPersist)]
+type ÃTitlePrefix = Text
+modifyTitle :: ÃTitlePrefix
+               -> [Entity (EntryGeneric SqlPersist)]
                -> Maybe Text
                -> Widget
-modifyTitle [entryE] Nothing =
-   setTitle . toHtml $ vaultTitlePrefix defaultVault `append` (entryHeading
-                                                               . entityVal $
-                                                               entryE)
-modifyTitle _ _ = return ()
+modifyTitle titlePrefix [entryE] Nothing =
+  setTitle . toHtml $ titlePrefix `append` (entryHeading . entityVal $ entryE)
+modifyTitle _ _ _ = return ()
 
 getLastModified :: [Entity (EntryGeneric SqlPersist)]
                    -> Handler UTCTime

@@ -75,6 +75,7 @@ data Extra = Extra
     , extraDisqusDeveloper :: Int
     , extraFeedDescription :: Text
     , extraHeaderServer :: Text
+    , extraTitlePrefix :: Text
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
@@ -92,3 +93,4 @@ parseExtra _ o = Extra
     <*> o .: "disqusDeveloper"
     <*> o .: "feedDescription"
     <*> o .: "header-server"
+    <*> o .: "titlePrefix"

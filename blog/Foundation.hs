@@ -27,7 +27,7 @@ type Form x = Html -> MForm App App (FormResult x, Widget)
 defaultVault :: AppVault
 defaultVault = AppVault {
   vaultMFeed = Nothing
-  , vaultTitlePrefix = "shergill: "
+  , vaultExtraSettings = (appExtra . settings) `fmap` getYesod
   }
 
 instance AppVaultMethods App where
@@ -109,28 +109,29 @@ instance YesodPersist App where
             (connPool master)
 
 -- Add breadcrumb support
+titlePrefix :: GHandler sub App Text
+titlePrefix = extraTitlePrefix `fmap` vaultExtraSettings defaultVault
 instance YesodBreadcrumbs App where
   breadcrumb (StaticR _) = return ("Static content", Nothing)
   breadcrumb (AuthR _) = return ("", Nothing)
   breadcrumb FaviconR = return ("favicon.ico", Nothing)
   breadcrumb RobotsR = return ("robots.txt", Nothing)
-  breadcrumb HomeR = do
-    title <- (extraTitle . appExtra . settings) `fmap` getYesod
-    return (title, Nothing)
-  breadcrumb PostsR = return (vaultTitlePrefix defaultVault `append` "Posts",
-                              Just HomeR)
-  breadcrumb (PostR postId) = return (vaultTitlePrefix defaultVault `append`
-                                      "Post #" `append` postId, Just PostsR)
-  breadcrumb (TagR tag) = return (vaultTitlePrefix defaultVault `append` "#"
-                                  `append` tag, Just HomeR)
-  breadcrumb FeedR = return (vaultTitlePrefix defaultVault `append` "RSS", Just
-                                                                           HomeR)
-  breadcrumb (FeedTagR tag) = return (vaultTitlePrefix defaultVault `append`
-                                      "RSS #" `append` tag, Just HomeR)
-  breadcrumb AboutR = return (vaultTitlePrefix defaultVault `append` "About Me",
-                              Just HomeR)
-  breadcrumb CVR = return (vaultTitlePrefix defaultVault `append` "CV", Just
+  breadcrumb HomeR = extraTitle `fmap` vaultExtraSettings defaultVault >>= \t ->
+    return (t, Nothing)
+  breadcrumb PostsR = titlePrefix >>= \p -> return (p `append` "Posts", Just
                                                                         HomeR)
+  breadcrumb (PostR postId) = titlePrefix >>= \p -> return (p `append` "Post #"
+                                                            `append` postId,
+                                                            Just PostsR)
+  breadcrumb (TagR tag) = titlePrefix >>= \p -> return (p `append` "#" `append`
+                                                        tag, Just HomeR)
+  breadcrumb FeedR = titlePrefix >>= \p -> return (p `append` "RSS", Just HomeR)
+  breadcrumb (FeedTagR tag) = titlePrefix >>= \p -> return (p `append` "RSS #"
+                                                            `append` tag, Just
+                                                                          HomeR)
+  breadcrumb AboutR = titlePrefix >>= \p -> return (p `append` "About Me", Just
+                                                                           HomeR)
+  breadcrumb CVR = titlePrefix >>= \p -> return (p `append` "CV", Just HomeR)
 
 instance YesodAuth App where
     type AuthId App = UserId
