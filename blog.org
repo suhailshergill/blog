@@ -1,5 +1,5 @@
 * STARTED setup blog [2/4]
-  SCHEDULED: <2012-04-15 Sun>
+  SCHEDULED: <2012-05-27 Sun>
   - State "STARTED"    from "TODO"       [2012-03-12 Mon 09:56]
 
   - [X] css [2/2]
