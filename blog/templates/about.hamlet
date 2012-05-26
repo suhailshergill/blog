@@ -1,8 +1,11 @@
 < .aboutMe>
   <ul>
-    <li>
+    <li class="icon-github-sign">
       <a href="https://github.com/suhailshergill"
          title="GitHub profile">GitHub
-    <li>
+    <li class="icon-linkedin-sign">
+      <a href="http://www.linkedin.com/in/suhailshergill"
+         title="LinkedIn profile">LinkedIn
+    <li class="icon-plus">
       <a href="https://plus.google.com/108586390250515214966/posts"
          title="Google+ profile">Google+
