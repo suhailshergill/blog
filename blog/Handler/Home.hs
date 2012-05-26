@@ -17,7 +17,7 @@ import Data.Text (append)
 import Yesod.AtomFeed
 
 extraSettings :: Handler Extra
-extraSettings = appExtra . settings <$> getYesod
+extraSettings = vaultExtraSettings defaultVault
 
 entrySort :: [SelectOpt (EntryGeneric SqlPersist)]
 entrySort = [ Desc EntryUpdatedOn, Desc EntryEnteredOn, Desc EntryId]
