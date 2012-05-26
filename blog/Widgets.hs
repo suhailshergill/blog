@@ -1,4 +1,4 @@
-{-# LANGUAGE RankNTypes, ImpredicativeTypes #-}
+{-# LANGUAGE RankNTypes #-}
 module Widgets
        where
 
@@ -10,7 +10,7 @@ type ÃMFeed = Maybe ÃFeed
 
 newtype SubscriptionData = SubscriptionData { getSubscriptionData :: ÃFeed }
 
-subscriptionWidget :: forall sub. Maybe ÃFeed -> GWidget sub App ()
+subscriptionWidget :: Maybe ÃFeed -> forall sub. GWidget sub App ()
 subscriptionWidget mFeed = $(widgetFile "subscription")
 
 subscription :: forall sub. GWidget sub App ()
