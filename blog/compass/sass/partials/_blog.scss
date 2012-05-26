@@ -40,6 +40,11 @@ body.bp {
          ul {
             margin-right: 0px;
             list-style-type: none;
+            height: 1.5em; // FontAwesome fonts seem to be slightly larger
+            // than 1.5em (on 16px, are 25pm high instead of 24px). if a height
+            // attribute is not set here it ends up messing with the layout of
+            // first paragraph of blog entry
+
             li {
                display: inline;
                margin-right: 0.2em;
