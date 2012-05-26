@@ -35,4 +35,4 @@ vaultCons :: AppVaultCons
 vaultCons = AppVaultCons { vaultMFeedCons = mFeedCons }
             where
               mFeedCons Nothing = Nothing
-              mFeedCons (Just tag) = Just (FeedTagR tag, "RSS")
+              mFeedCons (Just tag) = Just (FeedTagR tag, "RSS:" `append` tag)
