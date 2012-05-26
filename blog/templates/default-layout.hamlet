@@ -8,7 +8,7 @@
       <a href="@{AboutR}" title="About Me">
         <i class="icon-user">
         About
-    <li>
+    <li class="hide">
       <a href="@{CVR}" title="CV">
         <i class="icon-list-alt">
         CV
