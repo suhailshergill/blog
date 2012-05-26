@@ -41,6 +41,7 @@ library
                      Widgets
 
     ghc-options:   -Wall -Werror -threaded -O0 -ddump-splices
+    -fwarn-incomplete-record-updates -fwarn-monomorphism-restriction
     cpp-options:   -DDEVELOPMENT
 
     extensions: TemplateHaskell
