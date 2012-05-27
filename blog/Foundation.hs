@@ -107,8 +107,16 @@ instance YesodPersist App where
             (connPool master)
 
 -- Add breadcrumb support
-titlePrefix :: GHandler sub App Text
-titlePrefix = extraTitlePrefix `fmap` vaultExtraSettings defaultVault
+type ÃTitle = Text
+type ÃParentRoute = Route App
+mkBreadcrumb :: ÃTitle
+                -> Maybe ÃParentRoute
+                -> GHandler sub App (ÃTitle, Maybe ÃParentRoute)
+mkBreadcrumb title parent =
+  titlePrefix >>= \p -> return (p `append` title, parent)
+  where
+    titlePrefix = extraTitlePrefix `fmap` vaultExtraSettings defaultVault
+
 instance YesodBreadcrumbs App where
   breadcrumb (StaticR _) = return ("Static content", Nothing)
   breadcrumb (AuthR _) = return ("", Nothing)
@@ -116,20 +124,13 @@ instance YesodBreadcrumbs App where
   breadcrumb RobotsR = return ("robots.txt", Nothing)
   breadcrumb HomeR = extraTitle `fmap` vaultExtraSettings defaultVault >>= \t ->
     return (t, Nothing)
-  breadcrumb PostsR = titlePrefix >>= \p -> return (p `append` "Posts", Just
-                                                                        HomeR)
-  breadcrumb (PostR postId) = titlePrefix >>= \p -> return (p `append` "Post #"
-                                                            `append` postId,
-                                                            Just PostsR)
-  breadcrumb (TagR tag) = titlePrefix >>= \p -> return (p `append` "#" `append`
-                                                        tag, Just HomeR)
-  breadcrumb FeedR = titlePrefix >>= \p -> return (p `append` "RSS", Just HomeR)
-  breadcrumb (FeedTagR tag) = titlePrefix >>= \p -> return (p `append` "RSS #"
-                                                            `append` tag, Just
-                                                                          HomeR)
-  breadcrumb AboutR = titlePrefix >>= \p -> return (p `append` "About Me", Just
-                                                                           HomeR)
-  breadcrumb CVR = titlePrefix >>= \p -> return (p `append` "CV", Just HomeR)
+  breadcrumb PostsR = mkBreadcrumb "Posts" (Just HomeR)
+  breadcrumb (PostR postId) = mkBreadcrumb ("Post #" `append` postId) (Just PostsR)
+  breadcrumb (TagR tag) = mkBreadcrumb ("#" `append` tag) (Just HomeR)
+  breadcrumb FeedR = mkBreadcrumb "RSS" (Just HomeR)
+  breadcrumb (FeedTagR tag) = mkBreadcrumb ("RSS #" `append` tag) (Just HomeR)
+  breadcrumb AboutR = mkBreadcrumb "About Me" (Just HomeR)
+  breadcrumb CVR = mkBreadcrumb "CV" (Just HomeR)
 
 instance YesodAuth App where
     type AuthId App = UserId
