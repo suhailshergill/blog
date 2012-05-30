@@ -15,7 +15,7 @@
                       <i class="icon-tag">
                       #{tag}
 
-        < .post-body>#{preEscapedText $ entryPost entry}
+        < .post-body>#{preEscapedToMarkup $ entryPost entry}
 
         < .post-footer>
           <script type="text/javascript">
