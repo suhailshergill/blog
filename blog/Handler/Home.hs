@@ -12,7 +12,7 @@ module Handler.Home
 import Import
 
 import Control.Monad (liftM)
-import Text.Blaze (preEscapedText)
+import Text.Blaze (preEscapedToMarkup)
 import Data.Text (append)
 import Yesod.AtomFeed
 
@@ -136,7 +136,7 @@ entryEToRss entryE = do
                         feedEntryLink = PostR $ entryCustomId entryV
                       , feedEntryUpdated = entryUpdatedOn entryV
                       , feedEntryTitle = entryHeading entryV
-                      , feedEntryContent = preEscapedText $ entryPost entryV
+                      , feedEntryContent = preEscapedToMarkup $ entryPost entryV
                       }
 
 getPostsR_ :: Handler ([Entity Entry], Widget)
