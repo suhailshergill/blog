@@ -82,6 +82,8 @@ isStale w x = do
   return $! (a > w)
 
 
+type Title = String
+type Body = String
 type BOFHExcuse = (Title, Body)
 type CacheState = (DiffTime, BOFHExcuse)
 type CacheWindow = DiffTime
@@ -113,10 +115,7 @@ _getBOFHExcusesC windowSize cacheR = do
       writeIORef cacheR (Just (t, e))
       return $! e
 
-
-type Title = String
-type Body = String
-getBOFHExcuses :: (MonadIO m) => m (Title,Body)
+getBOFHExcuses :: (MonadIO m) => m BOFHExcuse
 getBOFHExcuses = do
   title:body <- return . filter (/= "") . lines =<< liftIO (readProcess "/usr/games/fortune"
                                                         ["bofh-excuses"] "")
