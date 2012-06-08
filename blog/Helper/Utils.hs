@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -fno-cse #-}
 module Helper.Utils
        ( getBOFHExcuses
          , getBOFHExcusesC
