@@ -1,4 +1,4 @@
-module SqlStmts where
+module Helper.SqlStmts where
 
 import Data.Text (Text)
 

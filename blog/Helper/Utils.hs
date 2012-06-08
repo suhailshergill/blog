@@ -1,5 +1,5 @@
 {-# OPTIONS_GHC -fno-cse #-}
-module Utils
+module Helper.Utils
        ( getBOFHExcuses
          , getBOFHExcusesC
          , findOrCreate

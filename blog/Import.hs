@@ -24,7 +24,7 @@ import Data.Time as X (formatTime, getCurrentTime, UTCTime)
 import Data.Time.Format.Human as X
 import System.Locale as X (defaultTimeLocale, rfc822DateFormat)
 
-import SqlStmts as X
+import Helper.SqlStmts as X
 
 #if __GLASGOW_HASKELL__ < 704
 infixr 5 <>

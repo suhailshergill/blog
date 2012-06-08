@@ -19,7 +19,7 @@ import Text.Jasmine as X (minifym)
 import Web.ClientSession as X (getKey)
 import Text.Hamlet as X (hamletFile)
 
-import Utils as X
+import Helper.Utils as X
 import Data.Text as X (Text, append)
 
 -- import Data.Reflection as X

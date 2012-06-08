@@ -34,12 +34,12 @@ library
                      Settings.StaticFiles
                      Handler.Home
                      Handler.About
-                     Utils
                      AppVault
                      FoundationAppImports
                      FoundationApp
                      Widgets
-                     SqlStmts
+                     Helper.SqlStmts
+                     Helper.Utils
 
     ghc-options:   -Wall -Werror -threaded -O0 -ddump-splices
     -fwarn-incomplete-record-updates -fwarn-monomorphism-restriction
