@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-cse #-}
 module Utils
        ( getBOFHExcuses
          , getBOFHExcusesC
@@ -8,6 +9,7 @@ module Utils
 
 import Prelude
 import System.Process (readProcess)
+import System.IO.Unsafe (unsafePerformIO)
 import Control.Monad.IO.Class (MonadIO)
 
 import Data.Time.Clock (getCurrentTime, utctDayTime, DiffTime)
@@ -84,15 +86,16 @@ type BOFHExcuse = (Title, Body)
 type CacheState = (DiffTime, BOFHExcuse)
 type CacheWindow = DiffTime
 
-bofhExcuseCacheR :: IO (IORef (Maybe CacheState))
-bofhExcuseCacheR = newIORef Nothing
+{-# NOINLINE bofhExcuseCacheR #-}
+bofhExcuseCacheR :: IORef (Maybe CacheState)
+bofhExcuseCacheR = unsafePerformIO $ newIORef Nothing
 
 getBOFHExcusesC :: (MonadIO m) => CacheWindow -> m BOFHExcuse
 getBOFHExcusesC w = _getBOFHExcusesC w bofhExcuseCacheR
 
-_getBOFHExcusesC :: (MonadIO m) => CacheWindow -> IO (IORef (Maybe CacheState)) -> m BOFHExcuse
+_getBOFHExcusesC :: (MonadIO m) => CacheWindow -> IORef (Maybe CacheState) -> m BOFHExcuse
 _getBOFHExcusesC windowSize cacheR = do
-  cache <- liftIO (readIORef =<< cacheR)
+  cache <- liftIO (readIORef cacheR)
   case cache of
     Just (diffTime,bofhExcuse) ->
       liftIO (
@@ -107,7 +110,7 @@ _getBOFHExcusesC windowSize cacheR = do
     getFreshBOFHExcuses = do
       t <- date
       e <- getBOFHExcuses
-      cacheR >>= flip writeIORef (Just (t, e))
+      writeIORef cacheR (Just (t, e))
       return $! e
 
 
