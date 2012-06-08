@@ -75,6 +75,8 @@ for xs f = map f xs
 date :: IO DiffTime
 date = fmap utctDayTime getCurrentTime
 
+-- {{{ BOFH
+
 isStale :: DiffTime -> CacheWindow -> IO Bool
 isStale w x = do
   t <- date
@@ -121,7 +123,6 @@ getBOFHExcuses = do
                                                         ["bofh-excuses"] "")
   return $! (title, unlines body)
 
-
 -- cacheWindow :: DiffTime
 -- cacheWindow = 1
 
@@ -129,3 +130,5 @@ getBOFHExcuses = do
 --   x <- getBOFHExcusesC cacheWindow
 --   putStrLn (show x)
 --   main
+
+-- }}}
