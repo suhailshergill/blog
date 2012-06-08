@@ -13,7 +13,6 @@ module Import
     , module Database.Persist.Query.Join
     , module Yesod.Default.Config
     , runJoin
-    , SqlPersist
 
     , module Text.Hamlet
     , module Safe
@@ -27,7 +26,7 @@ module Import
 
 import Prelude hiding (writeFile, readFile, head, tail, init, last)
 import Yesod   hiding (Route(..))
-import Foundation
+import Foundation hiding (Key, Entity, entityKey, entityVal, unKey)
 import Data.Monoid (Monoid (mappend, mempty, mconcat))
 import Control.Applicative ((<$>), (<*>), pure)
 import Data.Text (Text, pack)
@@ -35,7 +34,6 @@ import Settings.StaticFiles
 import Yesod.Paginator
 import Database.Persist.Query.Join hiding (runJoin)
 import Database.Persist.Query.Join.Sql (runJoin)
-import Database.Persist.GenericSql
 import Yesod.Default.Config
 
 import Text.Hamlet (hamletFile)

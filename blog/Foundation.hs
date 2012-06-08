@@ -6,6 +6,7 @@ module Foundation
     , maybeAuth
     , requireAuth
     , module Settings
+    , module Database.Persist.GenericSql
 
     , defaultVault
     ) where

@@ -18,7 +18,6 @@ import Yesod.Logger (Logger, logBS, toProduction)
 import Network.Wai.Middleware.RequestLogger (logCallback)
 #endif
 import qualified Database.Persist.Store
-import Database.Persist.GenericSql (runMigration)
 import Network.HTTP.Conduit (newManager, def)
 
 -- Import all relevant handler modules here.
