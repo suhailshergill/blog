@@ -21,6 +21,8 @@ module Import
     , module Data.Time
     , module Data.Time.Format.Human
     , module System.Locale
+
+    , module SqlStmts
     ) where
 
 import Prelude hiding (writeFile, readFile, head, tail, init, last)
@@ -33,7 +35,7 @@ import Settings.StaticFiles
 import Yesod.Paginator
 import Database.Persist.Query.Join hiding (runJoin)
 import Database.Persist.Query.Join.Sql (runJoin)
-import Database.Persist.GenericSql (SqlPersist)
+import Database.Persist.GenericSql
 import Yesod.Default.Config
 
 import Text.Hamlet (hamletFile)
@@ -42,6 +44,8 @@ import Safe
 import Data.Time (formatTime, getCurrentTime, UTCTime)
 import Data.Time.Format.Human
 import System.Locale (defaultTimeLocale, rfc822DateFormat)
+
+import SqlStmts
 
 #if __GLASGOW_HASKELL__ < 704
 infixr 5 <>

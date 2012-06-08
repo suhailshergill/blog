@@ -39,6 +39,7 @@ library
                      FoundationAppImports
                      FoundationApp
                      Widgets
+                     SqlStmts
 
     ghc-options:   -Wall -Werror -threaded -O0 -ddump-splices
     -fwarn-incomplete-record-updates -fwarn-monomorphism-restriction
