@@ -14,6 +14,7 @@ module Foundation
 import qualified Settings
 import Database.Persist.GenericSql
 import qualified Database.Persist.Store
+import Data.Time (secondsToDiffTime)
 
 import Model as X
 
@@ -91,10 +92,12 @@ instance Yesod App where
     jsLoader _ = BottomOfBody
 
     -- custom error pages
-    errorHandler NotFound = fmap chooseRep $ defaultLayout $ do
-      setTitle "Not Found"
-      (title,body) <- getBOFHExcusesC 300
-      $(widgetFile "error-notFound")
+    errorHandler NotFound = fmap chooseRep $ do
+      cacheWindow <- (secondsToDiffTime . extraCacheWindow) `fmap` vaultExtraSettings defaultVault
+      defaultLayout $ do
+        setTitle "Not Found"
+        (title,body) <- getBOFHExcusesC cacheWindow
+        $(widgetFile "error-notFound")
     errorHandler other = defaultErrorHandler other
 
 -- How to run database actions.

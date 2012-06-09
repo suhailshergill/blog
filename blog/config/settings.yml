@@ -20,6 +20,8 @@ Default: &defaults
   titlePrefix: "shergill: "
   feedDescription: "Random musings of a boy named Su"
 
+  cacheWindow: 3600
+
   paginationLength: 10
 
 Development:

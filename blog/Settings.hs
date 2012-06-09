@@ -76,6 +76,7 @@ data Extra = Extra
     , extraFeedDescription :: Text
     , extraHeaderServer :: Text
     , extraTitlePrefix :: Text
+    , extraCacheWindow :: Integer
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
@@ -94,3 +95,4 @@ parseExtra _ o = Extra
     <*> o .: "feedDescription"
     <*> o .: "header-server"
     <*> o .: "titlePrefix"
+    <*> o .: "cacheWindow"
