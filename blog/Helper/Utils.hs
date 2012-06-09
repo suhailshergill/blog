@@ -4,6 +4,8 @@ module Helper.Utils
          , findOrCreate
          , joinTables
          , joinTables3
+         , listToString
+         , listToText
        ) where
 
 import Prelude
@@ -12,6 +14,9 @@ import System.IO.Unsafe (unsafePerformIO)
 import Control.Monad.IO.Class (MonadIO)
 
 import Data.Time.Clock (getCurrentTime, utctDayTime, DiffTime)
+
+import qualified Data.Text as T
+import Data.Text (Text)
 
 import Data.IORef
 
@@ -131,3 +136,9 @@ getBOFHExcuses = do
 --   main
 
 -- }}}
+
+listToString :: [String] -> String
+listToString = concat . zipWith (++) ([] : repeat ", ")
+
+listToText :: [Text] -> Text
+listToText = T.concat . zipWith T.append ("" : repeat ", ")

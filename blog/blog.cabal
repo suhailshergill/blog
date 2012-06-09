@@ -38,6 +38,7 @@ library
                      FoundationAppImports
                      FoundationApp
                      Widgets
+                     Helper.SqlCombinators
                      Helper.SqlStmts
                      Helper.Utils
 
