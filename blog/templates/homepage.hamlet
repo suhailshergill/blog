@@ -11,7 +11,7 @@
               $forall mTag <- mTags
                 $maybe tag <- mTag
                   <li>
-                    <a href="@{TagR tag}">
+                    <a href="@{TagR tag}" rel="tag">
                       <i class="icon-tag">
                       #{tag}
 
