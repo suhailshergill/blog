@@ -13,7 +13,7 @@ blog:
 	cabal clean && cabal configure && cabal build
 
 .PHONY: install
-install:
+install: blog
 	cabal install
 	sudo $(blogInitd) stop
 	sudo $(INSTALL) `$(WHICH) blog` $(bindir)
