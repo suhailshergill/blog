@@ -16,7 +16,8 @@ import Control.Monad (liftM)
 import Text.Blaze (preEscapedToMarkup)
 import Yesod.AtomFeed
 
-import Data.Text (append)
+import Data.Text (append, unpack)
+import Data.Maybe (fromMaybe)
 import Network.HTTP.Types
 
 extraSettings :: Handler Extra
@@ -52,10 +53,13 @@ getPostR customId = do
 getTagsR :: Handler RepHtml
 getTagsR = do
   results :: [(Single Text, Single Int)] <- runDB $ rawSql stmt []
+  maxWeightResult :: [(Single Text, Single Int)] <- runDB $ rawSql
+                     (subquery `append` " LIMIT 1") []
   case (headMay results) of
-    Just (_, Single maxCount) -> do
+    Just _ -> do
       maxFontScale <- extraMaxFontScale <$> vaultExtraSettings defaultVault
-      let maxWeight = fromIntegral maxCount
+      let maxWeight = fromIntegral.(\(Single x) -> x).snd.
+                      (fromMaybe (Single "", Single 1)).headMay $ maxWeightResult
           scalingFactor x = (maxFontScale + (2/3) - 2/(2*((x/maxWeight)+1) - 1))
           tagName_weight_s = [(t, fromIntegral w) | (Single t, Single w) <- results]
       defaultLayout $(widgetFile "tags")
@@ -65,13 +69,16 @@ getTagsR = do
       "SELECT t.name, e.weight ",
       "FROM tag t ",
       "JOIN (",
-      "SELECT tag_id AS t, count(*) AS weight ",
-      "FROM entry_tag ",
-      "GROUP BY tag_id ",
-      "ORDER BY weight DESC",
+      unpack subquery,
       ") e ",
       "ON t.id = e.t ",
       "ORDER BY t.name ASC"
+      ]
+    subquery = pack . unlines $ [
+      "SELECT tag_id AS t, count(*) AS weight ",
+      "FROM entry_tag ",
+      "GROUP BY tag_id ",
+      "ORDER BY weight DESC"
       ]
 
 
