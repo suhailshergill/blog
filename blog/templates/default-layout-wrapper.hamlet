@@ -36,7 +36,9 @@
             <header>
             <div id="main" role="main">
               ^{pageBody pc}
-        <footer>#{extraCopyright $ mySettings}
+        <footer>
+          <a href="#{extraCopyrightLink mySettings}" rel="license">
+            #{extraCopyright $ mySettings}
 
         $maybe analytics <- extraAnalytics $ mySettings
             <script>

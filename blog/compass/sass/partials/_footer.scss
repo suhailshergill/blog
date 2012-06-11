@@ -39,6 +39,10 @@ body.bp {
       font-size: $footer-font-size;
       clear: both;
       text-align: center;
+      a {
+         color: $font-color;
+         &:visited { color: $font-color; }
+      }
    }
 
    // opera fix

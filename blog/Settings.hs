@@ -63,6 +63,7 @@ widgetFile = Yesod.Default.Util.widgetFileNoReload
 
 data Extra = Extra
     { extraCopyright :: Text
+    , extraCopyrightLink :: Text
     , extraJquery :: Text
     , extraStaticroot :: Text
     , extraLocalCopyright :: Maybe Text
@@ -83,6 +84,7 @@ data Extra = Extra
 parseExtra :: DefaultEnv -> Object -> Parser Extra
 parseExtra _ o = Extra
     <$> o .:  "copyright"
+    <*> o .:  "copyrightLink"
     <*> o .:  "jquery"
     <*> o .:  "staticroot"
     <*> o .:? "localCopyright"
