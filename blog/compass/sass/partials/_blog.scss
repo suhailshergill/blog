@@ -46,14 +46,12 @@ body.bp {
             // first paragraph of blog entry
 
             li {
-               display: inline;
                margin-right: 0.2em;
                &:last-child {
                   margin-right: 0;
                }
                @include su-tagify();
                background-color: #d7d7d7;
-               padding-bottom: 0.1em;
             }
          }
       }
@@ -62,6 +60,7 @@ body.bp {
          >p:first-child {
             padding-left: 1em;
             color: $quiet-color;
+            display: inline-block;
          }
 
          div.footnotes {
