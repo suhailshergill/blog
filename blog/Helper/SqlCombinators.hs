@@ -14,7 +14,7 @@ newtype ÑQuery = ÑQuery { unQuery :: Text }
 select :: ÃTable -> [ÃCol] -> ÑQuery
 select table cols = ÑQuery (
   (++)
-  (("SELECT " ++) $ listToText cols)
+  (("SELECT " ++) $ listToText $ qualifyCols table cols)
   (" FROM " ++ table)
   )
 
@@ -35,3 +35,7 @@ orderBy sort cols query = ÑQuery (
   ++ (listToText cols)
   ++ (" " ++ (pack $ show sort))
   )
+
+
+qualifyCols :: ÃTable -> [ÃCol] -> [ÃCol]
+qualifyCols table cols = zipWith (++) (repeat (table ++ ".")) cols
