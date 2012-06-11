@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-unused-imports #-}
 import Import -- standard imports
 import Settings -- database backend settings
 
