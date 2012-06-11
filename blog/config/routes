@@ -11,6 +11,7 @@
 
 /posts PostsR GET
 /posts/#Text PostR GET
+/tags TagsR GET
 /tags/#Text TagR GET
 
 /feed FeedR GET

@@ -76,6 +76,7 @@ data Extra = Extra
     , extraFeedDescription :: Text
     , extraHeaderServer :: Text
     , extraTitlePrefix :: Text
+    , extraMaxFontScale :: Double
     , extraCacheWindow :: Integer
     } deriving Show
 
@@ -95,4 +96,5 @@ parseExtra _ o = Extra
     <*> o .: "feedDescription"
     <*> o .: "header-server"
     <*> o .: "titlePrefix"
+    <*> o .: "maxFontScale"
     <*> o .: "cacheWindow"

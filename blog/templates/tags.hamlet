@@ -1,0 +1,5 @@
+< .tags>
+  <ul .cloud>
+    $forall (tag, weight) <- tagName_weight_s
+      <li style="font-size: #{(scalingFactor weight)}em;">
+        <a href="@{TagR tag}" rel="tag">#{tag}

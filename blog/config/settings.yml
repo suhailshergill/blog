@@ -23,6 +23,7 @@ Default: &defaults
   cacheWindow: 3600
 
   paginationLength: 10
+  maxFontScale: 2.33
 
 Development:
   <<: *defaults

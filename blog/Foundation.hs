@@ -130,6 +130,7 @@ instance YesodBreadcrumbs App where
     return (t, Nothing)
   breadcrumb PostsR = mkBreadcrumb "Posts" (Just HomeR)
   breadcrumb (PostR postId) = mkBreadcrumb ("Post #" `append` postId) (Just PostsR)
+  breadcrumb TagsR = mkBreadcrumb ("#") (Just HomeR)
   breadcrumb (TagR tag) = mkBreadcrumb ("#" `append` tag) (Just HomeR)
   breadcrumb FeedR = mkBreadcrumb "RSS" (Just HomeR)
   breadcrumb (FeedTagR tag) = mkBreadcrumb ("RSS #" `append` tag) (Just HomeR)

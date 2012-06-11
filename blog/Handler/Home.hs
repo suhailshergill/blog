@@ -1,8 +1,9 @@
-{-# LANGUAGE TupleSections, OverloadedStrings #-}
+{-# LANGUAGE TupleSections, OverloadedStrings, ScopedTypeVariables #-}
 module Handler.Home
        ( getHomeR
        , getPostsR
        , getPostR
+       , getTagsR
        , getTagR
        , getFeedR
        , getFeedTagR
@@ -13,8 +14,10 @@ import Import
 
 import Control.Monad (liftM)
 import Text.Blaze (preEscapedToMarkup)
-import Data.Text (append)
 import Yesod.AtomFeed
+
+import Data.Text (append)
+import Network.HTTP.Types
 
 extraSettings :: Handler Extra
 extraSettings = vaultExtraSettings defaultVault
@@ -45,6 +48,32 @@ getPostR :: Text -> Handler RepHtml
 getPostR customId = do
   entryE <- runDB . getBy404 $ UniqueCustomId customId
   renderEntries [entryE] [] Nothing Nothing
+
+getTagsR :: Handler RepHtml
+getTagsR = do
+  results :: [(Single Text, Single Int)] <- runDB $ rawSql stmt []
+  case (headMay results) of
+    Just (_, Single maxCount) -> do
+      maxFontScale <- extraMaxFontScale <$> vaultExtraSettings defaultVault
+      let maxWeight = fromIntegral maxCount
+          scalingFactor x = (maxFontScale + (2/3) - 2/(2*((x/maxWeight)+1) - 1))
+          tagName_weight_s = [(t, fromIntegral w) | (Single t, Single w) <- results]
+      defaultLayout $(widgetFile "tags")
+    Nothing -> redirectWith temporaryRedirect307 HomeR
+  where
+    stmt = pack . unlines $ [
+      "SELECT t.name, e.weight ",
+      "FROM tag t ",
+      "JOIN (",
+      "SELECT tag_id AS t, count(*) AS weight ",
+      "FROM entry_tag ",
+      "GROUP BY tag_id ",
+      "ORDER BY weight DESC",
+      ") e ",
+      "ON t.id = e.t ",
+      "ORDER BY t.name ASC"
+      ]
+
 
 getTagR :: Text -> Handler RepHtml
 getTagR tag = do
