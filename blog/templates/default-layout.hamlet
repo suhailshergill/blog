@@ -12,6 +12,10 @@
       <a href="@{CVR}" title="CV">
         <i class="icon-list-alt">
         CV
+    <li>
+      <a href="@{TagsR}" title="Tags" rel="index">
+        <i class="icon-tags">
+        Tags
     ^{subscription}
 
 $maybe msg <- mmsg
