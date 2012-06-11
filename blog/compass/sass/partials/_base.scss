@@ -30,6 +30,9 @@ $textColor: $font-color;
 
 // }}}
 
+li { line-height: 1.5em; } // fontawesome (?) sets line-height in pixels, which
+// messes everything up
+
 /* [[https://github.com/nex3/sass/issues/156][source]] */
 /* USAGE: */
 /* @if su-import-once("_SharedBaseStuff.scss") { */
