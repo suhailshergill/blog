@@ -7,11 +7,11 @@ import Distribution.PackageDescription
 import System.Process (runCommand,  waitForProcess )
 
 main :: IO ()
-main = defaultMainWithHooks $ simpleUserHooks 
+main = defaultMainWithHooks $ simpleUserHooks
          { preBuild = genCompass }
 
 runPostConf :: Args -> ConfigFlags -> PackageDescription -> LocalBuildInfo -> IO ()
-runPostConf _ _ _ _ = return () 
+runPostConf _ _ _ _ = return ()
 
 genCompass :: Args -> BuildFlags -> IO HookedBuildInfo
 genCompass _ _ = do
@@ -20,6 +20,6 @@ genCompass _ _ = do
                                     "export PATH=`pwd`/../../ruby/bin;",
                                     "export GEM_HOME=`pwd`/../../ruby/rubygems;",
                                     "export GEM_PATH=$GEM_HOME;",
-                                    "compass compile compass"]
+                                    "bundle exec compass compile compass"]
                                  )
   return emptyHookedBuildInfo
