@@ -20,6 +20,10 @@ Flag library-only
     Description:   Build for use with "yesod devel"
     Default:       False
 
+Flag prof
+    Description:   Turn on profiling options
+    Default:       False
+
 library
     if flag(library-only)
         Buildable: True
@@ -67,7 +71,12 @@ executable         blog
         cpp-options:   -DDEVELOPMENT
         ghc-options:   -Wall -Werror -threaded -O0 -ddump-splices -dppr-debug -dcore-lint -debug
     else
-        ghc-options:   -Wall -Werror -threaded -O2 -dcore-lint
+        if flag(prof)
+           ghc-options: -Wall -Werror -threaded -O2 -dcore-lint -rtsopts 
+                        -osuf prof.o -hisuf prof.hi -hcsuf prof.hc 
+                        -auto-all -caf-all -fforce-recomp
+        else
+           ghc-options: -Wall -Werror -threaded -O2 -dcore-lint
 
     main-is:       main.hs
 

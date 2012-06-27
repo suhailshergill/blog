@@ -1,9 +1,25 @@
 INSTALL = /usr/bin/install
 WHICH = /usr/bin/which
 
-prefix = /usr/local
+prefix = $(root)
 bindir = $(prefix)/bin
 blogInitd = /etc/init.d/blog
+
+root = $(realpath $(CURDIR)/../..)
+logDir = $(root)/logs
+stdout = /dev/null
+stderr = $(logDir)/stderr.log
+logFiles = $(stderr) blog.prof blog.summary
+
+launcherFile= $(root)/bin/blog-launcher
+RTSOPTS = +RTS -pa -sblog.summary -RTS
+define launcherContent
+#! /bin/sh
+pwd
+exec $(bindir)/blog $(RTSOPTS) $$@ 1> /dev/null 2> $(stderr)
+endef
+export launcherContent
+
 
 .PHONY: all
 all: blog
@@ -11,11 +27,21 @@ all: blog
 .PHONY: blog
 blog:
 	cabal clean && cabal configure && cabal build
+	cabal configure -f prof && cabal build
 
 .PHONY: install
-install: blog
+install: blog blog-launcher
 	cabal install
 	sudo $(blogInitd) stop
-	sudo $(INSTALL) `$(WHICH) blog` $(bindir)
+	$(call map,rotateLog,$(logFiles))
+	$(INSTALL) `$(WHICH) blog` $(bindir)
 	sudo $(blogInitd) start
 
+.PHONY: blog-launcher
+blog-launcher:
+	echo "$$launcherContent" > $(launcherFile)
+	chmod +x $(launcherFile)
+
+
+rotateLog = cp $(1) $(logDir)/$(notdir $(1)).1;
+map = $(foreach a,$(2),$(call $(1),$(a)))
