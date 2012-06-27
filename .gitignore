@@ -3,4 +3,5 @@ blog/static/tmp/
 blog/static/.sass-cache
 blog/static/sass/
 blog/static/extra
+blog/static/error/notFound.html
 blog/SourceGraph/

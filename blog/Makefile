@@ -36,12 +36,16 @@ install: blog blog-launcher
 	$(call map,rotateLog,$(logFiles))
 	$(INSTALL) `$(WHICH) blog` $(bindir)
 	sudo $(blogInitd) start
+	$(MAKE) error-file
 
 .PHONY: blog-launcher
 blog-launcher:
 	echo "$$launcherContent" > $(launcherFile)
 	chmod +x $(launcherFile)
 
+.PHONY: error-file
+error-file:
+	curl http://shergill.su/foo -o $(CURDIR)/static/error/notFound.html
 
 rotateLog = cp $(1) $(logDir)/$(notdir $(1)).1;
 map = $(foreach a,$(2),$(call $(1),$(a)))
