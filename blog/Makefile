@@ -45,7 +45,7 @@ blog-launcher:
 
 .PHONY: error-file
 error-file:
-	curl http://shergill.su/foo -o $(CURDIR)/static/error/notFound.html
+	curl localhost:53000/foo -o $(CURDIR)/static/error/notFound.html
 
 rotateLog = cp $(1) $(logDir)/$(notdir $(1)).1;
 map = $(foreach a,$(2),$(call $(1),$(a)))
