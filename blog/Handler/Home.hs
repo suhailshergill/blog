@@ -12,13 +12,17 @@ module Handler.Home
 
 import Import
 
-import Control.Monad (liftM)
+import Control.Monad (liftM, join)
 import Text.Blaze (preEscapedToMarkup)
 import Yesod.AtomFeed
 
 import Data.Text (append, unpack)
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, fromJust)
 import Network.HTTP.Types
+
+import qualified Data.Time as T (parseTime)
+import Data.Text.Encoding (decodeUtf8With)
+import Network.Wai
 
 extraSettings :: Handler Extra
 extraSettings = vaultExtraSettings defaultVault
@@ -127,23 +131,26 @@ renderEntries :: [Entity (EntryGeneric SqlPersist)]
                  -> Maybe ÃTag
                  -> Handler RepHtml
 renderEntries entryE_s entryOrder mPaginationWidget mTag = do
-  entry_mTags_s <- getEntriesTags entryE_s entryOrder
-  shortname <- extraDisqusShortname <$> extraSettings
-  developer <- extraDisqusDeveloper <$> extraSettings
-  getLastModifiedStr entryE_s >>= setHeader "Last-Modified"
-  now <- liftIO getCurrentTime
-  titlePrefix <- extraTitlePrefix `fmap` vaultExtraSettings defaultVault
-  let loadDisqusCommentThreads = (1==) . length $ entryE_s
-  ãDefaultLayout
-    defaultVault {
-      vaultMFeed = vaultMFeedCons vaultCons $ mTag
-      }
-    $ do
-      modifyTitle titlePrefix entryE_s mTag
-      mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
-      _ <- sequence [addScriptRemote mathJaxSrc | any (entryHasMath . fst)
-                                                entry_mTags_s]
-      $(widgetFile "homepage")
+  cacheMiss <- checkIfModifiedSince entryE_s
+  if cacheMiss then
+    do
+      entry_mTags_s <- getEntriesTags entryE_s entryOrder
+      shortname <- extraDisqusShortname <$> extraSettings
+      developer <- extraDisqusDeveloper <$> extraSettings
+      now <- liftIO getCurrentTime
+      titlePrefix <- extraTitlePrefix `fmap` vaultExtraSettings defaultVault
+      let loadDisqusCommentThreads = (1==) . length $ entryE_s
+      ãDefaultLayout
+        defaultVault {
+          vaultMFeed = vaultMFeedCons vaultCons mTag
+          }
+        $ do
+          modifyTitle titlePrefix entryE_s mTag
+          mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
+          _ <- sequence [addScriptRemote mathJaxSrc | any (entryHasMath . fst)
+                                                    entry_mTags_s]
+          $(widgetFile "homepage")
+    else sendResponseStatus notModified304 ()
 
 renderEntriesRss :: [Entity (EntryGeneric SqlPersist)]
                     -> Handler RepAtom
@@ -217,9 +224,28 @@ getLastModifiedStr :: [Entity (EntryGeneric SqlPersist)]
 getLastModifiedStr = (pack . formatTime defaultTimeLocale rfc822DateFormat <$>)
                      . getLastModified
 
+parseLastModified :: Text -> Maybe UTCTime
+parseLastModified time = T.parseTime defaultTimeLocale rfc822DateFormat $ unpack time
+
 getLastModifiedStrFriendly :: [Entity (EntryGeneric SqlPersist)]
                               -> Handler Text
 getLastModifiedStrFriendly = (liftIO . (pack <$>) . humanReadableTime =<<) . getLastModified
+
+checkIfModifiedSince :: [Entity (EntryGeneric SqlPersist)]
+                        -> Handler Bool
+checkIfModifiedSince entryE_s = do
+  headers <- requestHeaders `fmap` waiRequest
+  lastModifiedStr <- getLastModifiedStr entryE_s
+  let µifModifiedSince = headMay [v | (k,v) <- headers, k == "If-Modified-Since"]
+      µcacheLastModified = join $
+                           parseLastModified <$> decodeUtf8With (\_ _ ->
+                                                                  Nothing) <$>
+                           µifModifiedSince
+      lastModified = fromJust . parseLastModified $ lastModifiedStr
+  setHeader "Last-Modified" lastModifiedStr
+  case µcacheLastModified of
+    Just cacheLastModified -> return (cacheLastModified /= lastModified)
+    _ -> return True
 
 -- }}}
 

@@ -133,6 +133,7 @@ executable         blog
                  , safe                          >= 0.3        && < 0.4
                  , friendly-time                 >= 0.2        && < 0.3
                  , http-types                    >= 0.6        && < 0.7
+                 , wai                           >= 1.2        && < 1.3
                  -- , reflection                    >= 1.1        && < 1.2
                  -- , tagged                        >= 0.2        && < 0.3
 
