@@ -55,12 +55,12 @@ getTagsR = do
   results :: [(Single Text, Single Int)] <- runDB $ rawSql stmt []
   maxWeightResult :: [(Single Text, Single Int)] <- runDB $ rawSql
                      (subquery `append` " LIMIT 1") []
-  case (headMay results) of
+  case headMay results of
     Just _ -> do
       maxFontScale <- extraMaxFontScale <$> vaultExtraSettings defaultVault
       let maxWeight = fromIntegral.(\(Single x) -> x).snd.
-                      (fromMaybe (Single "", Single 1)).headMay $ maxWeightResult
-          scalingFactor x = (maxFontScale + (2/3) - 2/(2*((x/maxWeight)+1) - 1))
+                      fromMaybe (Single "", Single 1).headMay $ maxWeightResult
+          scalingFactor x = maxFontScale + (2/3) - 2/(2*((x/maxWeight)+1) - 1)
           tagName_weight_s = [(t, fromIntegral w) | (Single t, Single w) <- results]
       defaultLayout $(widgetFile "tags")
     Nothing -> redirectWith temporaryRedirect307 HomeR
