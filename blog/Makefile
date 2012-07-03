@@ -28,6 +28,7 @@ all: blog
 blog:
 	cabal clean && cabal configure && cabal build
 	cabal configure -f prof && cabal build
+	haskdogs -e
 
 .PHONY: install
 install: blog blog-launcher
