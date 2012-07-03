@@ -18,12 +18,14 @@
         < .post-body>#{preEscapedToMarkup $ entryPost entry}
 
         < .post-footer>
+          <!-- {{{ disqus -->
+
           <script type="text/javascript">
             var disqus_shortname = "#{shortname}";
             var disqus_developer = #{developer};
 
           $if loadDisqusCommentThreads
-              <div id="disqus_thread">
+              <div id="disqus_thread" class="disqus_thread">
               <script type="text/javascript">
                 var disqus_identifier = "#{customId}";
                 var disqus_url = "@{PostR customId}";
@@ -47,6 +49,8 @@
                 s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
                 (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
                 }());
+
+                <!-- }}} -->
 
 
 $maybe widget <- mPaginationWidget
