@@ -64,7 +64,7 @@ body.bp {
          }
          blockquote { margin-top: 0; }
 
-         div.footnotes {
+         div[id|=footnotes] {
             h2.footnotes {
                font-size: $footnotes-title-font-size;
                margin-bottom: 0.3em;
