@@ -12,7 +12,7 @@ stderr = $(logDir)/stderr.log
 logFiles = $(stderr) blog.prof blog.summary
 
 launcherFile= $(root)/bin/blog-launcher
-RTSOPTS = +RTS -pa -sblog.summary -RTS
+RTSOPTS = +RTS -pa -sblog.summary -xc -RTS
 define launcherContent
 #! /bin/sh
 pwd
