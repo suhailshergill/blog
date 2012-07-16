@@ -16,12 +16,19 @@ $code-padding: 1em;
    }
 }
 
+.gist {
+   font-size: 0.96em !important;
+   & .gist-file .gist-data .gist-highlight pre {
+      background-color: #f5f5f5 !important;
+   }
+}
+
 .src {
    background-color: #1c1c1c;
    color: #dadada;
-   font-size: 0.96em !important;
    padding: $code-padding;
    border-radius: $code-padding/2.5;
+   @extend .gist;
 
    @include su-src-annotation(haskell,"--");
    @include su-src-annotation(css,"/*","*/");
