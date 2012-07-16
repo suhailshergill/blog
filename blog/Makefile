@@ -37,6 +37,7 @@ install: blog blog-launcher
 	$(call map,rotateLog,$(logFiles))
 	$(INSTALL) `$(WHICH) blog` $(bindir)
 	sudo $(blogInitd) start
+	@sleep 5
 	$(MAKE) error-file
 
 .PHONY: blog-launcher
