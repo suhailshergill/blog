@@ -50,3 +50,8 @@ error-file:
 
 rotateLog = cp $(1) $(logDir)/$(notdir $(1)).1;
 map = $(foreach a,$(2),$(call $(1),$(a)))
+
+.PHONY: setup
+setup:
+	cabal install --upgrade-dependencies --disable-executable-profiling
+
