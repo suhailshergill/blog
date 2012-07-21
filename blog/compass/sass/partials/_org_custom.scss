@@ -4,6 +4,7 @@
 @import "base";
 
 $code-padding: 1em;
+$border-radius: $code-padding/2.5;
 
 @mixin su-src-annotation($lang, $comment-marker, $secondary: "") {
    &.src-#{$lang}:before {
@@ -21,9 +22,11 @@ $code-padding: 1em;
 }
 
 .emacs {
+   @extend .verbatim;
    background-color: #1c1c1c;
    color: #dadada;
-   @extend .verbatim;
+   padding-top: $code-padding;
+   border-radius: $border-radius;
 }
 
 .gist {
@@ -34,9 +37,8 @@ $code-padding: 1em;
 }
 
 .src {
-   padding: $code-padding;
-   border-radius: $code-padding/2.5;
    @extend .emacs;
+   padding: $code-padding;
 
    @include su-src-annotation(haskell,"--");
    @include su-src-annotation(css,"/*","*/");
