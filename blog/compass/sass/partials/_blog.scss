@@ -62,6 +62,7 @@ body.bp {
             color: $quiet-color;
             display: inline-block;
          }
+         p:empty { @extend .hide; }
          blockquote { margin-top: 0; }
 
          div[id|=footnotes] {
