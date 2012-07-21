@@ -16,19 +16,27 @@ $code-padding: 1em;
    }
 }
 
-.gist {
+.verbatim {
    font-size: 0.96em !important;
+}
+
+.emacs {
+   background-color: #1c1c1c;
+   color: #dadada;
+   @extend .verbatim;
+}
+
+.gist {
+   @extend .verbatim;
    & .gist-file .gist-data .gist-highlight pre {
       background-color: #f5f5f5 !important;
    }
 }
 
 .src {
-   background-color: #1c1c1c;
-   color: #dadada;
    padding: $code-padding;
    border-radius: $code-padding/2.5;
-   @extend .gist;
+   @extend .emacs;
 
    @include su-src-annotation(haskell,"--");
    @include su-src-annotation(css,"/*","*/");
