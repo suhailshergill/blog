@@ -11,7 +11,6 @@ import Yesod.Auth.BrowserId as X
 import Yesod.Auth.GoogleEmail as X
 import Yesod.Default.Config as X
 import Yesod.Default.Util as X (addStaticContentExternal)
-import Yesod.Logger as X (Logger, logMsg, formatLogText)
 import Network.HTTP.Conduit as X (Manager)
 import Settings.StaticFiles as X
 import Settings as X (widgetFile, Extra (..))

@@ -19,6 +19,7 @@ import Settings -- database backend settings
 
 import qualified Database.Persist.Store as DPS
 
+import Control.Monad.Trans.Resource (runResourceT, ResourceT)
 import Database.Persist.GenericSql (runMigration)
 
 import Data.Text (toLower)
@@ -34,7 +35,7 @@ import Su.Date
 truncateWhitespace :: String -> Text
 truncateWhitespace = strip . pack
 
-main :: IO [Key SqlPersist (EntryTagGeneric SqlPersist)]
+main :: IO [KeyBackend SqlBackend (EntryTagGeneric SqlBackend)]
 main = do
   args <- getArgs
   case args of
@@ -63,21 +64,21 @@ main = do
 
 
 runDBAction :: DefaultEnv
-               -> SqlPersist IO a
+               -> SqlPersist (ResourceT IO) a
                -> IO a
 runDBAction env action = do
   conf <- loadConfig $ configSettings env
   dbconf <- withYamlEnvironment "config/postgresql.yml" (appEnv conf)
             DPS.loadConfig >>= DPS.applyEnv
   pool <- DPS.createPoolConfig (dbconf :: Settings.PersistConfig)
-  DPS.runPool dbconf (do
+  runResourceT $ DPS.runPool dbconf (do
                       runMigration migrateAll
                       action
                      ) pool
 
-deleteEntry :: (PersistQuery backend m, PersistUnique backend m)
+deleteEntry :: (PersistQuery m, PersistUnique m)
                => ÃCustomId
-               -> backend m ()
+               -> m ()
 deleteEntry customId = do
   mEntryE <- getBy $ UniqueCustomId customId
   case mEntryE of
@@ -95,7 +96,10 @@ type ÃHeading = Text
 type ÃTag = Text
 type ÃPost = Text
 type ÃHasMath = Bool
-insertEntry :: (PersistQuery backend m, PersistUnique backend m)
+insertEntry :: ( PersistQuery m
+               , PersistUnique m
+               , backend ~ (PersistMonadBackend m)
+               )
                => ÃCustomId
                -> ÃEnteredOn
                -> ÃUpdatedOn
@@ -103,16 +107,18 @@ insertEntry :: (PersistQuery backend m, PersistUnique backend m)
                -> ÃHasMath
                -> [ÃTag]
                -> ÃPost
-               -> backend m [Key backend (EntryTagGeneric backend)]
+               -> m [KeyBackend backend (EntryTagGeneric backend)]
 insertEntry customId enteredOn updatedOn heading hasMath tags post = do
   deleteEntry customId
   blogPost <- insert $ Entry post customId enteredOn updatedOn heading hasMath
   sequence $ map (addTag blogPost) tags
 
-addTag :: PersistUnique backend m
-          => Key backend (EntryGeneric backend)
+addTag :: ( PersistUnique m
+          , backend ~ (PersistMonadBackend m)
+          )
+          => KeyBackend backend (EntryGeneric backend)
           -> ÃTag
-          -> backend m (Key backend (EntryTagGeneric backend))
+          -> m (Key (EntryTagGeneric backend))
 addTag entryId tag = let
     normalizedTag = toLower tag
     in

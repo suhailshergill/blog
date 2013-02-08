@@ -1,6 +1,8 @@
 INSTALL = /usr/bin/install
 WHICH = /usr/bin/which
 
+GHCRTS = +RTS -M300m -RTS
+
 prefix = $(root)
 bindir = $(prefix)/bin
 blogInitd = /etc/init.d/blog
@@ -12,7 +14,7 @@ stderr = $(logDir)/stderr.log
 logFiles = $(stderr) blog.prof blog.summary
 
 launcherFile= $(root)/bin/blog-launcher
-RTSOPTS = +RTS -pa -sblog.summary -xc -RTS
+RTSOPTS = $(GHCRTS) +RTS -pa -sblog.summary -xc -RTS
 define launcherContent
 #! /bin/sh
 pwd
@@ -26,8 +28,8 @@ all: blog
 
 .PHONY: blog
 blog:
-	cabal clean && cabal configure && cabal build
-	cabal configure -f prof && cabal build
+	cabal clean && cabal configure && cabal build --ghc-options='$(GHCRTS)'
+	cabal configure -f prof && cabal build --ghc-options='$(GHCRTS)'
 	haskdogs -e
 
 .PHONY: install
@@ -54,5 +56,5 @@ map = $(foreach a,$(2),$(call $(1),$(a)))
 
 .PHONY: setup
 setup:
-	cabal install --upgrade-dependencies --disable-executable-profiling
+	cabal-meta install --ghc-options='$(GHCRTS)'
 

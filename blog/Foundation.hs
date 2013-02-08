@@ -66,7 +66,9 @@ instance Yesod App where
     -- default session idle timeout is 120 minutes
     makeSessionBackend _ = do
         key <- getKey "config/client_session_key.aes"
-        return . Just $ clientSessionBackend key 120
+        let timeout = fromIntegral (120 * 60 :: Int) -- 120 minutes
+        (getCachedDate, _closeDateCacher) <- clientSessionDateCacher timeout
+        return . Just $ clientSessionBackend2 key getCachedDate
 
     defaultLayout = ãDefaultLayout defaultVault
 
@@ -79,8 +81,10 @@ instance Yesod App where
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
 
-    messageLogger y loc level msg =
-      formatLogText (getLogger y) loc level msg >>= logMsg (getLogger y)
+    -- What messages should be logged. The following includes all messages when
+    -- in development, and warnings and errors in production.
+    shouldLog _ _source level =
+      development || level == LevelWarn || level == LevelError
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows

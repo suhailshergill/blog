@@ -26,12 +26,13 @@ import Yesod
 import Data.Maybe (catMaybes)
 import qualified Data.Map as M
 
-findOrCreate :: ( YesodPersistBackend m ~ PersistEntityBackend v
+findOrCreate :: ( PersistMonadBackend (YesodPersistBackend m (GHandler s m)) ~
+                  PersistEntityBackend v
                 , YesodPersist m
-                , PersistUnique (PersistEntityBackend v) (GHandler s m)
+                , PersistUnique (YesodPersistBackend m (GHandler s m))
                 , PersistEntity v
                 )
-             => v -> GHandler s m (Key (PersistEntityBackend v) v)
+             => v -> GHandler s m (Key v)
 findOrCreate v = return . either entityKey id =<< runDB (insertBy v)
 
 -- |
@@ -49,14 +50,14 @@ findOrCreate v = return . either entityKey id =<< runDB (insertBy v)
 -- > -- ...
 -- > --
 --
-joinTables :: (a -> Key (PersistEntityBackend b) b)
+joinTables :: (a -> Key b)
            -> [Entity a]
            -> [Entity b]
            -> [(Entity a, Entity b)]
 joinTables f as bs = catMaybes . for as $ \a -> fmap (\b -> (a,b)) $ lookupRelation f a bs
 
-joinTables3 :: (a -> Key (PersistEntityBackend b) b)
-            -> (a -> Key (PersistEntityBackend c) c)
+joinTables3 :: (a -> Key b)
+            -> (a -> Key c)
             -> [Entity a]
             -> [Entity b]
             -> [Entity c]
@@ -66,7 +67,7 @@ joinTables3 f g as bs cs = catMaybes . for as $ \a ->
         (Just b, Just c) -> Just (a,b,c)
         _ -> Nothing
 
-lookupRelation :: (a -> Key (PersistEntityBackend b) b) -> Entity a -> [Entity b] -> Maybe (Entity b)
+lookupRelation :: (a -> Key b) -> Entity a -> [Entity b] -> Maybe (Entity b)
 lookupRelation f a bs = let k = f $ entityVal a
                             vs = M.fromList $ map (\(Entity k' v) -> (k',v)) bs
                         in fmap (\v -> Entity k v) $ M.lookup k vs

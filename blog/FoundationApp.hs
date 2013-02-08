@@ -5,9 +5,11 @@ module FoundationApp
        , resourcesApp
        , Handler
        , Widget
+       , development
        ) where
 
 import qualified Settings
+import Settings.Development (development)
 import qualified Database.Persist.Store
 
 import FoundationAppImports
@@ -18,7 +20,6 @@ import FoundationAppImports
 -- access to the data present here.
 data App = App
     { settings :: AppConfig DefaultEnv Extra
-    , getLogger :: Logger
     , getStatic :: Static -- ^ Settings for static file serving.
     , connPool :: Database.Persist.Store.PersistConfigPool Settings.PersistConfig -- ^ Database connection pool.
     , httpManager :: Manager

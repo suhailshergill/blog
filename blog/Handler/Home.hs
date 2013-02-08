@@ -27,7 +27,7 @@ import Network.Wai
 extraSettings :: Handler Extra
 extraSettings = vaultExtraSettings defaultVault
 
-entrySort :: [SelectOpt (EntryGeneric SqlPersist)]
+entrySort :: [SelectOpt (EntryGeneric SqlBackend)]
 entrySort = [ Desc EntryUpdatedOn, Desc EntryEnteredOn, Desc EntryId]
 
 -- This is a handler function for the GET request method on the RootR
@@ -103,15 +103,15 @@ getFeedTagR tag = do
 
 -- {{{ internal methods
 
-getTag :: Entity (EntryTagGeneric SqlPersist)
+getTag :: Entity (EntryTagGeneric SqlBackend)
           -> Handler (Maybe Text)
 getTag entryTagE = do
   maybeTag <- runDB . get $ (entryTagTagId . entityVal $ entryTagE)
   return $! liftM tagName maybeTag
 
-getEntriesTags :: [Entity (EntryGeneric SqlPersist)]
-                  -> [SelectOpt (EntryGeneric SqlPersist)]
-                  -> Handler [(EntryGeneric SqlPersist, [Maybe Text])]
+getEntriesTags :: [Entity (EntryGeneric SqlBackend)]
+                  -> [SelectOpt (EntryGeneric SqlBackend)]
+                  -> Handler [(EntryGeneric SqlBackend, [Maybe Text])]
 getEntriesTags entryE_s entryOrder = do
   entryE_entryTagsE_s <- runDB . runJoin $ (selectOneMany (EntryTagEntryId <-.)
                                             entryTagEntryId)
@@ -125,8 +125,8 @@ getEntriesTags entryE_s entryOrder = do
 
 
 type ÃTag = Text
-renderEntries :: [Entity (EntryGeneric SqlPersist)]
-                 -> [SelectOpt (EntryGeneric SqlPersist)]
+renderEntries :: [Entity (EntryGeneric SqlBackend)]
+                 -> [SelectOpt (EntryGeneric SqlBackend)]
                  -> Maybe Widget
                  -> Maybe ÃTag
                  -> Handler RepHtml
@@ -152,14 +152,15 @@ renderEntries entryE_s entryOrder mPaginationWidget mTag = do
           $(widgetFile "homepage")
     else sendResponseStatus notModified304 ()
 
-renderEntriesRss :: [Entity (EntryGeneric SqlPersist)]
+renderEntriesRss :: [Entity (EntryGeneric SqlBackend)]
                     -> Handler RepAtom
 renderEntriesRss entryE_s = case headMay entryE_s of
   Just headEntryE -> do
     description <- toHtml . extraFeedDescription <$> extraSettings
     entryRss_s <- mapM entryEToRss entryE_s
     atomFeed Feed
-                { feedTitle = "shergill.su"
+                { feedAuthor = "Suhail Shergill"
+                , feedTitle = "shergill.su"
                 , feedDescription = description
                 , feedLanguage = "en-us"
                 , feedLinkSelf = FeedR
@@ -170,7 +171,7 @@ renderEntriesRss entryE_s = case headMay entryE_s of
   _ -> notFound
 
 
-entryEToRss :: Entity (EntryGeneric SqlPersist)
+entryEToRss :: Entity (EntryGeneric SqlBackend)
                -> Handler (FeedEntry (Route App))
 entryEToRss entryE = do
   let entryV = entityVal entryE
@@ -191,7 +192,7 @@ getPostsR_ = do
     entrySort
 
 
-getTagR_ :: Text -> Handler ([Entity (EntryGeneric SqlPersist)], Widget)
+getTagR_ :: Text -> Handler ([Entity (EntryGeneric SqlBackend)], Widget)
 getTagR_ tag = runDB $ do
   tagE <- getBy404 $ UniqueTagName tag
   entryTagE_s <- selectList [EntryTagTagId ==. entityKey tagE] []
@@ -206,20 +207,20 @@ getTagR_ tag = runDB $ do
 
 type ÃTitlePrefix = Text
 modifyTitle :: ÃTitlePrefix
-               -> [Entity (EntryGeneric SqlPersist)]
+               -> [Entity (EntryGeneric SqlBackend)]
                -> Maybe Text
                -> Widget
 modifyTitle titlePrefix [entryE] Nothing =
   setTitle . toHtml $ titlePrefix `append` (entryHeading . entityVal $ entryE)
 modifyTitle _ _ _ = return ()
 
-getLastModified :: [Entity (EntryGeneric SqlPersist)]
+getLastModified :: [Entity (EntryGeneric SqlBackend)]
                    -> Handler UTCTime
 getLastModified entryE_s = case headMay entryE_s of
   Just headEntryE -> return $! entryUpdatedOn . entityVal $ headEntryE
   Nothing -> liftIO getCurrentTime
 
-getLastModifiedStr :: [Entity (EntryGeneric SqlPersist)]
+getLastModifiedStr :: [Entity (EntryGeneric SqlBackend)]
                       -> Handler Text
 getLastModifiedStr = (pack . formatTime defaultTimeLocale rfc822DateFormat <$>)
                      . getLastModified
@@ -227,11 +228,11 @@ getLastModifiedStr = (pack . formatTime defaultTimeLocale rfc822DateFormat <$>)
 parseLastModified :: Text -> Maybe UTCTime
 parseLastModified time = T.parseTime defaultTimeLocale rfc822DateFormat $ unpack time
 
-getLastModifiedStrFriendly :: [Entity (EntryGeneric SqlPersist)]
+getLastModifiedStrFriendly :: [Entity (EntryGeneric SqlBackend)]
                               -> Handler Text
 getLastModifiedStrFriendly = (liftIO . (pack <$>) . humanReadableTime =<<) . getLastModified
 
-checkIfModifiedSince :: [Entity (EntryGeneric SqlPersist)]
+checkIfModifiedSince :: [Entity (EntryGeneric SqlBackend)]
                         -> Handler Bool
 checkIfModifiedSince entryE_s = do
   headers <- requestHeaders `fmap` waiRequest

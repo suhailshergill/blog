@@ -5,3 +5,5 @@ blog/static/sass/
 blog/static/extra
 blog/static/error/notFound.html
 blog/SourceGraph/
+blog/.shelly
+blog/vendor
