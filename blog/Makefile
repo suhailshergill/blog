@@ -56,5 +56,6 @@ map = $(foreach a,$(2),$(call $(1),$(a)))
 
 .PHONY: setup
 setup:
+	bundle install
 	cabal-meta install --ghc-options='$(GHCRTS)'
 
