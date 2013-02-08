@@ -1,6 +1,1 @@
-friendly-time-0.2.2
-persistent-postgresql-1.1.2.1
-yesod-newsfeed-1.1.0
-yesod-platform-1.1.7.2
-
-git://github.com/suhailshergill/yesod-paginator.git ghc/7.6
+./
