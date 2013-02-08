@@ -27,9 +27,15 @@ export launcherContent
 all: blog
 
 .PHONY: blog
-blog:
+blog: build doc
+
+.PHONY: build
+build:
 	cabal clean && cabal configure && cabal build --ghc-options='$(GHCRTS)'
 	cabal configure -f prof && cabal build --ghc-options='$(GHCRTS)'
+
+.PHONY: doc
+doc:
 	haskdogs -e
 
 .PHONY: install
