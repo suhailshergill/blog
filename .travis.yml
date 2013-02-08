@@ -1,0 +1,5 @@
+language: haskell
+
+before_install: "sudo apt-get -qy install ruby1.8 rubygems && gem install bundler && cabal update && cabal install cabal-meta cabal-src --ghc-options='+RTS -M300m'"
+install: "cd blog && make setup"
+script: "make build"
