@@ -6,3 +6,4 @@ script: "make build"
 
 notifications:
   irc: "irc.freenode.org#shergill"
+  use_notice: true
