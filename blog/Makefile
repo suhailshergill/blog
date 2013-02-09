@@ -45,6 +45,7 @@ build-prof: build-reg
 
 .PHONY: clean
 clean:
+	-rm -rf dist/
 	cabal clean
 
 .PHONY: doc
