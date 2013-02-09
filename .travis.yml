@@ -1,5 +1,5 @@
 language: haskell
 
-before_install: "sudo apt-get -qy install ruby1.8 rubygems && gem install bundler && cabal update && cabal install cabal-meta cabal-src hsenv --ghc-options='+RTS -M300m'"
-install: "hsenv && . .hsenv/bin/activate; cd blog && make setup v=0"
+before_install: "sudo apt-get -qy install ruby1.8 rubygems && gem install bundler && cabal update && cabal install cabal-meta cabal-src --ghc-options='+RTS -M300m'"
+install: "cd blog; make travis v=0; hsenv && . .hsenv/bin/activate; make setup v=0"
 script: "make build"
