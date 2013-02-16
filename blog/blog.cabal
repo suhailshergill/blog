@@ -75,8 +75,8 @@ executable         blog
                        -dcore-lint -debug
     else
         if flag(prof)
-           ghc-options: -Wall -Werror -threaded -O2 -dcore-lint -rtsopts 
-                        -osuf prof.o -hisuf prof.hi -hcsuf prof.hc 
+           ghc-options: -Wall -Werror -threaded -O2 -dcore-lint -rtsopts
+                        -osuf prof.o -hisuf prof.hi -hcsuf prof.hc
                         -auto-all -caf-all -fforce-recomp
         else
            ghc-options: -Wall -Werror -threaded -O2 -dcore-lint
@@ -99,47 +99,44 @@ executable         blog
 
     build-depends: base                          >= 4          && < 5
                  , yesod-platform                == 1.1.7.2
-                 , yesod                         >= 1.1        && < 1.2
-                 , yesod-core                    >= 1.1        && < 1.2
-                 , yesod-auth                    >= 1.1        && < 1.2
-                 , yesod-static                  >= 1.1        && < 1.2
-                 , yesod-default                 >= 1.1        && < 1.2
-                 , yesod-form                    >= 1.2        && < 1.3
-                 , yesod-test                    >= 0.3        && < 0.4
-                 , clientsession                 >= 0.8        && < 0.9
-                 , bytestring                    >= 0.10       && < 0.11
-                 , text                          >= 0.11       && < 0.12
-                 , persistent                    >= 1.1        && < 1.2
-                 , persistent-postgresql         >= 1.1        && < 1.2
-                 , template-haskell
-                 , hamlet                        >= 1.1        && < 1.2
-                 , shakespeare-css               >= 1.0        && < 1.2
-                 , shakespeare-js                >= 1.1        && < 1.2
-                 , shakespeare-text              >= 1.0        && < 1.2
-                 , hjsmin                        >= 0.1        && < 0.2
-                 , monad-control                 >= 0.3        && < 0.4
-                 , wai-extra                     >= 1.3        && < 1.4
-                 , yaml                          >= 0.8        && < 0.9
-                 , http-conduit                  >= 1.8        && < 1.9
-                 , directory                     >= 1.2        && < 1.3
-                 , warp                          >= 1.3        && < 1.4
-
-                 , process                       >= 1          && < 2
-                 , transformers                  >= 0.3        && < 0.4
-                 , time                          >= 1.4        && < 1.5
-                 , yesod-paginator               >= 0.3        && < 0.4
-                 , blaze-html                    >= 0.5        && < 0.6
-                 , blaze-markup                  >= 0.5        && < 0.6
-                 , yesod-newsfeed                >= 1.1        && < 1.2
-                 , safe                          >= 0.3        && < 0.4
+                 , blaze-html
+                 , blaze-markup
+                 , bytestring
+                 , clientsession
+                 , data-default
+                 , directory
                  , friendly-time                 >= 0.2        && < 0.3
-                 , http-types                    >= 0.7        && < 0.8
-                 , wai                           >= 1.3        && < 1.4
-                 , data-default                  >= 0.5        && < 0.6
-                 -- , reflection                    >= 1.1        && < 1.2
-                 -- , tagged                        >= 0.2        && < 0.3
-
+                 , hamlet
+                 , hjsmin
+                 , http-conduit
+                 , http-types
+                 , monad-control
+                 , persistent
+                 , persistent-postgresql         >= 1.1        && < 1.2
+                 , process
+                 , safe
+                 , shakespeare-css
+                 , shakespeare-js
+                 , shakespeare-text
+                 , template-haskell
+                 , text
+                 , time
+                 , transformers
+                 , wai
+                 , wai-extra
+                 , warp
+                 , yaml
+                 , yesod
+                 , yesod-auth
+                 , yesod-core
+                 , yesod-default
+                 , yesod-form
+                 , yesod-newsfeed                >= 1.1        && < 1.2
+                 , yesod-paginator               >= 0.3        && < 0.4
+                 , yesod-static
                  , yesod-test
+                 -- , reflection                    >= 1.1        && < 1.2
+
 test-suite integration-tests
     type: exitcode-stdio-1.0
     main-is:        main.hs
