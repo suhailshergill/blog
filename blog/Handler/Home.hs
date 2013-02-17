@@ -130,7 +130,7 @@ renderEntries :: [Entity (EntryGeneric SqlBackend)]
                  -> Maybe Widget
                  -> Maybe ÃTag
                  -> Handler RepHtml
-renderEntries entryE_s entryOrder mPaginationWidget mTag = do
+renderEntries entryE_s entryOrder mPaginationWidget µtag = do
   cacheMiss <- checkIfModifiedSince entryE_s
   if cacheMiss then
     do
@@ -142,10 +142,10 @@ renderEntries entryE_s entryOrder mPaginationWidget mTag = do
       let loadDisqusCommentThreads = (1==) . length $ entryE_s
       ãDefaultLayout
         defaultVault {
-          vaultMFeed = vaultMFeedCons vaultCons mTag
+          vaultMFeed = vaultMFeedCons vaultCons µtag
           }
         $ do
-          modifyTitle titlePrefix entryE_s mTag
+          modifyTitle titlePrefix entryE_s µtag
           mathJaxSrc <- lift (extraMathJaxSrc <$> extraSettings)
           _ <- sequence [addScriptRemote mathJaxSrc | any (entryHasMath . fst)
                                                     entry_mTags_s]
