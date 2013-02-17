@@ -1,8 +1,15 @@
-* STARTED travis-ci [1/2]
+#+TITLE:     [[https://travis-ci.org/suhailshergill/blog.png?branch%3Dmaster,production][blog build-status]]
+#+AUTHOR:    Suhail Shergill
+#+EMAIL:     suhailshergill@gmail.com
+
+* DONE travis-ci [1/2]
+  CLOSED: [2013-02-18 Mon 00:03]
+  - State "DONE"       from "STARTED"    [2013-02-18 Mon 00:03] \\
+    TODO: figure out how to display build-status inline
   - State "STARTED"    from "TODO"       [2013-02-17 Sun 21:40]
   
   - [X] make sure build passes on travis-ci
-  - [ ] insert build-status image
+  - [-] insert build-status image
 
   - State "TODO"       from ""           [2013-02-17 Sun 21:38] \\
 
