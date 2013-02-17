@@ -29,7 +29,8 @@ import System.IO
 import System.Exit (exitFailure)
 import Data.Text (strip)
 
-import Su.Date
+import Data.Time.Format (readTime)
+import System.Locale (defaultTimeLocale)
 
 
 truncateWhitespace :: String -> Text
@@ -60,6 +61,9 @@ main = do
         "mode customID enteredOn updatedOn heading [tags]"
       exitFailure
 
+  where
+    parseDateUTC :: String -> UTCTime
+    parseDateUTC = readTime defaultTimeLocale "%F %T %Z"
 
 
 
