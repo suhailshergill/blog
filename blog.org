@@ -1,4 +1,4 @@
-* STARTED setup blog [2/4]
+* STARTED setup blog [3/4]
   SCHEDULED: <2012-05-27 Sun>
   - State "STARTED"    from "TODO"       [2012-03-12 Mon 09:56]
 
@@ -9,7 +9,7 @@
       needed because compass is ruby based (uses sass)
       - [X] install [[https://github.com/nkryptic/sandbox][sandbox]]
       - [X] integrate it with virtualenv: using postactivate.sh
-  - [-] workflow/capabilities [2/3]
+  - [X] workflow/capabilities [3/3]
     - [X] org-mode integration [1/1]
       - [X] format: markdown?. nope this wouldn't really make much
         sense. org-mode syntax is as expressive as i need to be. sure if i want
@@ -19,8 +19,9 @@
         have the ability to update tags and content etc. using CUSTOM_ID
         property as the unique identifier
       - [X] views based on posts
-    - [ ] integration with google+ etc? not all that hopeful, but would be nice
+    - [X] integration with google+ etc? not all that hopeful, but would be nice
       to see options there.
+      - using [[http://ifttt.com][ifttt]]
   - [-] database connectivity [1/2]
     - [X] main content (exported from org)?
     - [-] comments
