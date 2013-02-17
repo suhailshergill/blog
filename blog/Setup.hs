@@ -16,10 +16,5 @@ runPostConf _ _ _ _ = return ()
 genCompass :: Args -> BuildFlags -> IO HookedBuildInfo
 genCompass _ _ = do
   putStrLn "Running Compass"
-  waitForProcess =<< runCommand (unlines [
-                                    "export PATH=`pwd`/../../ruby/bin;",
-                                    "export GEM_HOME=`pwd`/../../ruby/rubygems;",
-                                    "export GEM_PATH=$GEM_HOME;",
-                                    "bundle exec compass compile compass"]
-                                 )
+  waitForProcess =<< runCommand "bundle exec compass compile compass"
   return emptyHookedBuildInfo
