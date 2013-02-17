@@ -1,3 +1,14 @@
+* STARTED travis-ci [1/2]
+  - State "STARTED"    from "TODO"       [2013-02-17 Sun 21:40]
+  
+  - [X] make sure build passes on travis-ci
+  - [ ] insert build-status image
+
+  - State "TODO"       from ""           [2013-02-17 Sun 21:38] \\
+
+  :PROPERTIES:
+  :CUSTOM_ID: fab07418-3e10-420a-8452-92d86d247162
+  :END:
 * STARTED setup blog [3/4]
   SCHEDULED: <2012-05-27 Sun>
   - State "STARTED"    from "TODO"       [2012-03-12 Mon 09:56]
