@@ -1,7 +1,8 @@
 INSTALL = /usr/bin/install
 WHICH = /usr/bin/which
 
-GHCRTS = +RTS -M300m -RTS
+override GHCRTS += +RTS -M300m -RTS
+v = 1
 
 prefix = $(root)
 bindir = $(prefix)/bin
@@ -30,9 +31,21 @@ all: blog
 blog: build doc
 
 .PHONY: build
-build:
-	cabal clean && cabal configure && cabal build --ghc-options='$(GHCRTS)'
-	cabal configure -f prof && cabal build --ghc-options='$(GHCRTS)'
+build: build-prof
+
+.PHONY: build-reg
+build-reg: clean
+	cabal configure
+	cabal build -v$(v) --ghc-options='$(GHCRTS)'
+
+.PHONY: build-prof
+build-prof: build-reg
+	cabal configure -f prof
+	cabal build -v$(v) --ghc-options='$(GHCRTS)'
+
+.PHONY: clean
+clean:
+	cabal clean
 
 .PHONY: doc
 doc:
@@ -61,7 +74,13 @@ rotateLog = cp $(1) $(logDir)/$(notdir $(1)).1;
 map = $(foreach a,$(2),$(call $(1),$(a)))
 
 .PHONY: setup
-setup:
-	bundle install
-	cd ..; cabal-meta install --ghc-options='$(GHCRTS)'
+setup: setup-ruby setup-haskell
 
+.PHONY: setup-ruby
+setup-ruby:
+	bundle install
+
+.PHONY: setup-haskell
+setup-haskell:
+	cd ..; cabal-meta install -v$(v) --ghc-options='$(GHCRTS)'
+	cabal-meta install -v$(v) --only-dependencies --ghc-options='$(GHCRTS)'
