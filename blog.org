@@ -16,8 +16,14 @@
   :PROPERTIES:
   :CUSTOM_ID: fab07418-3e10-420a-8452-92d86d247162
   :END:
-* STARTED setup blog [3/4]
-  SCHEDULED: <2012-05-27 Sun>
+* DONE setup blog [3/4]
+  CLOSED: [2013-02-18 Mon 00:09]
+  - State "DONE"       from "STARTED"    [2013-02-18 Mon 00:09] \\
+    the comments aren't insightful enough to warrant the effort needed to maintain
+    their local backups. additionally, with disqus-2012 it seems likely that google
+    will eventually start indexing the comments since disqus-2012 uses iframes. see:
+    http://www.quora.com/Disqus/How-does-Disqus-use-an-iframe-while-maintaining-SEO-compatibility
+  
   - State "STARTED"    from "TODO"       [2012-03-12 Mon 09:56]
 
   - [X] css [2/2]
@@ -42,9 +48,9 @@
       - using [[http://ifttt.com][ifttt]]
   - [-] database connectivity [1/2]
     - [X] main content (exported from org)?
-    - [-] comments
-      using [[http://disqus.com][disqus]] right now. probably want to make local backups using their
-      [[http://docs.disqus.com/help/58/][api]].
+    - [-] comments [1/2]
+      - [X] using [[http://disqus.com][disqus]] right now
+      - [ ] probably want to make local backups using their [[http://docs.disqus.com/help/58/][api]].
   - [X] rss feed
   - State "TODO"       from ""           [2012-03-09 Fri 10:59] \\
     
