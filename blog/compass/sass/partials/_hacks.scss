@@ -2,7 +2,7 @@
 body.bp {
    // github idiotically applies a style of highlight to the gists it sends but
    // doesn't bother to supply a style =/
-   .gist.highlight {
+   div.gist .highlight {
       background: none;
    }
 }
