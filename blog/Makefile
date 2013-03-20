@@ -62,14 +62,17 @@ deploy: blog
 
 .PHONY: install
 installBin = upx -d `$(WHICH) $(1)`; $(INSTALL) `$(WHICH) $(1)` $(bindir);
-install: blog-launcher
-	bundle exec compass compile compass
+install: blog-launcher css
 	sudo $(blogInitd) stop
 	$(call map,rotateLog,$(logFiles))
 	$(call map,installBin,blog publish-entry)
 	sudo $(blogInitd) start
 	@sleep 5
 	$(MAKE) error-file
+
+.PHONY: css
+css:
+	bundle exec compass compile compass
 
 .PHONY: blog-launcher
 blog-launcher:
