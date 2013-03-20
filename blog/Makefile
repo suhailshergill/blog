@@ -6,6 +6,7 @@ v = 1
 
 prefix = $(root)
 bindir = $(prefix)/bin
+deploydir = $(HOME)/workspace
 blogInitd = /etc/init.d/blog
 
 root = $(realpath $(CURDIR)/../..)
@@ -14,12 +15,13 @@ stdout = /dev/null
 stderr = $(logDir)/stderr.log
 logFiles = $(stderr) blog.prof blog.summary
 
-launcherFile= $(root)/bin/blog-launcher
+launcherFile= $(bindir)/blog-launcher
 RTSOPTS = $(GHCRTS) +RTS -pa -sblog.summary -xc -RTS
 define launcherContent
-#! /bin/sh
-pwd
-exec $(bindir)/blog $(RTSOPTS) $$@ 1> /dev/null 2> $(stderr)
+#!/bin/sh
+#pwd
+#exec $(bindir)/blog $(RTSOPTS) $$@ 1> /dev/null 2> $(stderr)
+exec $(bindir)/blog $$@ 1> /dev/null 2> $(stderr)
 endef
 export launcherContent
 
@@ -52,12 +54,18 @@ clean:
 doc:
 	#haskdogs -e
 
-.PHONY: install
-install: blog blog-launcher
+.PHONY: deploy
+deployBin = $(INSTALL) `$(WHICH) $(1)` $(deploydir); upx $(deploydir)/$(1);
+deploy: blog
 	cabal install
+	$(call map,deployBin,blog publish-entry)
+
+.PHONY: install
+installBin = upx -d `$(WHICH) $(1)`; $(INSTALL) `$(WHICH) $(1)` $(bindir);
+install: blog-launcher
 	sudo $(blogInitd) stop
 	$(call map,rotateLog,$(logFiles))
-	$(INSTALL) `$(WHICH) blog` $(bindir)
+	$(call map,installBin,blog publish-entry)
 	sudo $(blogInitd) start
 	@sleep 5
 	$(MAKE) error-file
