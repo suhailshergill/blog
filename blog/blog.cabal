@@ -75,8 +75,8 @@ executable         blog
                        -dcore-lint -debug
     else
         if flag(prof)
-           ghc-options: -Wall -Werror -threaded -O2 -dcore-lint -rtsopts -prof
-                        -fprof-auto -osuf prof.o -hisuf prof.hi -hcsuf prof.hc
+           ghc-options: -Wall -Werror -threaded -O2 -dcore-lint -rtsopts
+                        -osuf prof.o -hisuf prof.hi -hcsuf prof.hc
                         -auto-all -caf-all -fforce-recomp
         else
            ghc-options: -Wall -Werror -threaded -O2 -dcore-lint
