@@ -50,7 +50,7 @@ clean:
 
 .PHONY: doc
 doc:
-	haskdogs -e
+	#haskdogs -e
 
 .PHONY: install
 install: blog blog-launcher
