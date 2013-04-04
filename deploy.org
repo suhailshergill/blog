@@ -1,8 +1,8 @@
-#+PROPERTY: results silent output
+#+PROPERTY: results silent
 
 * prereqs
   ensure that vagrant is up and running
-  #+CALL: vagrant/up()
+  #+CALL: vagrant[:async no ]("up")
 * local
   #+NAME: blog/push
   #+BEGIN_SRC sh 
@@ -29,16 +29,20 @@
     scp * shergill@chaos:~/virtualEnvs/blog/.hsenv/bin/ && echo "pushed to chaos!"
   #+END_SRC
 * chaos
-  - stop app
-  - decompress files + copy them to correct place
-  - restart app
+  #+NAME: blog/app
+  #+BEGIN_SRC sh :dir /sudo:root@chaos:~ :var action="start"
+    /etc/init.d/blog $action
+  #+END_SRC
+
+  #+CALL: blog/app("stop")
+
   #+NAME: blog/install(commit = blog/push) 
-  #+BEGIN_SRC sh :dir /sudo:root@chaos:~
-    /etc/init.d/blog stop
-    sudo -u shergill bash -i - <<EOF
+  #+BEGIN_SRC sh :dir /ssh:chaos:~
+    bash -i - <<EOF
     workon blog
     git fetch --all && git reset --hard "$commit"
     make install # decompress + copy files
     EOF
-    /etc/init.d/blog start
   #+END_SRC
+
+  #+CALL: blog/app("start")
