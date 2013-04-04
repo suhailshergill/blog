@@ -63,12 +63,12 @@ deploy: blog
 .PHONY: install
 installBin = upx -d `$(WHICH) $(1)`; $(INSTALL) `$(WHICH) $(1)` $(bindir);
 install: blog-launcher css
-	sudo $(blogInitd) stop
+	# sudo $(blogInitd) stop
 	$(call map,rotateLog,$(logFiles))
 	$(call map,installBin,blog publish-entry)
-	sudo $(blogInitd) start
-	@sleep 5
-	$(MAKE) error-file
+	# sudo $(blogInitd) start
+	# @sleep 5
+	# $(MAKE) error-file
 
 .PHONY: css
 css:

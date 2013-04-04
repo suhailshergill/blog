@@ -1,0 +1,44 @@
+#+PROPERTY: results silent output
+
+* prereqs
+  ensure that vagrant is up and running
+  #+CALL: vagrant/up()
+* local
+  #+NAME: blog/push
+  #+BEGIN_SRC sh 
+    git push
+    git rev-parse HEAD
+  #+END_SRC
+* vagrant
+  - pull latest code. hmm checkout specific branches/commits? would need to pass
+    [[http://orgmode.org/worg/org-contrib/babel/intro.html#arguments-to-source-code-blocks][arguments to code blocks]]
+  - build it
+  - compress using upx + copy them over to shared folder
+  #+NAME: blog/make(commit = blog/push)
+  #+BEGIN_SRC sh :dir /ssh:vagrant:~ 
+    bash -i - 1> /dev/null <<EOF
+    workon blog
+    git fetch --all && git reset --hard "$commit"
+    make deploy
+    EOF
+  #+END_SRC
+* local
+  scp files over to chaos
+  #+NAME: blog/scp 
+  #+BEGIN_SRC sh :dir ~/workspace/linode/ 
+    scp * shergill@chaos:~/virtualEnvs/blog/.hsenv/bin/ && echo "pushed to chaos!"
+  #+END_SRC
+* chaos
+  - stop app
+  - decompress files + copy them to correct place
+  - restart app
+  #+NAME: blog/install(commit = blog/push) 
+  #+BEGIN_SRC sh :dir /sudo:root@chaos:~
+    /etc/init.d/blog stop
+    sudo -u shergill bash -i - <<EOF
+    workon blog
+    git fetch --all && git reset --hard "$commit"
+    make install # decompress + copy files
+    EOF
+    /etc/init.d/blog start
+  #+END_SRC
