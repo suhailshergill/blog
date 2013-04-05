@@ -1,8 +1,16 @@
 #+PROPERTY: results silent
 
 * prereqs
-  ensure that vagrant is up and running
+  - set remote host + auto-confirm
+  #+NAME: setup
+  #+BEGIN_SRC emacs-lisp 
+    (setq su/provorg/host "chaos"
+          org-confirm-babel-evaluate nil)
+  #+END_SRC
+
+  - ensure that vagrant is up and running
   #+CALL: vagrant[:async no ]("up")
+
 * local
   #+NAME: blog/push
   #+BEGIN_SRC sh 
@@ -25,24 +33,34 @@
 * local
   scp files over to chaos
   #+NAME: blog/scp 
-  #+BEGIN_SRC sh :dir ~/workspace/linode/ 
-    scp * shergill@chaos:~/virtualEnvs/blog/.hsenv/bin/ && echo "pushed to chaos!"
+  #+BEGIN_SRC sh :dir ~/workspace/linode/ :var host=provorg/get-host :var server_dir=blog/server-dir 
+    tar czf - . | ssh $host "cd $server_dir/.hsenv/bin; tar xzf -"
+    echo "pushed to $host!"
   #+END_SRC
 * chaos
-  #+NAME: blog/app
-  #+BEGIN_SRC sh :dir /sudo:root@chaos:~ :var action="start"
-    /etc/init.d/blog $action
+  #+NAME: blog/server-dir
+  #+BEGIN_SRC sh :dir-dyn yes :dir ~ :cache yes :results replace 
+    bash -i - <<EOF
+    workon blog 1> /dev/null
+    printenv VIRTUAL_ENV # for some reason echo doesn't work here
+    EOF
   #+END_SRC
 
-  #+CALL: blog/app("stop")
+  #+CALL: provorg/initd(app="blog",action="stop")
 
   #+NAME: blog/install(commit = blog/push) 
   #+BEGIN_SRC sh :dir /ssh:chaos:~
     bash -i - <<EOF
-    workon blog
+    workon blog 1> /dev/null
     git fetch --all && git reset --hard "$commit"
     make install # decompress + copy files
     EOF
   #+END_SRC
 
-  #+CALL: blog/app("start")
+  #+CALL: provorg/initd(app="blog",action="start")
+* postreqs
+  #+NAME: cleanup
+  #+BEGIN_SRC emacs-lisp 
+    (setq su/provorg/host "localhost"
+          org-confirm-babel-evaluate t)
+  #+END_SRC
