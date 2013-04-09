@@ -95,8 +95,8 @@ setup-ruby:
 
 .PHONY: setup-haskell
 setup-haskell:
-	cd ..; cabal-meta install -v$(v) --ghc-options='$(GHCRTS)'
-	cabal-meta install -v$(v) --only-dependencies --ghc-options='$(GHCRTS)'
+	cd ..; cabal-meta install -v$(v) --force-reinstalls --ghc-options='$(GHCRTS)'
+	cabal-meta install -v$(v) --only-dependencies --force-reinstalls --ghc-options='$(GHCRTS)'
 
 .PHONY: travis
 travis:
