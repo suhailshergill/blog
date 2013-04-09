@@ -1,1 +1,4 @@
+happy
+haskdogs
+hasktags
 git://github.com/tmhedberg/hsenv.git

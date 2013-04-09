@@ -52,7 +52,7 @@ clean:
 
 .PHONY: doc
 doc:
-	#haskdogs -e
+	haskdogs -e
 
 .PHONY: deploy
 deployBin = $(INSTALL) `$(WHICH) $(1)` $(deploydir); upx $(deploydir)/$(1);
