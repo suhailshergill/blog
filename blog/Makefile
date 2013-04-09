@@ -30,7 +30,7 @@ export launcherContent
 all: blog
 
 .PHONY: blog
-blog: build doc
+blog: build
 
 .PHONY: build
 build: build-prof
