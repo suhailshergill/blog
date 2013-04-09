@@ -16,6 +16,7 @@ import Settings.StaticFiles as X
 import Settings as X (widgetFile, Extra (..))
 import Text.Jasmine as X (minifym)
 import Web.ClientSession as X (getKey)
+import System.Log.FastLogger as X (Logger)
 import Text.Hamlet as X (hamletFile)
 
 import Helper.Utils as X

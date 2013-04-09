@@ -55,6 +55,10 @@ staticRoot conf = [st|#{extraStaticroot $ appExtra $ conf}|]
 
 -- | Settings for 'widgetFile', such as which template languages to support and
 -- default Hamlet settings.
+--
+-- For more information on modifying behavior, see:
+--
+-- https://github.com/yesodweb/yesod/wiki/Overriding-widgetFile
 widgetFileSettings :: WidgetFileSettings
 widgetFileSettings = def
     { wfsHamletSettings = defaultHamletSettings

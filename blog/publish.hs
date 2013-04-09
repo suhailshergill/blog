@@ -20,6 +20,7 @@ import Settings -- database backend settings
 import qualified Database.Persist.Store as DPS
 
 import Control.Monad.Trans.Resource (runResourceT, ResourceT)
+import Control.Monad.Logger (runNoLoggingT, NoLoggingT)
 import Database.Persist.GenericSql (runMigration)
 
 import Data.Text (toLower)
@@ -77,17 +78,18 @@ main = do
 
 
 runDBAction :: DefaultEnv
-               -> SqlPersist (ResourceT IO) a
+               -> SqlPersist (ResourceT (NoLoggingT IO)) a
                -> IO a
 runDBAction env action = do
   conf <- loadConfig $ configSettings env
   dbconf <- withYamlEnvironment "config/postgresql.yml" (appEnv conf)
             DPS.loadConfig >>= DPS.applyEnv
   pool <- DPS.createPoolConfig (dbconf :: Settings.PersistConfig)
-  runResourceT $ DPS.runPool dbconf (do
-                      runMigration migrateAll
-                      action
-                     ) pool
+  runNoLoggingT $ runResourceT $
+    DPS.runPool dbconf (do
+                           runMigration migrateAll
+                           action
+                       ) pool
 
 deleteEntry :: (PersistQuery m, PersistUnique m)
                => ÃCustomId

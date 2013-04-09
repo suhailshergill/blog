@@ -24,6 +24,7 @@ data App = App
     , connPool :: Database.Persist.Store.PersistConfigPool Settings.PersistConfig -- ^ Database connection pool.
     , httpManager :: Manager
     , persistConfig :: Settings.PersistConfig
+    , appLogger :: Logger
     }
 
 -- Set up i18n messages. See the message folder.

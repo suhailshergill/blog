@@ -86,11 +86,19 @@ instance Yesod App where
     shouldLog _ _source level =
       development || level == LevelWarn || level == LevelError
 
+    getLogger = return . appLogger
+
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
     -- expiration dates to be set far in the future without worry of
     -- users receiving stale content.
-    addStaticContent = addStaticContentExternal minifym base64md5 Settings.staticDir (StaticR . flip StaticRoute [])
+    addStaticContent =
+      addStaticContentExternal minifym genFileName Settings.staticDir (StaticR . flip StaticRoute [])
+      where
+        -- Generate a unique filename based on the content itself
+        genFileName lbs
+          | development = "autogen-" ++ base64md5 lbs
+          | otherwise   = base64md5 lbs
 
     -- Place Javascript at bottom of the body tag so the rest of the page loads first
     jsLoader _ = BottomOfBody
@@ -165,6 +173,10 @@ instance YesodAuth App where
 -- achieve customized and internationalized form validation messages.
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
+
+-- | Get the 'Extra' value, used to hold data from the settings.yml file.
+getExtra :: Handler Extra
+getExtra = fmap (appExtra . settings) getYesod
 
 -- Note: previous versions of the scaffolding included a deliver function to
 -- send emails. Unfortunately, there are too many different options for us to
