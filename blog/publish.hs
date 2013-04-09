@@ -33,6 +33,15 @@ import Data.Time.Format (readTime)
 import System.Locale (defaultTimeLocale)
 
 
+type ÃCustomId = Text
+type ÃEnteredOn = UTCTime
+type ÃUpdatedOn = UTCTime
+type ÃHeading = Text
+type ÃTag = Text
+type ÃPost = Text
+type ÃHasMath = Bool
+
+
 truncateWhitespace :: String -> Text
 truncateWhitespace = strip . pack
 
@@ -41,13 +50,13 @@ main = do
   args <- getArgs
   case args of
     mode_:custom_id:entered_on:updated_on:heading_:hasMath_:tags_ -> do
-      let mode = read mode_
-          customId = pack custom_id
-          heading = pack heading_
-          hasMath = read hasMath_
-          tags = map pack tags_
-          enteredOn = parseDateUTC entered_on
-          updatedOn = parseDateUTC updated_on
+      let mode :: DefaultEnv = read mode_
+          customId :: ÃCustomId = pack custom_id
+          heading :: ÃHeading = pack heading_
+          hasMath :: ÃHasMath = read hasMath_
+          tags :: [ÃTag] = map pack tags_
+          enteredOn :: ÃEnteredOn = parseDateUTC entered_on
+          updatedOn :: ÃUpdatedOn = parseDateUTC updated_on
       text <- getContents
       let entryText = truncateWhitespace text
           in
@@ -93,13 +102,6 @@ deleteEntry customId = do
     Nothing -> return ()
 
 
-type ÃCustomId = Text
-type ÃEnteredOn = UTCTime
-type ÃUpdatedOn = UTCTime
-type ÃHeading = Text
-type ÃTag = Text
-type ÃPost = Text
-type ÃHasMath = Bool
 insertEntry :: ( PersistQuery m
                , PersistUnique m
                , backend ~ (PersistMonadBackend m)

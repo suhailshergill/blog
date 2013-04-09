@@ -182,6 +182,7 @@ executable         publish-entry
                 GADTs
                 GeneralizedNewtypeDeriving
                 FlexibleContexts
+                ScopedTypeVariables
 
     build-depends: containers
                  , mtl
