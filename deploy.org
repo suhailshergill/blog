@@ -1,66 +1,138 @@
 #+PROPERTY: results silent
+#+PROPERTY: var proj="blog"
 
 * prereqs
-  - set remote host + auto-confirm
-  #+NAME: setup
-  #+BEGIN_SRC emacs-lisp 
-    (setq su/provorg/host "chaos"
-          org-confirm-babel-evaluate nil)
-  #+END_SRC
+  - disable auto-confirm
+    #+NAME: setup
+    #+BEGIN_SRC emacs-lisp 
+      (setq org-confirm-babel-evaluate nil)
+    #+END_SRC  
+  - cache project name
+    #+NAME: proj
+    #+BEGIN_SRC sh :cache yes :results replace 
+      echo $proj
+    #+END_SRC
+
+    #+RESULTS[413016537dd6d825293511577a13258daf169ff5]: proj
+    : blog
 
   - ensure that vagrant is up and running
-  #+CALL: vagrant[:async no ]("up")
+    #+CALL: vagrant[:async no ]("up")
 
 * local/push
   #+NAME: blog/push
-  #+BEGIN_SRC sh 
-    git push
+  #+BEGIN_SRC sh :dir-dyn no 
+    git push --force
     git rev-parse HEAD
   #+END_SRC
+
 * vagrant/build
-  - pull latest code. hmm checkout specific branches/commits? would need to pass
-    [[http://orgmode.org/worg/org-contrib/babel/intro.html#arguments-to-source-code-blocks][arguments to code blocks]]
-  - build it
-  - compress using upx + copy them over to shared folder
-  #+NAME: blog/make(commit = blog/push)
-  #+BEGIN_SRC sh :dir /ssh:vagrant:~ 
-    bash -i - 1> /dev/null <<EOF
-    workon blog
-    git fetch --all && git reset --hard "$commit"
-    make deploy
-    EOF
-  #+END_SRC
-* local/scp
-  scp files over to chaos
-  #+NAME: blog/scp 
-  #+BEGIN_SRC sh :dir ~/workspace/linode/ :var host=provorg/get-host :var server_dir=blog/server-dir 
-    tar czf - . | ssh $host "cd $server_dir/.hsenv/bin; tar xzf -"
-    echo "pushed to $host!"
-  #+END_SRC
-* chaos/install
-  #+NAME: blog/server-dir
-  #+BEGIN_SRC sh :dir-dyn yes :dir ~ :cache yes :results replace 
-    bash -i - <<EOF
-    workon blog 1> /dev/null
-    printenv VIRTUAL_ENV # for some reason echo doesn't work here
-    EOF
-  #+END_SRC
+** set remote host
+   #+CALL: provorg/host/push[]("vagrant") 
 
-  #+CALL: provorg/initd(app="blog",action="stop")
+** fetch changed commits
+   #+NAME: blog/changed-commits
+   #+BEGIN_SRC emacs-lisp :eval yes
+     (let* ((old-head (provorg/call-lob "git/head/get"
+                                        :inside-header `((:var proj= ,proj) 
+                                                         (:dir-dyn yes)
+                                                         (:dir "~"))))
+            (new-head (provorg/call-lob "git/head/get"
+                                        :inside-header `((:var proj= ,proj)
+                                                         (:dir-dyn no)
+                                                         (:dir "~"))))
+            (ancestor (provorg/call-lob "git/common-ancestor"
+                                        :inside-header `((:var proj= ,proj)
+                                                         (:var A= ,old-head)
+                                                         (:var B= ,new-head)
+                                                         (:dir-dyn no)
+                                                         (:dir "~"))))
+            (log-titles (provorg/call-lob "git/log-titles-in-range"
+                                          :inside-header `((:var proj= ,proj)
+                                                           (:var A= ,ancestor)
+                                                           (:var B= ,new-head)
+                                                           (:dir-dyn no)
+                                                           (:dir "~"))))
+            )
+       log-titles)
+   #+END_SRC
 
-  #+NAME: blog/install(commit = blog/push) 
-  #+BEGIN_SRC sh :dir /ssh:chaos:~
-    bash -i - <<EOF
-    workon blog 1> /dev/null
-    git fetch --all && git reset --hard "$commit"
-    make install # decompress + copy files
-    EOF
-  #+END_SRC
+** check to see if changes require setup to be built again
+   #+NAME: git/commit/tag-p
+   #+BEGIN_SRC emacs-lisp :dir-dyn no :var commitlog='() :var tag="" 
+     (let ((commits (if (stringp commitlog)
+               `(,commitlog)
+             (mapcar #'(lambda (list)
+                         (mapconcat 'identity list " "))
+                     commitlog))))
+       (when (provorg/utils/not-nil tag)
+         (some 'identity (mapcar #'(lambda (commit)
+                                     (and (string-match (concat tag ": ") commit) t))
+                                 commits))))
+   #+END_SRC
 
-  #+CALL: provorg/initd(app="blog",action="start")
+** build + copy to shared folder
+   - pull latest code. hmm checkout specific branches/commits? would need to pass
+     [[http://orgmode.org/worg/org-contrib/babel/intro.html#arguments-to-source-code-blocks][arguments to code blocks]]
+   - build it
+   - compress using upx + copy them over to shared folder
+   #+NAME: blog/make
+   #+BEGIN_SRC sh :dir /ssh:vagrant:~ :var setup=git/commit/tag-p[:var tag="setup" :var commitlog=blog/changed-commits[:eval yes ]()]() :var commit=blog/push
+     bash -i - 1> /dev/null <<EOF
+     workon blog
+     git fetch --all && git reset --hard "$commit"
+     if [ "${setup}" != "nil" ]; then
+         cabal update
+         make setup
+     fi
+     make deploy
+     EOF
+   #+END_SRC
+
+** unset remote host
+   #+CALL: provorg/host/pop[]() 
+* chaos
+** set remote host
+   #+CALL: provorg/host/push[]("chaos") 
+** scp over files
+   - cache server-dir
+     #+NAME: blog/server-dir
+     #+BEGIN_SRC sh :dir-dyn yes :dir ~ :cache yes :results replace
+       bash -i - <<EOF
+       workon blog 1> /dev/null
+       printenv VIRTUAL_ENV # for some reason echo doesn't work here
+       EOF
+     #+END_SRC
+
+     #+RESULTS[f5544226e0f1ede1748f8f67634e2a52b5b9eba6]: blog/server-dir
+     : /home/shergill/virtualEnvs/blog
+
+   - scp files over to chaos
+     #+NAME: blog/scp 
+     #+BEGIN_SRC sh :dir-dyn no :dir ~/workspace/linode/ :var host=provorg/host/get :var server_dir=blog/server-dir
+       tar czf - . | ssh $host "cd $server_dir/.hsenv/bin; tar xzf -"
+       echo "pushed to $host!"
+     #+END_SRC
+** install
+   - stop blog
+     #+CALL: provorg/initd(app="blog",action="stop")
+
+   - install the new version
+     #+NAME: blog/install(commit = blog/push) 
+     #+BEGIN_SRC sh :dir-dyn yes :dir ~
+       bash -i - <<EOF
+       workon blog 1> /dev/null
+       git fetch --all && git reset --hard "$commit"
+       make install # decompress + install files
+       EOF
+     #+END_SRC
+
+   - start blog
+     #+CALL: provorg/initd(app="blog",action="start")
+** unset remote host
+   #+CALL: provorg/host/pop[]() 
 * postreqs
   #+NAME: cleanup
   #+BEGIN_SRC emacs-lisp 
-    (setq su/provorg/host "localhost"
-          org-confirm-babel-evaluate t)
+    (setq org-confirm-babel-evaluate t)
   #+END_SRC
