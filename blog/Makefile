@@ -1,7 +1,7 @@
 INSTALL = /usr/bin/install
 WHICH = /usr/bin/which
 
-override GHCRTS += +RTS -M300m -RTS
+override GHCRTS += +RTS -M1500m -RTS
 v = 1
 
 prefix = $(root)
