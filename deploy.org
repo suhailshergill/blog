@@ -3,10 +3,7 @@
 
 * prereqs
   - disable auto-confirm
-    #+NAME: setup
-    #+BEGIN_SRC emacs-lisp 
-      (setq org-confirm-babel-evaluate nil)
-    #+END_SRC  
+    #+CALL: provorg/init[]() 
   - cache project name
     #+NAME: proj
     #+BEGIN_SRC sh :cache yes :results replace 
@@ -132,7 +129,4 @@
 ** unset remote host
    #+CALL: provorg/host/pop[]() 
 * postreqs
-  #+NAME: cleanup
-  #+BEGIN_SRC emacs-lisp 
-    (setq org-confirm-babel-evaluate t)
-  #+END_SRC
+  #+CALL: provorg/quit[]() 
