@@ -11,3 +11,10 @@ author:
   name: Suhail Shergill
   email: suhailshergill@gmail.com
   uri: https://ca.linkedin.com/in/suhailshergill
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
