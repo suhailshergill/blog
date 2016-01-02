@@ -3,6 +3,10 @@
 #+EMAIL:     suhailshergill@gmail.com
 
 * TODO resurrect blog [0/2]                                            :blog:
+  - State "TODO"       from "TODO"       [2016-01-02 Sat 17:45] \\
+    so the jekyll equivalent of wrappers/delimited continuations are called
+    layouts. did a basic translation of [[git:~/virtualEnvs/blog/src/blog/templates/default-layout-wrapper.hamlet::dev@{2016-01-02}][default-layout-wrapper.hamlet]] into
+    _layouts/default.html in gh-pages branch.
   - State "TODO"       from "STARTED"    [2016-01-02 Sat 14:40]
   - State "STARTED"    from "TODO"       [2016-01-02 Sat 14:39]
   - State "TODO"       from "TODO"       [2016-01-02 Sat 00:54] \\
@@ -39,7 +43,7 @@
   :PROPERTIES:
   :CUSTOM_ID: 965b5e27-c500-488c-a9fa-aad8c2c13e27
   :END:
-** STARTED move to github pages [2/3]
+** TODO move to github pages [2/3]
    - [X] add DNS redirect
      - shergill.su -> suhailshergill.github.io
      - suhailshergill.github.io -> blog.shergill.su
