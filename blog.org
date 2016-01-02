@@ -62,9 +62,10 @@
        - use [[https://rawgit.com/][rawgit]] for CDN
          no, it's better to just use the gh-pages branch. use the travis script
          to compile the content and publish to gh-pages. 
-     - [ ] integrate disqus
-       - [[git:~/virtualEnvs/blog/src/blog/templates/homepage.hamlet::sss/gh-pages@{2016-01-02}][homepage.hamlet snippet]]
-       - [[git:~/virtualEnvs/blog/src/blog/config/settings.yml::sss/gh-pages@{2016-01-02}][settings.yml]]
+     - [ ] convert hamlet templates to [[http://liquidmarkup.org/][liquid]] templates
+       - [ ] integrate disqus
+         - [[git:~/virtualEnvs/blog/src/blog/templates/homepage.hamlet::sss/gh-pages@{2016-01-02}][homepage.hamlet snippet]]
+         - [[git:~/virtualEnvs/blog/src/blog/config/settings.yml::sss/gh-pages@{2016-01-02}][settings.yml]]
 ** TODO move past content over
 * CANCELED track history of posts
   CLOSED: [2016-01-02 Sat 14:00]
