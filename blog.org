@@ -2,6 +2,85 @@
 #+AUTHOR:    Suhail Shergill
 #+EMAIL:     suhailshergill@gmail.com
 
+* TODO resurrect blog [0/2]                                            :blog:
+  - State "TODO"       from "TODO"       [2016-01-02 Sat 00:54] \\
+    need to figure emacs provisioning w/ customizations as the next step
+  - State "TODO"       from "STARTED"    [2016-01-02 Sat 00:49] \\
+    the DNS issues were resolved. so for each subdomain/github repo i would need to
+    do two things:
+    - add CNAME to gh-pages branch
+    - add CNAME entry in linode pointing to suhailshergill.github.io
+    
+    the above works because nic.ru redirects DNS requests for *.shergill.su to
+    linode nameservers. and within linode we then forward requests to
+    suhailshergill.github.io as needed. note, that as per [[https://help.github.com/articles/tips-for-configuring-a-cname-record-with-your-dns-provider/][github help]] we
+    shouldn't use wildcard DNS records w/ github pages since it will allow
+    anyone to host a github pages site at one of my subdomains.
+  - State "STARTED"    from "TODO"       [2016-01-01 Fri 19:20]
+  - State "TODO"       from "STARTED"    [2016-01-01 Fri 19:14] \\
+    trying to debug dns issues.
+    for a moment blog.shergill.su worked. it doesn't any more. one of the things
+    changed was the deletion of redirect of blog.shergill.su to
+    suhailshergill.github.io.
+    
+    shergill.su works. for it i did:
+      - [[https://help.github.com/articles/adding-a-cname-file-to-your-repository/][added CNAME to github.com/suhailshergill/suhailshergill.github.io]]
+      - [[https://help.github.com/articles/tips-for-configuring-an-a-record-with-your-dns-provider/][added AAAA record pointing to 192.30.252.153 and 192.30.252.154]]
+    trying to see if docs.shergill.su works. tried:
+      - added CNAME to github.com/suhailshergill/docs
+      - added redirect to linode docs.shergill.su -> suhailshergill.github.io
+  - State "STARTED"    from "TODO"       [2016-01-01 Fri 19:14]
+  - State "TODO"       from "TODO"       [2016-01-01 Fri 19:14]
+
+  - State "TODO"       from ""           [2012-10-21 Sun 22:15] \\
+
+  :PROPERTIES:
+  :CUSTOM_ID: 965b5e27-c500-488c-a9fa-aad8c2c13e27
+  :END:
+** TODO move to github pages [1/4]
+   - [X] add DNS redirect
+     - shergill.su -> suhailshergill.github.io
+     - suhailshergill.github.io -> blog.shergill.su
+     - blog.shergill.su -> suhailshergill.github.io/blog
+   - [ ] clean out gh-pages history
+   - [-] add build step to travis job [1/6]
+     - [ ] installs emacs
+     - [ ] pulls custom .el code [0/2]
+       - [ ] [[help:su/journal-publish][su/journal-publish]]
+       - [ ] custom version of org-mode
+     - [ ] processes journal.org file [0/1]
+       - [ ] add disqus links (using custom ID i believe)
+     - [ ] merges into gh-pages branch 
+       - mine
+         - [[https://github.com/suhailshergill/research/blob/master/travis/travis-doc-upload.sh][travis-doc-upload.sh]]
+         - [[https://github.com/suhailshergill/research/blob/master/.travis.yml#L51][travis.yml]]
+       - more tweaked variant in [[https://github.com/suhailshergill/research/issues/7][mesos-stack]]
+     - [X] figure out CDN
+       - use [[https://rawgit.com/][rawgit]] for CDN
+         no, it's better to just use the gh-pages branch. use the travis script
+         to compile the content and publish to gh-pages. 
+     - [ ] integrate disqus
+       - [[git:~/virtualEnvs/blog/src/blog/templates/homepage.hamlet::sss/gh-pages@{2016-01-02}][homepage.hamlet snippet]]
+       - [[git:~/virtualEnvs/blog/src/blog/config/settings.yml::sss/gh-pages@{2016-01-02}][settings.yml]]
+** TODO move past content over
+* CANCELED track history of posts
+  CLOSED: [2016-01-02 Sat 14:00]
+  - State "CANCELED"   from "TODO"       [2016-01-02 Sat 14:00] \\
+    this will automatically happen once i move to github pages
+  something like [[https://gist.github.com/3889970][what gist does]] will be nice, but i don't want to simply be
+  inserting gists via js. makes it harder for people to get at the content. of
+  course the solution might be to use github pages ([[http://jdodds.github.com/][example]]), or invent
+  something of your own along those lines. hmm [[http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository][creating a separate git repo for
+  blog posts]] (currently with all my assorted org files) would probably be the
+  way to go.
+   - run a git-commit and push on [[help:after-save-hook][after-save-hook]]
+   - [[help:find-file-hook][find-file-hook]] see if there's something which fires earlier?
+* CANCELED custom font-awesome [[http://icnfnt.com/][subset]]
+  CLOSED: [2016-01-02 Sat 14:04]
+  - State "CANCELED"   from "TODO"       [2016-01-02 Sat 14:04] \\
+    well the [[https://github.com/johnsmclay/icnfnt][icnfnt]] site is down, but i am questioning the worth of this.
+    that being said, note that there are alternatives like [[http://fontello.com/][fontello]] and [[https://icomoon.io/app/][icomoon]] as
+    per [[http://stackoverflow.com/questions/15331525/optimize-font-awesome-for-only-used-classes][stackoverflow post]].
 * DONE travis-ci [1/2]
   CLOSED: [2013-02-18 Mon 00:03]
   - State "DONE"       from "STARTED"    [2013-02-18 Mon 00:03] \\
@@ -70,3 +149,4 @@
     :PROPERTIES:
     :CUSTOM_ID: efdb3cce-eef6-49a5-a250-387f4b870e78
     :END:
+
