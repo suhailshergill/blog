@@ -1,0 +1,17 @@
+blog:
+  copyright:
+    text: >
+      Except where otherwise noted, content on this site is licensed under a
+      Creative Commons BY-NC-SA 3.0 License. 
+    link: https://creativecommons.org/licenses/by-nc-sa/3.0/
+  disqus:
+    shortname: shergill
+    developer: 1
+  google-verification: fHM_yAw2cluSQ1j0USmMnj3SwZXeKCQrYzkCC71Zado
+  title: "$> su - shergill"
+
+favicon: http://shergill.su/favicon.ico
+
+linked-in: 
+  profile: https://ca.linkedin.com/in/suhailshergill
+  resume: http://resume.linkedinlabs.com/me0zyid72

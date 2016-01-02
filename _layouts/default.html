@@ -1,0 +1,64 @@
+---
+---
+<!doctype html>
+<!--[if lt IE 7]> <html class="bp no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="bp no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="bp no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="bp no-js" lang="en"> <!--<![endif]--><head><meta charset="UTF-8">
+<title>
+  {% if page.title %}
+    {{ page.title }}
+  {% else %}
+    {{ site.data.sss.blog.title }}
+  {% endif %}
+</title>
+<meta name="description" content="{{ site.name }}">
+<meta name="author" content="{{ site.author.name }}">
+<link rel="shortcut icon" href="{{ site.data.sss.favicon }}" />
+<meta name="google-site-verification" content="{{ site.data.sss.blog.google-verification }}" />
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="http://static.shergill.su/sass/screen.css?etag=RgSDhBOZ" rel="stylesheet" media="screen,projection">
+<!--[if lt IE 9]>
+<link href="http://static.shergill.su/sass/ie.css?etag=KR2p-wz8" rel="stylesheet" media="screen,projection">
+<![endif]-->
+<link href="http://static.shergill.su/sass/print.css?etag=rylCNFHC" rel="stylesheet" media="print">
+<link rel="stylesheet" href="http://static.shergill.su/tmp/kh6Kzmz4.css">
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');</script>
+</head>
+<body class="bp">
+  <div id="container">
+    <header></header>
+  <div id="main" role="main">
+    <div class="blog-header">
+      <ul>
+        <li>
+          <a href="{{ site.github.url }}" title="Home"><i class="icon-home"></i>Home</a>
+        </li>
+        <li>
+          <a href="{{ site.author.uri }}" title="About Me"><i class="icon-user"></i>About</a>
+        </li>
+        <li>
+          <a href="{{ site.data.sss.linked-in.resume }}" title="CV"><i class="icon-list-alt"></i>CV</a>
+        </li>
+        <li>
+          <a href="{{ site.github.url }}/tags" title="Tags" rel="index"><i class="icon-tags"></i>Tags</a>
+        </li>
+        <ul class="subscriptions"><li><a href="/feed.xml" title="Atom Feed">RSS</a></li></ul>
+      </ul>
+      </div>
+      {{ content }}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  </div>
+</div>
+<footer>
+  <a href="{{ site.data.sss.blog.copyright.link }}" rel="license">{{ site.data.sss.blog.copyright.text }}</a>
+</footer>
+<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.  chromium.org/developers/how-tos/chrome-frame-getting-started -->
+<!--[if lt IE 7 ]><script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+<script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+<![endif]--></body>
+</html>
