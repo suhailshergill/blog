@@ -4,3 +4,10 @@ gems:
 - jekyll-redirect-from
 - jekyll-sitemap
 - jemoji
+
+name: "Suhail Shergill's personal blog"
+description: Random musings
+author:
+  name: Suhail Shergill
+  email: suhailshergill@gmail.com
+  uri: https://ca.linkedin.com/in/suhailshergill
