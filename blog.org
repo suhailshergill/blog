@@ -3,6 +3,8 @@
 #+EMAIL:     suhailshergill@gmail.com
 
 * TODO resurrect blog [0/2]                                            :blog:
+  - State "TODO"       from "STARTED"    [2016-01-02 Sat 14:40]
+  - State "STARTED"    from "TODO"       [2016-01-02 Sat 14:39]
   - State "TODO"       from "TODO"       [2016-01-02 Sat 00:54] \\
     need to figure emacs provisioning w/ customizations as the next step
   - State "TODO"       from "STARTED"    [2016-01-02 Sat 00:49] \\
@@ -37,14 +39,15 @@
   :PROPERTIES:
   :CUSTOM_ID: 965b5e27-c500-488c-a9fa-aad8c2c13e27
   :END:
-** TODO move to github pages [1/4]
+** STARTED move to github pages [2/3]
    - [X] add DNS redirect
      - shergill.su -> suhailshergill.github.io
      - suhailshergill.github.io -> blog.shergill.su
      - blog.shergill.su -> suhailshergill.github.io/blog
-   - [ ] clean out gh-pages history
+   - [X] clean out gh-pages history
    - [-] add build step to travis job [1/6]
      - [ ] installs emacs
+       - how to provision? a docker image?
      - [ ] pulls custom .el code [0/2]
        - [ ] [[help:su/journal-publish][su/journal-publish]]
        - [ ] custom version of org-mode
