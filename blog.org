@@ -3,6 +3,11 @@
 #+EMAIL:     suhailshergill@gmail.com
 
 * TODO resurrect blog [0/2]                                            :blog:
+  - State "TODO"       from "TODO"       [2016-01-02 Sat 19:53] \\
+    i think i'm going to switch to hakyll coupled with some additional testing (ruby
+    gem and haskell based) instead of using jekyll. see:
+    - http://cliffle.com/article/2015/05/09/hakyll/
+    - https://www.reddit.com/r/haskell/comments/3f0yld/dr_hakyll_create_a_github_page_with_hakyll_and/
   - State "TODO"       from "TODO"       [2016-01-02 Sat 17:45] \\
     so the jekyll equivalent of wrappers/delimited continuations are called
     layouts. did a basic translation of [[git:~/virtualEnvs/blog/src/blog/templates/default-layout-wrapper.hamlet::dev@{2016-01-02}][default-layout-wrapper.hamlet]] into
@@ -49,7 +54,7 @@
      - suhailshergill.github.io -> blog.shergill.su
      - blog.shergill.su -> suhailshergill.github.io/blog
    - [X] clean out gh-pages history
-   - [-] add build step to travis job [1/6]
+   - [-] add build step to travis job [1/7]
      - [ ] installs emacs
        - how to provision? a docker image?
      - [ ] pulls custom .el code [0/2]
@@ -66,10 +71,12 @@
        - use [[https://rawgit.com/][rawgit]] for CDN
          no, it's better to just use the gh-pages branch. use the travis script
          to compile the content and publish to gh-pages. 
-     - [ ] convert hamlet templates to [[http://liquidmarkup.org/][liquid]] templates
+     - [ ] convert hamlet templates to [[http://www.stackbuilders.com/news/dr-hakyll-create-a-github-page-with-hakyll-and-circleci][hakyll]] templates
        - [ ] integrate disqus
          - [[git:~/virtualEnvs/blog/src/blog/templates/homepage.hamlet::sss/gh-pages@{2016-01-02}][homepage.hamlet snippet]]
          - [[git:~/virtualEnvs/blog/src/blog/config/settings.yml::sss/gh-pages@{2016-01-02}][settings.yml]]
+     - [ ] add [[http://www.jacobtomlinson.co.uk/jekyll/2015/02/18/test-you-jekyll-blog-with-travis-ci/][CI tests]] 
+       - some [[https://wiki.haskell.org/Web/Testing_and_Verification][haskell web testing libs]]
 ** TODO move past content over
 * CANCELED track history of posts
   CLOSED: [2016-01-02 Sat 14:00]
