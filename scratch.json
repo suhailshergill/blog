@@ -1,7 +1,11 @@
 {
 	"entry": [
 		{
-			"title": "To be or not to be",
+			"title": "Edited entry",
+			"date": "2017-06-11"
+		},
+		{
+			"title": "Second entry",
 			"date": "2017-06-11"
 		}
 	]
