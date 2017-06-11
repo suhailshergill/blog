@@ -1,6 +1,10 @@
 {
 	"entry": [
 		{
+			"title": "Third entry",
+			"date": "2017-06-10"
+		},
+		{
 			"title": "Edited entry",
 			"date": "2017-06-11"
 		},
