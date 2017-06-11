@@ -1,9 +1,15 @@
 language: haskell
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - ruby
+      - rubygems
 
 before_install:
-  - sudo apt-get -qy install ruby1.8 rubygems
-  - gem install bundler
-  - cabal update && cabal install cabal-meta cabal-src --ghc-options='+RTS -M300m'
+  - cd blog
+  - make build-ci
 
 install:
   - cd blog
@@ -17,3 +23,8 @@ script:
 notifications:
   irc: "irc.freenode.org#shergill"
   use_notice: true
+  # email:
+  #   - suhailshergill@gmail.com
+  # on_success: change
+  # on_failure: always
+

@@ -101,3 +101,8 @@ setup-haskell:
 .PHONY: travis
 travis:
 	cd ../travis; cabal-meta install -v$(v) --ghc-options='$(GHCRTS)'
+
+.PHONY: build-ci
+build-ci:
+	gem install bundler
+	cabal install shake
